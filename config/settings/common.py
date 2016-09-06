@@ -39,13 +39,14 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'haystack',
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
     'opac_ssm.users.apps.UsersConfig',
-    # Your stuff: custom apps go here
+    'assets_manager',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -244,3 +245,14 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS_HOST = env('HAYSTACK_CONNECTIONS_HOST', default='127.0.0.1')
+HAYSTACK_CONNECTIONS_PORT = env('HAYSTACK_CONNECTIONS_PORT', default='9200')
+HAYSTACK_CONNECTIONS_INDEX = env('HAYSTACK_CONNECTIONS_INDEX', default='opac_ssm')
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://{host}:{port}/'.format(host=HAYSTACK_CONNECTIONS_HOST, port=HAYSTACK_CONNECTIONS_PORT),
+        'INDEX_NAME': HAYSTACK_CONNECTIONS_INDEX,
+    },
+}
