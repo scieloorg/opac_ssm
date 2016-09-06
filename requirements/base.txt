@@ -42,3 +42,7 @@ celery==3.1.23
 # haystack and elasticsearch
 django-haystack==2.5.0
 elasticsearch==2.4.0
+
+# grpc
+grpcio==1.0.0
+grpcio-tools==1.0.0
