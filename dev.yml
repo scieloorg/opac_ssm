@@ -5,6 +5,13 @@ volumes:
   postgres_backup_dev: {}
 
 services:
+
+  elasticsearch:
+    image: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
   postgres:
     build: ./compose/postgres
     volumes:
@@ -23,18 +30,17 @@ services:
     environment:
       - POSTGRES_USER=opac_ssm
       - USE_DOCKER=yes
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     links:
       - postgres
-
+      - elasticsearch
       - mailhog
-
-
-
-
 
   mailhog:
     image: mailhog/mailhog
