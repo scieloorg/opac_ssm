@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service AssetService {
+    rpc add_asset(Asset) returns (Asset) {}
+}
+
+message Asset {
+    bytes file = 1; // file of the asset
+    string type = 2;
+    string origin = 3;
+    string license = 4;
+    string visibility = 5;
+    string metadata = 6;
+    string description = 7;
+}
