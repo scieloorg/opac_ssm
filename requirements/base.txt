@@ -45,4 +45,4 @@ elasticsearch==2.4.0
 
 # grpc
 grpcio==1.0.0
-grpcio-tools==1.0.0
+grpcio-tools==1.0.4
