@@ -40,7 +40,7 @@ celery==4.0.2
 # Your custom requirements go here
 
 # haystack and elasticsearch
-django-haystack==2.5.0
+django-haystack==2.5.1
 elasticsearch==2.4.0
 
 # grpc
