@@ -28,7 +28,7 @@ awesome-slugify==1.6.5
 django-autoslug==1.9.3
 
 # Time zones support
-pytz==2016.6.1
+pytz==2016.10
 
 # Redis support
 django-redis==4.7.0
