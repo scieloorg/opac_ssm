@@ -1,24 +1,24 @@
 # Bleeding edge Django
-django==1.9.9
+django==1.10.4
 
 # Configuration
-django-environ==0.4.0
-whitenoise==3.2.1
+django-environ==0.4.1
+whitenoise==3.2.2
 
 # Forms
-django-braces==1.9.0
-django-crispy-forms==1.6.0
+django-braces==1.10.0
+django-crispy-forms==1.6.1
 django-floppyforms==1.7.0
 
 # Models
-django-model-utils==2.5.2
+django-model-utils==2.6
 
 # Images
-Pillow==3.3.1
+Pillow==4.0.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.27.0
+django-allauth==0.30.0
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.6.2
@@ -28,21 +28,21 @@ awesome-slugify==1.6.5
 django-autoslug==1.9.3
 
 # Time zones support
-pytz==2016.6.1
+pytz==2016.10
 
 # Redis support
-django-redis==4.4.4
+django-redis==4.7.0
 redis>=2.10.0
 
 # Celery
-celery==3.1.23
+celery==4.0.2
 
 # Your custom requirements go here
 
 # haystack and elasticsearch
-django-haystack==2.5.0
-elasticsearch==2.4.0
+django-haystack==2.5.1
+elasticsearch==5.0.1
 
 # grpc
-grpcio==1.0.0
-grpcio-tools==1.0.0
+grpcio==1.0.4
+grpcio-tools==1.0.4
