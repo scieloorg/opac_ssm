@@ -3,6 +3,7 @@ from . import models
 
 # Register your models here.
 
+
 @admin.register(models.Asset)
 class AssetAdmin(admin.ModelAdmin):
     list_display = (
