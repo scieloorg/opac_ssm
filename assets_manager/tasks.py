@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 
 import os
 import logging
@@ -9,6 +9,7 @@ from opac_ssm.taskapp.celery import app
 from . import models
 
 logger = logging.getLogger(__name__)
+
 
 @app.task(bind=True)
 def add_asset(self, file, type=None, origin=None, license=None, visibility=None,

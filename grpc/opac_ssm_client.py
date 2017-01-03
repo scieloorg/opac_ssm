@@ -2,6 +2,7 @@ import grpc
 
 import opac_ssm_pb2
 
+
 def run():
     channel = grpc.insecure_channel('localhost:5000')
 
