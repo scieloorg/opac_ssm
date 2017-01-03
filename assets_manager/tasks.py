@@ -21,13 +21,7 @@ def add_asset(self, file, type=None, origin=None, license=None, visibility=None,
     Params:
         :param file: can be File Like Object or a path (mandatory)
         :param type: is the type of asset ()
-        :param origin: (model set default = 'WEBUP')
-        :param license: (model set default = 'C')
-        :param visibility: options: ['PRIVATE',
-                                     'INTERNAL',
-                                     'PUBLIC',] (model set default = 'INTERNAL')
         :param metadata: JSON with metadada about asset
-        :param description: notes about asset
     """
 
     # Check if is a path
@@ -46,20 +40,7 @@ def add_asset(self, file, type=None, origin=None, license=None, visibility=None,
     filename = os.path.basename(getattr(fp, 'name', None))
     asset.file = File(fp, filename)
     asset.type = type
-
-    if origin:
-        asset.origin = origin
-    else:
-        asset.origin = 'OTHER'
-
-    if license:
-        asset.license = license
-
-    if visibility:
-        asset.visibility = visibility
-
     asset.metadata = metadata
-    asset.description = description
     asset.save()
 
-    logger.info(u"Successfully created asset with the id=%s, size=%s and path=%s" % (asset.id, asset.file.size, asset.file.path))
+    logger.info(u"Successfully created asset with the id=%s, size=%s and path=%s", asset.id, asset.file.size, asset.file.path)

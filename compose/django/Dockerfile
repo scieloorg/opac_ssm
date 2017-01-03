@@ -1,5 +1,5 @@
+FROM python:3.5
 
-FROM python:2.7
 ENV PYTHONUNBUFFERED 1
 
 # Requirements have to be pulled and installed here, otherwise caching won't work

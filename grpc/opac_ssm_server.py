@@ -12,11 +12,9 @@ class Asset(opac_ssm_pb2.AssetServiceServicer):
     """
     Return a Asset object
     """
-    return opac_ssm_pb2.Asset(file=request.file, origin=request.origin,
-                            license=request.license,
-                            visibility=request.visibility,
-                            metadata=request.metadata,
-                            description=request.description)
+    return opac_ssm_pb2.Asset(file=request.file,
+                              type=request.type,
+                              metadata=request.metadata)
 
 def serve():
   server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
