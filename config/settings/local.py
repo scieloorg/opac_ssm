@@ -10,9 +10,9 @@ Local settings
 - Add django-extensions as app
 """
 
-from .common import *  # noqa
 import socket
 import os
+from .common import *  # noqa
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='ate9zu6r2(vk2#cl!u2r78k=cq&2pj317!)*yu-%f7j4x@753n')
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='w%vn20@n7%1)3m10genhm(v@tt_+y=hx!71fdett&hx_rzjs&_')
 
 # Mail settings
 # ------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ CACHES = {
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 INSTALLED_APPS += ('debug_toolbar', )
 
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', ]

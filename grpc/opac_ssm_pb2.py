@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='opac_ssm.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x0eopac_ssm.proto\"\x7f\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x0e\n\x06origin\x18\x03 \x01(\t\x12\x0f\n\x07license\x18\x04 \x01(\t\x12\x12\n\nvisibility\x18\x05 \x01(\t\x12\x10\n\x08metadata\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t2-\n\x0c\x41ssetService\x12\x1d\n\tadd_asset\x12\x06.Asset\x1a\x06.Asset\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0eopac_ssm.proto\"5\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x10\n\x08metadata\x18\x03 \x01(\t2-\n\x0c\x41ssetService\x12\x1d\n\tadd_asset\x12\x06.Asset\x1a\x06.Asset\"\x00\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,36 +48,8 @@ _ASSET = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='origin', full_name='Asset.origin', index=2,
+      name='metadata', full_name='Asset.metadata', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='license', full_name='Asset.license', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='visibility', full_name='Asset.visibility', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='metadata', full_name='Asset.metadata', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='Asset.description', index=6,
-      number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -95,7 +67,7 @@ _ASSET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=18,
-  serialized_end=145,
+  serialized_end=71,
 )
 
 DESCRIPTOR.message_types_by_name['Asset'] = _ASSET
@@ -108,84 +80,109 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
 _sym_db.RegisterMessage(Asset)
 
 
-import grpc
-from grpc.beta import implementations as beta_implementations
-from grpc.beta import interfaces as beta_interfaces
-from grpc.framework.common import cardinality
-from grpc.framework.interfaces.face import utilities as face_utilities
+try:
+  # THESE ELEMENTS WILL BE DEPRECATED.
+  # Please use the generated *_pb2_grpc.py files instead.
+  import grpc
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
+  from grpc.beta import implementations as beta_implementations
+  from grpc.beta import interfaces as beta_interfaces
 
 
-class AssetServiceStub(object):
+  class AssetServiceStub(object):
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+      """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.add_asset = channel.unary_unary(
-        '/AssetService/add_asset',
-        request_serializer=Asset.SerializeToString,
-        response_deserializer=Asset.FromString,
-        )
-
-
-class AssetServiceServicer(object):
-
-  def add_asset(self, request, context):
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+      Args:
+        channel: A grpc.Channel.
+      """
+      self.add_asset = channel.unary_unary(
+          '/AssetService/add_asset',
+          request_serializer=Asset.SerializeToString,
+          response_deserializer=Asset.FromString,
+          )
 
 
-def add_AssetServiceServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'add_asset': grpc.unary_unary_rpc_method_handler(
-          servicer.add_asset,
-          request_deserializer=Asset.FromString,
-          response_serializer=Asset.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'AssetService', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+  class AssetServiceServicer(object):
+
+    def add_asset(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
 
 
-class BetaAssetServiceServicer(object):
-  def add_asset(self, request, context):
-    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def add_AssetServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'add_asset': grpc.unary_unary_rpc_method_handler(
+            servicer.add_asset,
+            request_deserializer=Asset.FromString,
+            response_serializer=Asset.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'AssetService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
 
 
-class BetaAssetServiceStub(object):
-  def add_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-    raise NotImplementedError()
-  add_asset.future = None
+  class BetaAssetServiceServicer(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def add_asset(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
-def beta_create_AssetService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  request_deserializers = {
-    ('AssetService', 'add_asset'): Asset.FromString,
-  }
-  response_serializers = {
-    ('AssetService', 'add_asset'): Asset.SerializeToString,
-  }
-  method_implementations = {
-    ('AssetService', 'add_asset'): face_utilities.unary_unary_inline(servicer.add_asset),
-  }
-  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-  return beta_implementations.server(method_implementations, options=server_options)
+  class BetaAssetServiceStub(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def add_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    add_asset.future = None
 
 
-def beta_create_AssetService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  request_serializers = {
-    ('AssetService', 'add_asset'): Asset.SerializeToString,
-  }
-  response_deserializers = {
-    ('AssetService', 'add_asset'): Asset.FromString,
-  }
-  cardinalities = {
-    'add_asset': cardinality.Cardinality.UNARY_UNARY,
-  }
-  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'AssetService', cardinalities, options=stub_options)
+  def beta_create_AssetService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_deserializers = {
+      ('AssetService', 'add_asset'): Asset.FromString,
+    }
+    response_serializers = {
+      ('AssetService', 'add_asset'): Asset.SerializeToString,
+    }
+    method_implementations = {
+      ('AssetService', 'add_asset'): face_utilities.unary_unary_inline(servicer.add_asset),
+    }
+    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+    return beta_implementations.server(method_implementations, options=server_options)
+
+
+  def beta_create_AssetService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_serializers = {
+      ('AssetService', 'add_asset'): Asset.SerializeToString,
+    }
+    response_deserializers = {
+      ('AssetService', 'add_asset'): Asset.FromString,
+    }
+    cardinalities = {
+      'add_asset': cardinality.Cardinality.UNARY_UNARY,
+    }
+    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+    return beta_implementations.dynamic_stub(channel, 'AssetService', cardinalities, options=stub_options)
+except ImportError:
+  pass
 # @@protoc_insertion_point(module_scope)

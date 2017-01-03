@@ -7,9 +7,5 @@ service AssetService {
 message Asset {
     bytes file = 1; // file of the asset
     string type = 2;
-    string origin = 3;
-    string license = 4;
-    string visibility = 5;
-    string metadata = 6;
-    string description = 7;
+    string metadata = 3;
 }
