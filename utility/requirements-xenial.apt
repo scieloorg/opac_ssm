@@ -3,8 +3,8 @@
 build-essential
 #required to translate
 gettext
+python3-dev
 
-python-dev
 
 ##shared dependencies of:
 ##Pillow, pylibmc

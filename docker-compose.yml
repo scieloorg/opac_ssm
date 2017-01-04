@@ -5,6 +5,13 @@ volumes:
   postgres_backup: {}
 
 services:
+
+  elasticsearch:
+    image: elasticsearch:2
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
   postgres:
     build: ./compose/postgres
     volumes:
@@ -27,7 +34,6 @@ services:
     build: ./compose/nginx
     depends_on:
       - django
-
     ports:
       - "0.0.0.0:80:80"
 

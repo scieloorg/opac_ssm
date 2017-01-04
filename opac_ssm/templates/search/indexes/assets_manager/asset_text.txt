@@ -1,1 +1,3 @@
 {{ object.file }}
+{{ object.filename }}
+{{ object.created_at }}
