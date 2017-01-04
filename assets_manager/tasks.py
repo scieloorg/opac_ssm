@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @app.task(bind=True)
-def add_asset(self, file, type=None, origin=None, license=None, visibility=None,
-              metadata=None, description=None):
+def add_asset(self, file, type=None, metadata=None):
     """
     Task to create a new asset.
 
