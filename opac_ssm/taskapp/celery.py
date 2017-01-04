@@ -10,7 +10,6 @@ if not settings.configured:
     # set the default Django settings module for the 'celery' program.
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')  # pragma: no cover
 
-
 app = Celery('opac_ssm')
 
 
@@ -34,8 +33,6 @@ class CeleryConfig(AppConfig):
             raven_client = RavenClient(dsn=settings.RAVEN_CONFIG['DSN'])
             raven_register_logger_signal(raven_client)
             raven_register_signal(raven_client)
-
-        
 
 
 @app.task(bind=True)
