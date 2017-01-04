@@ -7,23 +7,20 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
-from assets_manager.views import upload, MySearchView
-
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    url(r'^upload/$', upload, name='upload'),
+    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
-    url(settings.ADMIN_URL, include(admin.site.urls)),
+    url(settings.ADMIN_URL, admin.site.urls),
 
     # User management
     url(r'^users/', include('opac_ssm.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
-    url(r'^search/?$', MySearchView.as_view(), name='search_view'),
-
+    url(r'^search/', include('haystack.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -36,3 +33,9 @@ if settings.DEBUG:
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
     ]
+    if 'debug_toolbar' in settings.INSTALLED_APPS:
+        import debug_toolbar
+
+        urlpatterns += [
+            url(r'^__debug__/', include(debug_toolbar.urls)),
+        ]

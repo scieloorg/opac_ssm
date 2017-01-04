@@ -1,10 +1,11 @@
 from django.contrib import admin
 from . import models
 
+# Register your models here.
+
 
 @admin.register(models.Asset)
 class AssetAdmin(admin.ModelAdmin):
     list_display = (
-        'type', 'origin', 'file', 'license',
-        'created_at', 'created_by')
+        'type', 'file', 'created_at')
     readonly_fields = ('metadata', 'filename')

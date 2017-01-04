@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Django settings for OPAC Static Storage Manager project.
+Django settings for OPAC SSM project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/dev/topics/settings/
@@ -16,6 +16,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (opac_ssm/config/settings/common.py - 3
 APPS_DIR = ROOT_DIR.path('opac_ssm')
 
 env = environ.Env()
+env.read_env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -39,13 +40,14 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
-    'haystack',
+    'haystack',  # haystack
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
     'opac_ssm.users.apps.UsersConfig',
+    # Your stuff: custom apps go here
     'assets_manager',
 )
 
@@ -54,7 +56,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,7 +92,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ("""Juan Funez""", 'juan.funez@scielo.org'),
+    ("""Jamil Atta & Juan Funez""", 'jamil.atta@scielo.orf'),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -100,7 +102,6 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
     'default': env.db('DATABASE_URL', default='postgres:///opac_ssm'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
@@ -202,6 +203,26 @@ ROOT_URLCONF = 'config.urls'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
+# PASSWORD VALIDATION
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
+# ------------------------------------------------------------------------------
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = (
@@ -227,7 +248,7 @@ LOGIN_URL = 'account_login'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
-########## CELERY
+# CELERY
 INSTALLED_APPS += ('opac_ssm.taskapp.celery.CeleryConfig',)
 # if you are not using the django database broker (e.g. rabbitmq, redis, memcached), you can remove the next line.
 INSTALLED_APPS += ('kombu.transport.django',)
@@ -236,18 +257,17 @@ if BROKER_URL == 'django://':
     CELERY_RESULT_BACKEND = 'redis://'
 else:
     CELERY_RESULT_BACKEND = BROKER_URL
-########## END CELERY
+# END CELERY
 
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
 
-
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
 HAYSTACK_CONNECTIONS_HOST = env('HAYSTACK_CONNECTIONS_HOST', default='127.0.0.1')
 HAYSTACK_CONNECTIONS_PORT = env('HAYSTACK_CONNECTIONS_PORT', default='9200')
-HAYSTACK_CONNECTIONS_INDEX = env('HAYSTACK_CONNECTIONS_INDEX', default='opac_ssm')
+HAYSTACK_CONNECTIONS_INDEX = env('HAYSTACK_CONNECTIONS_INDEX', default='opac_ssm_idx')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -256,3 +276,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': HAYSTACK_CONNECTIONS_INDEX,
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
