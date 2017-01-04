@@ -2,12 +2,11 @@
 # source: opac_ssm.proto
 
 import sys
-_b = sys.version_info[0] < 3 and (lambda x:x) or (lambda x:x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode('latin1'))
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -67,115 +66,108 @@ _ASSET = _descriptor.Descriptor(
 DESCRIPTOR.message_types_by_name['Asset'] = _ASSET
 
 Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), dict(
-  DESCRIPTOR = _ASSET,
-  __module__ = 'opac_ssm_pb2'
+  DESCRIPTOR=_ASSET,
+  __module__='opac_ssm_pb2'
   # @@protoc_insertion_point(class_scope:Asset)
   ))
 _sym_db.RegisterMessage(Asset)
 
 try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
+    # THESE ELEMENTS WILL BE DEPRECATED.
+    # Please use the generated *_pb2_grpc.py files instead.
+    import grpc
+    from grpc.framework.common import cardinality
+    from grpc.framework.interfaces.face import utilities as face_utilities
+    from grpc.beta import implementations as beta_implementations
+    from grpc.beta import interfaces as beta_interfaces
 
+    class AssetServiceStub(object):
 
-  class AssetServiceStub(object):
+        def __init__(self, channel):
+            """Constructor.
 
-      def __init__(self, channel):
-        """Constructor.
+            Args:
+              channel: A grpc.Channel.
+            """
+            self.add_asset = channel.unary_unary(
+                '/AssetService/add_asset',
+                request_serializer=Asset.SerializeToString,
+                response_deserializer=Asset.FromString,
+                )
 
-        Args:
-          channel: A grpc.Channel.
-        """
-        self.add_asset = channel.unary_unary(
-            '/AssetService/add_asset',
-            request_serializer=Asset.SerializeToString,
-            response_deserializer=Asset.FromString,
-            )
+    class AssetServiceServicer(object):
 
+        def add_asset(self, request, context):
+            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+            context.set_details('Method not implemented!')
+            raise NotImplementedError('Method not implemented!')
 
-  class AssetServiceServicer(object):
+    def add_AssetServiceServicer_to_server(servicer, server):
+        rpc_method_handlers = {
+            'add_asset': grpc.unary_unary_rpc_method_handler(
+                servicer.add_asset,
+                request_deserializer=Asset.FromString,
+                response_serializer=Asset.SerializeToString,
+            ),
+        }
+        generic_handler = grpc.method_handlers_generic_handler(
+            'AssetService', rpc_method_handlers)
+        server.add_generic_rpc_handlers((generic_handler,))
 
-      def add_asset(self, request, context):
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+    class BetaAssetServiceServicer(object):
+        """The Beta API is deprecated for 0.15.0 and later.
 
+        It is recommended to use the GA API (classes and functions in this
+        file not marked beta) for all further purposes. This class was generated
+        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+        def add_asset(self, request, context):
+            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
-  def add_AssetServiceServicer_to_server(servicer, server):
-      rpc_method_handlers = {
-          'add_asset': grpc.unary_unary_rpc_method_handler(
-              servicer.add_asset,
-              request_deserializer=Asset.FromString,
-              response_serializer=Asset.SerializeToString,
-          ),
-      }
-      generic_handler = grpc.method_handlers_generic_handler(
-          'AssetService', rpc_method_handlers)
-      server.add_generic_rpc_handlers((generic_handler,))
+    class BetaAssetServiceStub(object):
+        """The Beta API is deprecated for 0.15.0 and later.
 
+        It is recommended to use the GA API (classes and functions in this
+        file not marked beta) for all further purposes. This class was generated
+        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+        def add_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+            raise NotImplementedError()
+        add_asset.future = None
 
-  class BetaAssetServiceServicer(object):
-      """The Beta API is deprecated for 0.15.0 and later.
+    def beta_create_AssetService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+        """The Beta API is deprecated for 0.15.0 and later.
 
-      It is recommended to use the GA API (classes and functions in this
-      file not marked beta) for all further purposes. This class was generated
-      only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-      def add_asset(self, request, context):
-        context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+        It is recommended to use the GA API (classes and functions in this
+        file not marked beta) for all further purposes. This function was
+        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+        request_deserializers = {
+          ('AssetService', 'add_asset'): Asset.FromString,
+        }
+        response_serializers = {
+          ('AssetService', 'add_asset'): Asset.SerializeToString,
+        }
+        method_implementations = {
+          ('AssetService', 'add_asset'): face_utilities.unary_unary_inline(servicer.add_asset),
+        }
+        server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+        return beta_implementations.server(method_implementations, options=server_options)
 
+    def beta_create_AssetService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+        """The Beta API is deprecated for 0.15.0 and later.
 
-  class BetaAssetServiceStub(object):
-      """The Beta API is deprecated for 0.15.0 and later.
-
-      It is recommended to use the GA API (classes and functions in this
-      file not marked beta) for all further purposes. This class was generated
-      only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-      def add_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-        raise NotImplementedError()
-      add_asset.future = None
-
-
-  def beta_create_AssetService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-      """The Beta API is deprecated for 0.15.0 and later.
-
-      It is recommended to use the GA API (classes and functions in this
-      file not marked beta) for all further purposes. This function was
-      generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-      request_deserializers = {
-        ('AssetService', 'add_asset'): Asset.FromString,
-      }
-      response_serializers = {
-        ('AssetService', 'add_asset'): Asset.SerializeToString,
-      }
-      method_implementations = {
-        ('AssetService', 'add_asset'): face_utilities.unary_unary_inline(servicer.add_asset),
-      }
-      server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-      return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_AssetService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-      """The Beta API is deprecated for 0.15.0 and later.
-
-      It is recommended to use the GA API (classes and functions in this
-      file not marked beta) for all further purposes. This function was
-      generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-      request_serializers = {
-        ('AssetService', 'add_asset'): Asset.SerializeToString,
-      }
-      response_deserializers = {
-        ('AssetService', 'add_asset'): Asset.FromString,
-      }
-      cardinalities = {
-        'add_asset': cardinality.Cardinality.UNARY_UNARY,
-      }
-      stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-      return beta_implementations.dynamic_stub(channel, 'AssetService', cardinalities, options=stub_options)
+        It is recommended to use the GA API (classes and functions in this
+        file not marked beta) for all further purposes. This function was
+        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+        request_serializers = {
+          ('AssetService', 'add_asset'): Asset.SerializeToString,
+        }
+        response_deserializers = {
+          ('AssetService', 'add_asset'): Asset.FromString,
+        }
+        cardinalities = {
+          'add_asset': cardinality.Cardinality.UNARY_UNARY,
+        }
+        stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+        return beta_implementations.dynamic_stub(channel, 'AssetService', cardinalities, options=stub_options)
 except ImportError:
     pass
 # @@protoc_insertion_point(module_scope)

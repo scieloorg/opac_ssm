@@ -40,7 +40,7 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
-    'haystack', # haystack
+    'haystack',  # haystack
 )
 
 # Apps specific for this project go here.
@@ -248,7 +248,7 @@ LOGIN_URL = 'account_login'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
-########## CELERY
+# CELERY
 INSTALLED_APPS += ('opac_ssm.taskapp.celery.CeleryConfig',)
 # if you are not using the django database broker (e.g. rabbitmq, redis, memcached), you can remove the next line.
 INSTALLED_APPS += ('kombu.transport.django',)
@@ -257,7 +257,7 @@ if BROKER_URL == 'django://':
     CELERY_RESULT_BACKEND = 'redis://'
 else:
     CELERY_RESULT_BACKEND = BROKER_URL
-########## END CELERY
+# END CELERY
 
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
@@ -278,5 +278,3 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-
