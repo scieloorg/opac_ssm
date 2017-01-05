@@ -1,0 +1,4 @@
+celerybeat-schedule
+celerybeat.pid
+pg_data*
+docs

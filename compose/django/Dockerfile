@@ -10,10 +10,10 @@ RUN pip install -r /requirements/production.txt \
     && useradd -r -g django django
 
 COPY . /app
-RUN chown -R django /app
 
-COPY ./compose/django/gunicorn.sh /gunicorn.sh
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
+COPY ./compose/django/gunicorn.sh /gunicorn.sh
+
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /gunicorn.sh \
     && chmod +x /entrypoint.sh \
@@ -22,6 +22,8 @@ RUN sed -i 's/\r//' /entrypoint.sh \
     && chown django /gunicorn.sh
 
 WORKDIR /app
+
+RUN chown -R django /app
 
 USER django
 

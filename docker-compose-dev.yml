@@ -16,25 +16,23 @@ services:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
+      - ./pg_data_dev:/var/lib/postgresql/data
 
   django:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     user: django
     restart: always
     depends_on:
       - postgres
       - redis
       - elasticsearch
-    command: /gunicorn.sh
-    ports:
-      - "8000:8000"
+    command: /start-dev.sh
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -43,6 +41,20 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    links:
+      - postgres
+      - redis
+      - elasticsearch
+      - mailhog
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
 
   redis:
     image: redis:latest
@@ -51,18 +63,18 @@ services:
   celeryworker:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     user: django
     restart: always
     depends_on:
       - postgres
       - redis
       - elasticsearch
-    command: celery -A opac_ssm.taskapp worker -l INFO
+    command: celery -A opac_ssm.taskapp worker -l DEBUG
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -70,22 +82,24 @@ services:
       - USE_DOCKER=yes
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
-      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+    volumes:
+      - .:/app
 
   celerybeat:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     user: django
     restart: always
     depends_on:
       - postgres
       - redis
-    command: celery -A opac_ssm.taskapp beat -l INFO
+    command: celery -A opac_ssm.taskapp beat -l DEBUG
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -93,4 +107,6 @@ services:
       - USE_DOCKER=yes
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
-      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+    volumes:
+      - .:/app
