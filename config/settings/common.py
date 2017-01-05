@@ -16,7 +16,6 @@ ROOT_DIR = environ.Path(__file__) - 3  # (opac_ssm/config/settings/common.py - 3
 APPS_DIR = ROOT_DIR.path('opac_ssm')
 
 env = environ.Env()
-env.read_env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -28,10 +27,6 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Useful template tags:
-    # 'django.contrib.humanize',
-
     # Admin
     'django.contrib.admin',
 )

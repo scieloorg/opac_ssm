@@ -1,1 +1,2 @@
-Jamil Atta & Juan Funez
+Jamil Atta <jamil.atta@scielo.org>
+Juan Funez <juan.funez@scielo.org>

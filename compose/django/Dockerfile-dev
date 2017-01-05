@@ -4,21 +4,24 @@ ENV PYTHONUNBUFFERED 1
 
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements
+
 RUN pip install -r /requirements/local.txt \
     && groupadd -r django \
     && useradd -r -g django django
 
-RUN chown -R django /app
-
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
-RUN sed -i 's/\r//' /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 COPY ./compose/django/start-dev.sh /start-dev.sh
-RUN sed -i 's/\r//' /start-dev.sh
-RUN chmod +x /start-dev.sh
+
+RUN sed -i 's/\r//' /entrypoint.sh \
+    && sed -i 's/\r//' /start-dev.sh \
+    && chmod +x /entrypoint.sh \
+    && chown django /entrypoint.sh \
+    && chmod +x /start-dev.sh \
+    && chown django /start-dev.sh
 
 WORKDIR /app
+
+RUN chown -R django /app
 
 USER django
 

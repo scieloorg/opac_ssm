@@ -11,7 +11,6 @@ django==1.10.5
 django-environ==0.4.1
 whitenoise==3.2.3
 
-
 # Forms
 django-braces==1.10.0
 django-crispy-forms==1.6.1
@@ -26,7 +25,6 @@ Pillow==4.0.0
 # Well-built with regular release cycles!
 django-allauth==0.30.0
 
-
 # Python-PostgreSQL Database Adapter
 psycopg2==2.6.2
 
@@ -40,6 +38,7 @@ pytz==2016.10
 django-redis==4.7.0
 redis>=2.10.5
 
+# celery
 celery==3.1.24
 
 # Your custom requirements go here
@@ -51,3 +50,6 @@ elasticsearch==2.4.0
 # grpc
 grpcio==1.0.4
 grpcio-tools==1.0.4
+
+# Raven is the Sentry client
+raven==5.32.0

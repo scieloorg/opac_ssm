@@ -1,3 +1,7 @@
+# Postgres data dirs
+pg_data/
+pg_data_dev/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -74,6 +78,8 @@ target/
 
 # celery beat schedule file
 celerybeat-schedule
+# celery pid file
+celerybeat.pid
 
 # dotenv
 .env

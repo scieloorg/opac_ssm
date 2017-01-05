@@ -47,7 +47,7 @@ CACHES = {
 MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 INSTALLED_APPS += ('debug_toolbar', )
 
-INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', ]
+INTERNAL_IPS = ['127.0.0.1', ]
 # tricks to have debug toolbar when developing with docker
 if os.environ.get('USE_DOCKER') == 'yes':
     ip = socket.gethostbyname(socket.gethostname())
@@ -68,10 +68,10 @@ INSTALLED_APPS += ('django_extensions', )
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-########## CELERY
+# ######### CELERY
 # In development, all tasks will be executed locally by blocking until the task returns
 CELERY_ALWAYS_EAGER = True
-########## END CELERY
+# ######### END CELERY
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
