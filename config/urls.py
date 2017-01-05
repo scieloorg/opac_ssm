@@ -22,6 +22,9 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     url(r'^search/', include('haystack.urls')),
 
+    # Assets Manager
+    url(r'^assets/', include('assets_manager.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
