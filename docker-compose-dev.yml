@@ -60,6 +60,34 @@ services:
     image: redis:latest
     restart: always
 
+  grpc:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    command: /start-grpc.sh
+    environment:
+      - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_USER=postgres_user
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_SECURE_SSL_REDIRECT=False
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=False
+      - USE_DOCKER=yes
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+
   celeryworker:
     build:
       context: .
