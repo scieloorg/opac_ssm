@@ -44,6 +44,7 @@ LOCAL_APPS = (
     'opac_ssm.users.apps.UsersConfig',
     # Your stuff: custom apps go here
     'assets_manager',
+    'grpc_ssm',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -273,3 +274,6 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+GRCP_PORT = env('GRCP_PORT', default=5000)
+GRCP_MAX_WORKERS = env('GRCP_MAX_WORKERS', default=4)
