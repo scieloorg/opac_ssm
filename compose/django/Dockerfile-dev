@@ -11,13 +11,18 @@ RUN pip install -r /requirements/local.txt \
 
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
 COPY ./compose/django/start-dev.sh /start-dev.sh
+COPY ./compose/django/start-grpc.sh /start-grpc.sh
 
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /start-dev.sh \
+    && sed -i 's/\r//' /start-grpc.sh \
     && chmod +x /entrypoint.sh \
-    && chown django /entrypoint.sh \
     && chmod +x /start-dev.sh \
-    && chown django /start-dev.sh
+    && chmod +x /start-grpc.sh \
+    && chown django /entrypoint.sh \
+    && chown django /start-dev.sh \
+    && chown django /start-grpc.sh
+
 
 WORKDIR /app
 
