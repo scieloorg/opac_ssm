@@ -21,7 +21,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     user: django
     restart: always
     depends_on:
@@ -63,7 +63,7 @@ services:
   grpc:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     user: django
     restart: always
     depends_on:
@@ -91,7 +91,7 @@ services:
   celeryworker:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     user: django
     restart: always
     depends_on:
@@ -117,7 +117,7 @@ services:
   celerybeat:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./Dockerfile-dev
     user: django
     restart: always
     depends_on:

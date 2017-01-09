@@ -19,9 +19,7 @@ services:
       - ./pg_data:/var/lib/postgresql/data
 
   django:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile
+    build: .
     user: django
     restart: always
     depends_on:
@@ -49,9 +47,7 @@ services:
     restart: always
 
   celeryworker:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile
+    build: .
     user: django
     restart: always
     depends_on:
@@ -73,9 +69,7 @@ services:
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
 
   celerybeat:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile
+    build: .
     user: django
     restart: always
     depends_on:
