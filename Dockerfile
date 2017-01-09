@@ -5,24 +5,21 @@ ENV PYTHONUNBUFFERED 1
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements
 
-RUN pip install -r /requirements/local.txt \
+RUN pip install -r /requirements/production.txt \
     && groupadd -r django \
     && useradd -r -g django django
 
-COPY ./compose/django/entrypoint.sh /entrypoint.sh
-COPY ./compose/django/start-dev.sh /start-dev.sh
-COPY ./compose/django/start-grpc.sh /start-grpc.sh
+COPY . /app
+
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./gunicorn.sh /gunicorn.sh
 
 RUN sed -i 's/\r//' /entrypoint.sh \
-    && sed -i 's/\r//' /start-dev.sh \
-    && sed -i 's/\r//' /start-grpc.sh \
+    && sed -i 's/\r//' /gunicorn.sh \
     && chmod +x /entrypoint.sh \
-    && chmod +x /start-dev.sh \
-    && chmod +x /start-grpc.sh \
     && chown django /entrypoint.sh \
-    && chown django /start-dev.sh \
-    && chown django /start-grpc.sh
-
+    && chmod +x /gunicorn.sh \
+    && chown django /gunicorn.sh
 
 WORKDIR /app
 
