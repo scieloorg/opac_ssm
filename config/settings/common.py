@@ -36,6 +36,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'haystack',  # haystack
+    'tastypie',  # tastypie
 )
 
 # Apps specific for this project go here.
@@ -273,3 +274,4 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+TASTYPIE_DEFAULT_FORMATS = ['json']
