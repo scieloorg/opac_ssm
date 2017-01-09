@@ -9,3 +9,6 @@ python-targets: 3
 pep8:
   disable:
     - E501  # line too long
+ignore-patterns:
+  - opac_pb2.py
+  - opac_pb2_grpc.py
