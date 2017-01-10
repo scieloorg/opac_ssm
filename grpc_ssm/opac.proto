@@ -1,12 +1,22 @@
 syntax = "proto3";
 
 service AssetService {
-    rpc add_asset(Asset) returns (Asset) {}
+    rpc add_asset(Asset) returns (TaskId) {}
+    rpc get_task_state(TaskId) returns (TaskState) {}
 }
+
 
 message Asset {
     bytes file = 1; // file of the asset
     string filename = 2;
     string type = 3;
     string metadata = 4;
+}
+
+message TaskId{
+    string id = 1;
+}
+
+message TaskState{
+    string state = 1;
 }
