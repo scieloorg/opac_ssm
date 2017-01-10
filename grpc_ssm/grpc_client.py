@@ -17,10 +17,13 @@ def run():
 
     meta = "{'foo': 'bar', 'pickles': 'blaus'}" # String
 
-    asset = stub.add_asset(opac_pb2.Asset(file=file.read(), filename=filename,
-                                          type="txt", metadata=meta))
+    task = stub.add_asset(opac_pb2.Asset(file=file.read(), filename=filename,
+                                            type="txt", metadata=meta))
 
-    print(asset)
+    task_state = stub.get_task_state(opac_pb2.TaskId(id=task.id))
+
+
+    print((task.id, task_state.state))
 
 if __name__ == '__main__':
     run()

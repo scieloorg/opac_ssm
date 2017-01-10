@@ -110,7 +110,7 @@ Command to generate GRPC class:
 
 .. code-block:: python
 
-    python -m grpc_tools.protoc -I grpc --python_out=grpc --grpc_python_out=grpc grpc/opac_ssm.proto
+    python -m grpc_tools.protoc -I grpc_ssm --python_out=grpc_ssm --grpc_python_out=grpc_ssm grpc_ssm/opac.proto
 
 
 Docker

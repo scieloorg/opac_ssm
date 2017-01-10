@@ -6,6 +6,8 @@ from concurrent import futures
 import grpc
 from grpc_ssm import opac_pb2
 
+from celery.result import AsyncResult
+
 from assets_manager import tasks
 
 
@@ -21,10 +23,19 @@ class Asset(opac_pb2.AssetServiceServicer):
         filetype = request.type
         metadata = request.metadata
 
-        tasks.add_asset.delay(file, filename, filetype, metadata)
+        task_result = tasks.add_asset.delay(file, filename, filetype, metadata)
 
-        return opac_pb2.Asset(file=file, filename=filename,
-                              type=filetype, metadata=metadata)
+        return opac_pb2.TaskId(id=task_result.id)
+
+
+    def get_task_state(self, request, context):
+        """
+        Return a Asset state
+        """
+
+        res = AsyncResult(request.id)
+
+        return opac_pb2.TaskState(state=res.state)
 
 
 def serve(port=5000, max_workers=4):
