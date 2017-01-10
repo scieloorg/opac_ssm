@@ -1,3 +1,5 @@
+{{ object.type }}
 {{ object.file }}
 {{ object.filename }}
 {{ object.created_at }}
+{{ object.updated_at }}

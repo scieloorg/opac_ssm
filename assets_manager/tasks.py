@@ -33,6 +33,7 @@ def add_asset(self, file, filename, type=None, metadata=None):
 
     asset = models.Asset()
     asset.file = File(fp, filename)
+    asset.filename = filename
     asset.type = type
     asset.metadata = metadata
     asset.save()

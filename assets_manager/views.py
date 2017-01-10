@@ -15,7 +15,7 @@ def upload(request):
         form = FileFieldForm(request.POST, request.FILES)
         if form.is_valid():
             new_file = Asset(file=request.FILES['file'])
-            new_file.owned_by = request.user
+            new_file.metadata = {'foo': 'bar'}
             new_file.save()
             form = FileFieldForm()
             return render(request, 'pages/home.html', {'form': form})
