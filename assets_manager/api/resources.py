@@ -2,6 +2,7 @@
 from django.conf.urls import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
+from haystack.inputs import Raw
 from haystack.query import SearchQuerySet
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
@@ -35,8 +36,8 @@ class AssetResource(ModelResource):
         self.throttle_check(request)
 
         # Do the query.
-        sqs = SearchQuerySet().models(Asset).load_all().auto_query(
-            request.GET.get('q', '')
+        sqs = SearchQuerySet().models(Asset).load_all().filter(
+             content=Raw(request.GET.get('q', ''))
         )
         limit_per_page = getattr(settings, 'API_LIMIT_PER_PAGE', 20)
         paginator = Paginator(sqs, limit_per_page)
