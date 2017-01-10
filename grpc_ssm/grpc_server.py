@@ -23,7 +23,8 @@ class Asset(opac_pb2.AssetServiceServicer):
 
         tasks.add_asset.delay(file, filename, filetype, metadata)
 
-        return opac_pb2.Asset(file, filename, filetype, metadata)
+        return opac_pb2.Asset(file=file, filename=filename,
+                              type=filetype, metadata=metadata)
 
 
 def serve(port=5000, max_workers=4):
@@ -32,7 +33,7 @@ def serve(port=5000, max_workers=4):
     server.add_insecure_port('[::]:{0}'.format(port))
     server.start()
 
-    print('Started GRPC server on locahost, port: {0}, accept connections!'.format(port))
+    print('Started GRPC server on localhost, port: {0}, accept connections!'.format(port))
 
     try:
         while True:
