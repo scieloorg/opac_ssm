@@ -15,8 +15,10 @@ def run():
 
     filename = os.path.basename(getattr(file, 'name', None))
 
-    asset = stub.add_asset(opac_pb2.Asset(file=u'teste', filename=filename,
-                                          type="txt", metadata="CC-BY"))
+    meta = "{'foo': 'bar', 'pickles': 'blaus'}" # String
+
+    asset = stub.add_asset(opac_pb2.Asset(file=file.read(), filename=filename,
+                                          type="txt", metadata=meta))
 
     print(asset)
 
