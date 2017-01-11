@@ -6,6 +6,8 @@ import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
+import opac_pb2 as opac__pb2
+import opac_pb2 as opac__pb2
 
 
 class AssetServiceStub(object):
@@ -21,6 +23,11 @@ class AssetServiceStub(object):
         request_serializer=opac__pb2.Asset.SerializeToString,
         response_deserializer=opac__pb2.TaskId.FromString,
         )
+    self.get_asset_info = channel.unary_unary(
+        '/AssetService/get_asset_info',
+        request_serializer=opac__pb2.TaskId.SerializeToString,
+        response_deserializer=opac__pb2.AssetInfo.FromString,
+        )
     self.get_task_state = channel.unary_unary(
         '/AssetService/get_task_state',
         request_serializer=opac__pb2.TaskId.SerializeToString,
@@ -31,6 +38,11 @@ class AssetServiceStub(object):
 class AssetServiceServicer(object):
 
   def add_asset(self, request, context):
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def get_asset_info(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -47,6 +59,11 @@ def add_AssetServiceServicer_to_server(servicer, server):
           servicer.add_asset,
           request_deserializer=opac__pb2.Asset.FromString,
           response_serializer=opac__pb2.TaskId.SerializeToString,
+      ),
+      'get_asset_info': grpc.unary_unary_rpc_method_handler(
+          servicer.get_asset_info,
+          request_deserializer=opac__pb2.TaskId.FromString,
+          response_serializer=opac__pb2.AssetInfo.SerializeToString,
       ),
       'get_task_state': grpc.unary_unary_rpc_method_handler(
           servicer.get_task_state,

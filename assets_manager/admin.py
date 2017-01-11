@@ -8,4 +8,4 @@ from . import models
 class AssetAdmin(admin.ModelAdmin):
     list_display = (
         'type', 'file', 'created_at')
-    readonly_fields = ('metadata', 'filename')
+    readonly_fields = ('metadata', 'filename', 'task_id')

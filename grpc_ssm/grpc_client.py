@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import time
 import grpc
 
 import opac_pb2
@@ -22,8 +23,11 @@ def run():
 
     task_state = stub.get_task_state(opac_pb2.TaskId(id=task.id))
 
+    time.sleep(5)
+    print(task.id)
+    task_info = stub.get_asset_info(opac_pb2.TaskId(id=task.id))
 
-    print((task.id, task_state.state))
+    print((task.id, task_state.state, task_info.url, task_info.url_path))
 
 if __name__ == '__main__':
     run()
