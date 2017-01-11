@@ -7,7 +7,6 @@ from concurrent import futures
 import grpc
 from grpc_ssm import opac_pb2
 
-# from django.core.exceptions import ObjectDoesNotExist
 from celery.result import AsyncResult
 
 from assets_manager import tasks
