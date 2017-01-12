@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from django.db.models import signals
 
 
 class UsersConfig(AppConfig):
@@ -10,4 +11,7 @@ class UsersConfig(AppConfig):
             Users system checks
             Users signal registration
         """
-        pass
+        from tastypie.models import create_api_key
+        signals.post_save.connect(
+            create_api_key,
+            sender=self.get_model('User'))
