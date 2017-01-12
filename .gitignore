@@ -1,6 +1,8 @@
 # Postgres data dirs
 pg_data/
 pg_data_dev/
+pg_data_build/
+opac_ssm/media/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
