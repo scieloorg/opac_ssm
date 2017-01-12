@@ -25,7 +25,7 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
         if object.metadata:
             try:
                 metadata = json.loads(object.metadata.replace("'", "\""))
-            except TypeError:
+            except TypeError as e:
                 logger.error(e)
                 raise
 
