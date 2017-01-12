@@ -36,6 +36,7 @@ def add_asset(self, file, filename, type=None, metadata=None):
     asset.filename = filename
     asset.type = type
     asset.metadata = metadata
+    asset.task_id = self.request.id # Save task id
     asset.save()
 
     logger.info(u"Successfully created asset with the id=%s, size=%s and path=%s",
