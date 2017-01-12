@@ -282,3 +282,16 @@ TASTYPIE_DEFAULT_FORMATS = ['json']
 GRCP_HOST = env('GRCP_HOST', default='[::]')
 GRCP_PORT = env('GRCP_PORT', default=5000)
 GRCP_MAX_WORKERS = env('GRCP_MAX_WORKERS', default=4)
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = env('DJANGO_FILE_UPLOAD_MAX_MEMORY_SIZE', default=2621440)  # 2.5MB
+
+# Mail settings
+# ------------------------------------------------------------------------------
+
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default='mailhog')
+EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=1025)
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default='')
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default='')
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL = env.bool("DJANGO_EMAIL_USE_SSL", default=False)
+EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default='')
