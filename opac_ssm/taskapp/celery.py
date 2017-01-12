@@ -33,8 +33,3 @@ class CeleryConfig(AppConfig):
             raven_client = RavenClient(dsn=settings.RAVEN_CONFIG['DSN'])
             raven_register_logger_signal(raven_client)
             raven_register_signal(raven_client)
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))  # pragma: no cover
