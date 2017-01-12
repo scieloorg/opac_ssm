@@ -12,4 +12,5 @@ class Command(BaseCommand):
 
         self.stdout.write("Starting GRPC...")
 
-        grpc_server.serve(settings.GRCP_PORT, settings.GRCP_MAX_WORKERS)
+        grpc_server.serve(settings.GRCP_HOST, settings.GRCP_PORT,
+                          settings.GRCP_MAX_WORKERS)

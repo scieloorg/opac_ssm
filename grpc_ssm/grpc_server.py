@@ -68,10 +68,10 @@ class Asset(opac_pb2.AssetServiceServicer):
                                   task_id=str(asset.task_id))
 
 
-def serve(port=5000, max_workers=4):
+def serve(host='[::]', port=5000, max_workers=4):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
     opac_pb2.add_AssetServiceServicer_to_server(Asset(), server)
-    server.add_insecure_port('[::]:{0}'.format(port))
+    server.add_insecure_port('{0}:{1}'.format(host, port))
     server.start()
 
     print('Started GRPC server on localhost, port: {0}, accept connections!'.format(port))

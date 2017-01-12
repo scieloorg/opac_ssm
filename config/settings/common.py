@@ -279,5 +279,6 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
+GRCP_HOST = env('GRCP_HOST', default='[::]')
 GRCP_PORT = env('GRCP_PORT', default=5000)
 GRCP_MAX_WORKERS = env('GRCP_MAX_WORKERS', default=4)
