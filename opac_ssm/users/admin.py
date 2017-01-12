@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from tastypie.admin import ApiKeyInline
-from .models import User
+from opac_ssm.users.models import User
 
 
 class MyUserChangeForm(UserChangeForm):

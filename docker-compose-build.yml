@@ -18,13 +18,12 @@ services:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
     volumes:
-      - ./pg_data_dev:/var/lib/postgresql/data
+      - ./pg_data_build:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
 
   django:
     build:
       context: .
-      dockerfile: ./Dockerfile-dev
       args:
         - OPACSSM_BUILD_DATE=${OPACSSM_BUILD_DATE}            # export OPACSSM_BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
         - OPACSSM_VCS_REF=${OPACSSM_VCS_REF}                  # export OPACSSM_VCS_REF=`git rev-parse --short HEAD`
@@ -35,11 +34,13 @@ services:
       - postgres
       - redis
       - elasticsearch
-    command: /start-dev.sh
+    command: /gunicorn.sh
+    ports:
+      - "8000:8000"
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -48,21 +49,6 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
-    volumes:
-      - .:/app
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "8000:8000"
-    links:
-      - postgres
-      - redis
-      - elasticsearch
-      - mailhog
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - "8025:8025"
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
@@ -74,24 +60,18 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   celeryworker:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-dev
-      args:
-        - OPACSSM_BUILD_DATE=${OPACSSM_BUILD_DATE}            # export OPACSSM_BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-        - OPACSSM_VCS_REF=${OPACSSM_VCS_REF}                  # export OPACSSM_VCS_REF=`git rev-parse --short HEAD`
-        - OPACSSM_WEBAPP_VERSION=${OPACSSM_WEBAPP_VERSION}    # export OPACSSM_WEBAPP_VERSION="v0.1.0-dev"
+    build: .
     user: django
     restart: always
     depends_on:
       - postgres
       - redis
       - elasticsearch
-    command: celery -A opac_ssm.taskapp worker -l DEBUG
+    command: celery -A opac_ssm.taskapp worker -l INFO
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -99,29 +79,22 @@ services:
       - USE_DOCKER=yes
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
-      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
     volumes:
-      - .:/app
       - /etc/localtime:/etc/localtime:ro
 
   celerybeat:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-dev
-      args:
-        - OPACSSM_BUILD_DATE=${OPACSSM_BUILD_DATE}            # export OPACSSM_BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-        - OPACSSM_VCS_REF=${OPACSSM_VCS_REF}                  # export OPACSSM_VCS_REF=`git rev-parse --short HEAD`
-        - OPACSSM_WEBAPP_VERSION=${OPACSSM_WEBAPP_VERSION}    # export OPACSSM_WEBAPP_VERSION="v0.1.0-dev"
+    build: .
     user: django
     restart: always
     depends_on:
       - postgres
       - redis
-    command: celery -A opac_ssm.taskapp beat -l DEBUG
+    command: celery -A opac_ssm.taskapp beat -l INFO
     environment:
       - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
-      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
       - DJANGO_SECURE_SSL_REDIRECT=False
@@ -129,9 +102,8 @@ services:
       - USE_DOCKER=yes
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
-      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
     volumes:
-      - .:/app
       - /etc/localtime:/etc/localtime:ro
 
   grpc:
