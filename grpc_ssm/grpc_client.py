@@ -27,7 +27,9 @@ def run():
 
     task_info = stub.get_asset_info(opac_pb2.TaskId(id=task.id))
 
-    print((task.id, task_state.state, task_info.url, task_info.url_path))
+    asset = stub.get_asset(opac_pb2.TaskId(id=task.id))
+
+    print((task.id, task_state.state, task_info.url, task_info.url_path, asset))
 
 if __name__ == '__main__':
     run()

@@ -1,6 +1,6 @@
 from test_plus.test import TestCase
 
-from ..admin import MyUserCreationForm
+from opac_ssm.users.admin import MyUserCreationForm
 
 
 class TestMyUserCreationForm(TestCase):
