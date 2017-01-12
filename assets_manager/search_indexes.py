@@ -24,8 +24,13 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
 
         if object.metadata:
             try:
-                metadata = json.loads(object.metadata.replace("'", "\""))
-            except TypeError as e:
+                if isinstance(object.metadata, str):
+                    metadata = json.loads(object.metadata.replace("'", "\""))
+                elif isinstance(object.metadata, dict):
+                    metadata = object.metadata
+                else:
+                    raise ValueError
+            except (TypeError, ValueError) as e:
                 logger.error(e)
                 raise
 
