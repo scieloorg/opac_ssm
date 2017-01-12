@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 service AssetService {
+    rpc get_asset(TaskId) returns (Asset) {}
     rpc add_asset(Asset) returns (TaskId) {}
     rpc get_asset_info(TaskId) returns (AssetInfo) {}
     rpc get_task_state(TaskId) returns (TaskState) {}
@@ -11,6 +12,7 @@ message Asset {
     string filename = 2;
     string type = 3;
     string metadata = 4;
+    string task_id = 5;
 }
 
 message AssetInfo {

@@ -18,7 +18,7 @@ class Asset(opac_pb2.AssetServiceServicer):
 
     def add_asset(self, request, context):
         """
-        Return a Asset object
+        Return an Asset object
         """
         task_result = tasks.add_asset.delay(request.file, request.filename,
                                             request.type, request.metadata)
@@ -27,7 +27,7 @@ class Asset(opac_pb2.AssetServiceServicer):
 
     def get_task_state(self, request, context):
         """
-        Return a Asset state
+        Return an Asset state
         """
         res = AsyncResult(request.id)
 
@@ -35,7 +35,7 @@ class Asset(opac_pb2.AssetServiceServicer):
 
     def get_asset_info(self, request, context):
         """
-        Return a Asset info
+        Return an Asset info
         """
         try:
             asset = models.Asset.objects.get(task_id=request.id)
@@ -45,6 +45,27 @@ class Asset(opac_pb2.AssetServiceServicer):
         else:
             return opac_pb2.AssetInfo(url=asset.get_full_absolute_url,
                                       url_path=asset.get_absolute_url)
+
+    def get_asset(self, request, context):
+        """
+        Return an Asset
+        """
+        try:
+            asset = models.Asset.objects.get(task_id=request.id)
+        except models.Asset.DoesNotExist as e:
+            logger.error(e)
+            raise
+        else:
+
+            try:
+                fp = open(asset.file.path, 'rb')
+            except IOError as e:
+                logger.error(e)
+                raise
+
+            return opac_pb2.Asset(file=fp.read(), filename=asset.filename,
+                                  type=asset.type, metadata=asset.metadata,
+                                  task_id=str(asset.task_id))
 
 
 def serve(port=5000, max_workers=4):
