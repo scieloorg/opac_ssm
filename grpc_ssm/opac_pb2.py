@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='opac.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\nopac.proto\"G\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t2\x80\x01\n\x0c\x41ssetService\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nopac.proto\"X\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\x12\x0f\n\x07task_id\x18\x05 \x01(\t\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t2\xa0\x01\n\x0c\x41ssetService\x12\x1e\n\tget_asset\x12\x07.TaskId\x1a\x06.Asset\"\x00\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -61,6 +61,13 @@ _ASSET = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='task_id', full_name='Asset.task_id', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -74,7 +81,7 @@ _ASSET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=85,
+  serialized_end=102,
 )
 
 
@@ -111,8 +118,8 @@ _ASSETINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=87,
-  serialized_end=129,
+  serialized_start=104,
+  serialized_end=146,
 )
 
 
@@ -142,8 +149,8 @@ _TASKID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=131,
-  serialized_end=151,
+  serialized_start=148,
+  serialized_end=168,
 )
 
 
@@ -173,8 +180,8 @@ _TASKSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=153,
-  serialized_end=179,
+  serialized_start=170,
+  serialized_end=196,
 )
 
 DESCRIPTOR.message_types_by_name['Asset'] = _ASSET
@@ -229,6 +236,11 @@ try:
       Args:
         channel: A grpc.Channel.
       """
+      self.get_asset = channel.unary_unary(
+          '/AssetService/get_asset',
+          request_serializer=TaskId.SerializeToString,
+          response_deserializer=Asset.FromString,
+          )
       self.add_asset = channel.unary_unary(
           '/AssetService/add_asset',
           request_serializer=Asset.SerializeToString,
@@ -248,6 +260,11 @@ try:
 
   class AssetServiceServicer(object):
 
+    def get_asset(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
     def add_asset(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
@@ -266,6 +283,11 @@ try:
 
   def add_AssetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+        'get_asset': grpc.unary_unary_rpc_method_handler(
+            servicer.get_asset,
+            request_deserializer=TaskId.FromString,
+            response_serializer=Asset.SerializeToString,
+        ),
         'add_asset': grpc.unary_unary_rpc_method_handler(
             servicer.add_asset,
             request_deserializer=Asset.FromString,
@@ -293,6 +315,8 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def get_asset(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def add_asset(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def get_asset_info(self, request, context):
@@ -307,6 +331,9 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def get_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    get_asset.future = None
     def add_asset(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     add_asset.future = None
@@ -326,16 +353,19 @@ try:
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
       ('AssetService', 'add_asset'): Asset.FromString,
+      ('AssetService', 'get_asset'): TaskId.FromString,
       ('AssetService', 'get_asset_info'): TaskId.FromString,
       ('AssetService', 'get_task_state'): TaskId.FromString,
     }
     response_serializers = {
       ('AssetService', 'add_asset'): TaskId.SerializeToString,
+      ('AssetService', 'get_asset'): Asset.SerializeToString,
       ('AssetService', 'get_asset_info'): AssetInfo.SerializeToString,
       ('AssetService', 'get_task_state'): TaskState.SerializeToString,
     }
     method_implementations = {
       ('AssetService', 'add_asset'): face_utilities.unary_unary_inline(servicer.add_asset),
+      ('AssetService', 'get_asset'): face_utilities.unary_unary_inline(servicer.get_asset),
       ('AssetService', 'get_asset_info'): face_utilities.unary_unary_inline(servicer.get_asset_info),
       ('AssetService', 'get_task_state'): face_utilities.unary_unary_inline(servicer.get_task_state),
     }
@@ -351,16 +381,19 @@ try:
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
       ('AssetService', 'add_asset'): Asset.SerializeToString,
+      ('AssetService', 'get_asset'): TaskId.SerializeToString,
       ('AssetService', 'get_asset_info'): TaskId.SerializeToString,
       ('AssetService', 'get_task_state'): TaskId.SerializeToString,
     }
     response_deserializers = {
       ('AssetService', 'add_asset'): TaskId.FromString,
+      ('AssetService', 'get_asset'): Asset.FromString,
       ('AssetService', 'get_asset_info'): AssetInfo.FromString,
       ('AssetService', 'get_task_state'): TaskState.FromString,
     }
     cardinalities = {
       'add_asset': cardinality.Cardinality.UNARY_UNARY,
+      'get_asset': cardinality.Cardinality.UNARY_UNARY,
       'get_asset_info': cardinality.Cardinality.UNARY_UNARY,
       'get_task_state': cardinality.Cardinality.UNARY_UNARY,
     }
