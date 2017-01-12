@@ -6,7 +6,7 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import User
+from opac_ssm.users.models import User
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
