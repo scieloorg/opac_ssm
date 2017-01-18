@@ -10,6 +10,10 @@ Static Storage Management for OPAC website
      :target: https://github.com/pydanny/cookiecutter-django/
      :alt: Built with Cookiecutter Django
 
+.. image:: https://landscape.io/github/scieloorg/opac_ssm/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/scieloorg/opac_ssm/master
+   :alt: Code Health
+
 :License: BSD
 
 
