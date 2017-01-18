@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+
+{% block page_header_title %}{% endblock page_header_title %}
+{% block sub_header %}{% endblock sub_header %}
+{% block sidebar_filter %}{% endblock sidebar_filter %}
+{% block content %}
+  <div class="col-md-12 ">
+    {% block inner %}{% endblock inner%}
+  </div>
+{% endblock %}
