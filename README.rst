@@ -14,6 +14,14 @@ Static Storage Management for OPAC website
    :target: https://landscape.io/github/scieloorg/opac_ssm/master
    :alt: Code Health
 
+.. image:: https://pyup.io/repos/github/scieloorg/opac_ssm/shield.svg
+     :target: https://pyup.io/repos/github/scieloorg/opac_ssm/
+     :alt: Updates
+
+.. image:: https://pyup.io/repos/github/scieloorg/opac_ssm/python-3-shield.svg
+     :target: https://pyup.io/repos/github/scieloorg/opac_ssm/
+     :alt: Python 3
+
 :License: BSD
 
 
