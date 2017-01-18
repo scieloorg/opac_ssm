@@ -21,6 +21,18 @@ Static Storage Management for OPAC website
 .. image:: https://pyup.io/repos/github/scieloorg/opac_ssm/python-3-shield.svg
      :target: https://pyup.io/repos/github/scieloorg/opac_ssm/
      :alt: Python 3
+     
+.. image:: https://images.microbadger.com/badges/image/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own image badge on microbadger.com
+
+.. image:: https://images.microbadger.com/badges/version/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own version badge on microbadger.com
+
+.. image:: https://images.microbadger.com/badges/commit/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own commit badge on microbadger.com
 
 :License: BSD
 
