@@ -1,14 +1,16 @@
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 from .forms import FileFieldForm
 from .models import Asset
 
 
+@login_required
 def home(request):
     context = {}
     return render(request, 'pages/home.html', context)
 
 
+@login_required
 def upload(request):
 
     if request.method == 'POST':
