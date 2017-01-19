@@ -4,7 +4,7 @@ import logging
 
 from haystack import indexes
 
-from .models import Asset
+from .models import Asset, AssetBucket
 
 logger = logging.getLogger(__name__)
 
@@ -34,3 +34,14 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
                     self.prepared_data[key] = val
 
         return self.prepared_data
+
+
+class AssetBucketIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return AssetBucket
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.all()
