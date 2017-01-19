@@ -10,6 +10,11 @@
 
   <h1 class="text-center">{% trans "Sign In" %}</h1>
 
+  {% url 'account_signup' as account_signup_url %}
+  <p class="text-center">
+    {% blocktrans %}Don't have an account? Then please <a href="{{ account_signup_url }}">sign up</a>.{% endblocktrans %}
+  </p>
+
   <form method="POST" action="{% url 'account_login' %}">
     {% csrf_token %}
     {{ form|crispy }}
@@ -17,14 +22,15 @@
     {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
+
     <div class="btn-group.btn-group-justified.btn-group-raised">
-      <a href="{% url 'account_reset_password' %}" class="btn btn-raised btn-link pull-left">{% trans "Forgot Password?" %}</a>
+      <a href="{% url 'account_reset_password' %}" class="btn btn-raised btn-link pull-left">
+        {% trans "Forgot Password?" %}
+      </a>
 
       <button class="btn btn-raised btn-primary pull-right" type="submit">
         {% trans "Sign In" %}
       </button>
     </div>
   </form>
-
 {% endblock %}
-
