@@ -7,6 +7,13 @@ from django.contrib.sites.models import Site
 from django.contrib.postgres.fields import JSONField
 
 
+class AssetBucket(models.Model):
+    name = models.CharField('nome', max_length=256, unique=True, default='')
+
+    def __str__(self):
+        return self.name
+
+
 def upload_to_path(instance, filename):
     return 'assets/raw/{0}/'.format(filename)
 
@@ -22,10 +29,11 @@ class Asset(models.Model):
     task_id = models.UUIDField(unique=True, editable=False, default=uuid4)
 
     created_at = models.DateTimeField(auto_now_add=True)
-
     updated_at = models.DateTimeField(auto_now=True)
 
     metadata = JSONField(null=True, blank=True)
+
+    bucket = models.ForeignKey(AssetBucket, null=True, blank=False)
 
     def __unicode__(self):
         return unicode(self.file)
