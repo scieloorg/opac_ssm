@@ -1,5 +1,4 @@
-from __future__ import unicode_literals
-
+# -*- coding: utf-8 -*-
 from uuid import uuid4
 from django.db import models
 from django.conf import settings

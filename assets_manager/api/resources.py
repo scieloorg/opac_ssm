@@ -15,31 +15,51 @@ from tastypie.authorization import ReadOnlyAuthorization
 
 from django.conf import settings
 
-from assets_manager.models import Asset
+from assets_manager.models import Asset, AssetBucket
+
+DEFAULT_ALLOWED_METHODS = ['get']
+DEFAULT_AUTHENTICATION = ReadOnlyAuthorization()
+DEFAULT_AUTHENTICATION = MultiAuthentication(
+    BasicAuthentication(),
+    SessionAuthentication(),
+    ApiKeyAuthentication()
+)
 
 
-class AssetResource(ModelResource):
+class SearchableModelResource(ModelResource):
+    """
+    Sub-class this to add `/search/?q=foo` endpoint then search using ES index
+    """
+
+    search_model_class = None  # MUST define this for each resource sub-class
+    search_limit_per_age = getattr(settings, 'API_LIMIT_PER_PAGE', 20)
 
     def prepend_urls(self):
+        """
+        Append /search url segment and call self.get_search method
+        """
         return [
             url(
-                r"^(?P<resource_name>%s)/search%s$" % (
-                    self._meta.resource_name, trailing_slash),
+                r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash),
                 self.wrap_view('get_search'),
                 name="api_get_search"
             ),
         ]
 
     def get_search(self, request, **kwargs):
-        self.method_check(request, allowed=['get'])
+
+        if self.search_model_class is None:
+            raise ImplementationError('Must define: `search_model_class` attribute for this resource: %s' % str(self))
+
+        self.method_check(request, allowed=DEFAULT_ALLOWED_METHODS)
         self.is_authenticated(request)
         self.throttle_check(request)
 
         # Do the query.
-        sqs = SearchQuerySet().models(Asset).load_all().filter(
+        sqs = SearchQuerySet().models(self.search_model_class).load_all().filter(
              content=Raw(request.GET.get('q', ''))
         )
-        limit_per_page = getattr(settings, 'API_LIMIT_PER_PAGE', 20)
+        limit_per_page = self.search_limit_per_age
         paginator = Paginator(sqs, limit_per_page)
 
         try:
@@ -82,15 +102,24 @@ class AssetResource(ModelResource):
         self.log_throttled_access(request)
         return self.create_response(request, object_list)
 
+
+class AssetBucketResource(SearchableModelResource):
+    search_model_class = AssetBucket
+
+    class Meta:
+        resource_name = 'asset_bucket'
+        queryset = AssetBucket.objects.all()
+        allowed_methods = DEFAULT_ALLOWED_METHODS
+        authentication = DEFAULT_AUTHENTICATION
+        authorization = DEFAULT_AUTHENTICATION
+
+
+class AssetResource(SearchableModelResource):
+    search_model_class = Asset
+
     class Meta:
         resource_name = 'asset'
         queryset = Asset.objects.all()
-        allowed_methods = ['get']
-
-        authentication = MultiAuthentication(
-            BasicAuthentication(),
-            SessionAuthentication(),
-            ApiKeyAuthentication()
-        )
-
-        authorization = ReadOnlyAuthorization()
+        allowed_methods = DEFAULT_ALLOWED_METHODS
+        authentication = DEFAULT_AUTHENTICATION
+        authorization = DEFAULT_AUTHENTICATION
