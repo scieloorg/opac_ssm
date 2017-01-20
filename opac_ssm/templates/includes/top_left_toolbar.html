@@ -1,0 +1,20 @@
+{% load i18n %}
+<div class="col-md-2">
+  <div class="btn-group pull-right">
+    <a href="{% url 'home' %}" class="btn btn-fab btn-fab-mini">
+      <i class="material-icons">home</i>
+    </a>
+    {% if user.username %}
+      <button type="button" class="btn btn-fab btn-fab-mini dropdown-toggle" data-toggle="dropdown">
+        <i class="material-icons">account_circle</i>
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a class="dropdown-item" href="{% url 'users:detail' user.username %}">{% trans "Profile" %}</a></li>
+        <li><a class="dropdown-item" href="{% url 'account_reset_password' %}">{% trans "Password reset" %}</a></li>
+        <li class="divider"></li>
+        <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
+      </ul>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{% block page_header %}
+  <div class="row">
+    <div class="col-md-10">
+      <h1 class="page-header">
+        {% block page_header_title %}{% endblock page_header_title %}
+      </h1>
+    </div>
+    {% include "includes/top_left_toolbar.html" %}
+  </div>
+{% endblock page_header %}
+
+{% block sub_header %}
+  <h2 class="sub-header">
+    {% block sub_header_title %}{% endblock sub_header_title %}
+  </h2>
+{% endblock sub_header %}

@@ -11,6 +11,7 @@ class AssetAdmin(admin.ModelAdmin):
         'type', 'file', 'created_at')
     readonly_fields = ('metadata', 'filename', 'task_id')
 
+
 @admin.register(models.AssetBucket)
 class AssetBucketAdmin(admin.ModelAdmin):
     list_display = ('name', )
