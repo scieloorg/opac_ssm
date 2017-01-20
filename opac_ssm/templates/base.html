@@ -35,80 +35,40 @@
     {% block main_content %}
       <div class="container-fluid">
         <div class="row">
-          {% block sidebar %}
-            <div class="col-sm-3 col-md-2 sidebar">
-              <h2 class="text-center page-header">
-                <a href="/">SSM</a>
-              </h2>
-
-              {% block sidebar_filter %}
-                <div class="form-group label-floating is-empty">
-                  <label for="555" class="control-label">{% trans "Filter" %}:</label>
-                  <input class="form-control" id="555" type="text">
-                  <p class="help-block">{% trans "Enter text to search folders" %}</p>
-                </div>
-
-                <ul class="nav nav-sidebar" style="padding-top: 20px;">
-                  <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                  <li><a href="#">Reports</a></li>
-                </ul>
-              {% endblock sidebar_filter %}
-
-              <ul class="nav nav-sidebar">
-                <li>
-                  <a href="{% url 'users:list' %}">
-                    <i class="material-icons">supervisor_account</i> Users
-                  </a>
-                </li>
-              </ul>
-            </div>
-          {% endblock sidebar %}
-
-          <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-
-            {% block page_header %}
-              <div class="row">
-
-                <div class="col-md-10">
-                  <h1 class="page-header">{% block page_header_title %}Dashboard{% endblock page_header_title %}</h1>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-fab btn-fab-mini dropdown-toggle" data-toggle="dropdown">
-                      <i class="material-icons">account_circle</i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                      <li><a class="dropdown-item" href="{% url 'users:detail' user.username %}">{% trans "Profile" %}</a></li>
-                      <li><a class="dropdown-item" href="{% url 'account_reset_password' %}">{% trans "Password reset" %}</a></li>
-                      <li class="divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
-                    </ul>
+          {% block left_sidebar %}{% endblock left_sidebar %}
+          {% block middle_section %}
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+              {% include "includes/messages.html" %}
+              {% include "includes/middle_section_headers.html" %}
+              {% comment %}
+              {% block page_header %}
+                <div class="row">
+                  <div class="col-md-10">
+                    <h1 class="page-header">
+                      {% block page_header_title %}{% endblock page_header_title %}
+                    </h1>
                   </div>
+                  {% include "includes/top_left_toolbar.html" %}
                 </div>
+              {% endblock page_header %}
+              {% endcomment %}
 
-              </div>
-            {% endblock page_header %}
+              {% block sub_header %}
+                <h2 class="sub-header">
+                  {% block sub_header_title %}{% endblock sub_header_title %}
+                </h2>
+              {% endblock sub_header %}
 
-            {% block sub_header %}
-              <h2 class="sub-header">{% block sub_header_title %}Section title{% endblock sub_header_title %}</h2>
-            {% endblock sub_header %}
 
-            <div class="row well">
-              {% block content %}
+              <div class="row well">
+                {% block content %}
                   <p>Use this document as a way to quick start any new project.</p>
-              {% endblock content %}
+                {% endblock content %}
+              </div>
+
             </div>
-          </div>
+          {% endblock middle_section %}
+          {% block right_sidebar %}{% endblock right_sidebar %}
         </div>
       </div>
     {% endblock main_content %}
@@ -123,6 +83,7 @@
     <script src="{% static 'js/jquery.nouislider.min.js' %}"></script>
     <script src="{% static 'js/jquery.dropdown.js' %}"></script>
     {# place project specific Javascript in this file #}
+    {% block vue_app %}{% endblock vue_app %}
     <script src="{% static 'js/project.js' %}"></script>
     <script>
       $(function() {

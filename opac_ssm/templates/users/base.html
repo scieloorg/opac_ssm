@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
-
 {% block page_header_title %}{% endblock page_header_title %}
 {% block sub_header %}{% endblock sub_header %}
-{% block sidebar_filter %}{% endblock sidebar_filter %}
-{% block content %}
-  <div class="col-md-12 ">
-    {% block inner %}{% endblock inner%}
+
+{% block middle_section %}
+  <div class="col-sm-12 col-md-12 main">
+    {% include "includes/messages.html" %}
+    {% include "includes/middle_section_headers.html" %}
+    <div class="row well" style="margin-top: 40px">
+        {% block inner %}{% endblock inner%}
+    </div>
   </div>
-{% endblock %}
+{% endblock middle_section %}
