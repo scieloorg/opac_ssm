@@ -3,120 +3,117 @@ OPAC SSM
 
 Static Storage Management for OPAC website
 
+.. image:: https://travis-ci.org/scieloorg/opac_ssm.svg?branch=master
+    :target: https://travis-ci.org/scieloorg/opac_ssm
+
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
      :alt: Built with Cookiecutter Django
 
+.. image:: https://landscape.io/github/scieloorg/opac_ssm/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/scieloorg/opac_ssm/master
+   :alt: Code Health
+
+.. image:: https://pyup.io/repos/github/scieloorg/opac_ssm/shield.svg
+     :target: https://pyup.io/repos/github/scieloorg/opac_ssm/
+     :alt: Updates
+
+.. image:: https://pyup.io/repos/github/scieloorg/opac_ssm/python-3-shield.svg
+     :target: https://pyup.io/repos/github/scieloorg/opac_ssm/
+     :alt: Python 3
+     
+.. image:: https://images.microbadger.com/badges/image/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own image badge on microbadger.com
+
+.. image:: https://images.microbadger.com/badges/version/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own version badge on microbadger.com
+
+.. image:: https://images.microbadger.com/badges/commit/scieloorg/opac_ssm.svg
+     :target: https://microbadger.com/images/scieloorg/opac_ssm
+     :alt: Get your own commit badge on microbadger.com
 
 :License: BSD
 
 
-Settings
---------
+Configuração: Variáveis de ambiente:
+====================================
 
-Moved to settings_.
+Docker:
+-------
 
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+* ``USE_DOCKER`` - se o ambiente é feito com docker, definir como: 'yes'
 
-Basic Commands
+Database:
+---------
+
+* ``POSTGRES_USER`` - usuário postgres (requerido)
+* ``POSTGRES_PASSWORD`` - senha do usuário postgres (requerido)
+
+
+Django:
+-------
+
+* ``DJANGO_SETTINGS_MODULE``- caminho do modulo de settings. (default: 'config.settings.production')
+* ``DJANGO_DEBUG`` - habilita/deshabilita modo debug da webapp (default: False)
+* ``DJANGO_ACCOUNT_ALLOW_REGISTRATION`` - habilita/deshabilita cadastro de usuários (default: True)
+* ``DJANGO_ADMIN_URL`` - URL do admin (default: quando acessar /admin gera erro)
+* ``DJANGO_SECRET_KEY`` - segredo para segurança (default: gera erro)
+* ``DJANGO_ALLOWED_HOSTS`` - host permitidos (default: '*' (aceita tudo, deveria ser somente o host do ssm somente))
+* ``FILE_UPLOAD_MAX_MEMORY_SIZE`` - espaço em memoria máximo (em bytes) utilizada n upload de arquivos (default: 2621440 equivale a: 2.5MB)
+* ``DJANGO_SECURE_SSL_REDIRECT`` -
+
+Django (email):
+---------------
+
+* ``DJANGO_DEFAULT_FROM_EMAIL`` - email padrão no from (default: 'OPAC SSM <noreply@example.com>')
+* ``DJANGO_EMAIL_SUBJECT_PREFIX`` - email padrão no from (default: '[OPAC SSM] ')
+* ``DJANGO_EMAIL_HOST`` - host do servidor de envio de emails (default: 'mailhog')
+* ``DJANGO_EMAIL_PORT`` - porta do servidor de envio de emails (default: 1025)
+* ``DJANGO_EMAIL_HOST_USER`` - usuário do servidor de envio de email (default: '')
+* ``DJANGO_EMAIL_HOST_PASSWORD`` - senha do usuário do servidor de envio de email (default: '')
+* ``DJANGO_EMAIL_USE_TLS`` - True/False dependendo se o servidor de envio de email usa TLS na autenticação (default: False)
+* ``DJANGO_EMAIL_USE_SSL`` - True/False dependendo se o servidor de envio de email usa SSL na autenticação (default: False)
+
+
+Sentry:
+-------
+
+* ``DJANGO_SENTRY_DSN`` - DSN do Sentry (default: não reporta nada, obter o DSN de: https://homolog.sentry.scielo.org/sentry/homologopacssmscieloorg/settings/keys/)
+* ``DJANGO_SENTRY_LOG_LEVEL`` - (integer) nivel de log do Sentry (default: logging.INFO)  - Mais info: https://docs.python.org/2/library/logging.html#logging-levels
+
+
+Redis:
+------
+
+* ``REDIS_URL`` - URL de conexão para o servidor Redis (default: "redis://127.0.0.1:6379", no entrypoint.sh definido como: "redis://redis:6379")
+
+
+Haystack:
+---------
+
+* ``HAYSTACK_CONNECTIONS_HOST`` - host do servidor de indice (ElasticSearch) (default: '127.0.0.1')
+* ``HAYSTACK_CONNECTIONS_PORT`` - porta do servidor de indice (ElasticSearch) (default: '9200')
+* ``HAYSTACK_CONNECTIONS_INDEX`` - nome do indice no servidor de indice (ElasticSearch) (default: 'opac_ssm_idx')
+
+
+Servidor GRPC:
 --------------
 
-Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
-
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
-
-* To create an **superuser account**, use this command::
-
-    $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-Test coverage
-^^^^^^^^^^^^^
-
-To run the tests, check your test coverage, and generate an HTML coverage report::
-
-    $ coverage run manage.py test
-    $ coverage html
-    $ open htmlcov/index.html
-
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-  $ py.test
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
+* ``GRCP_HOST`` - host do servidor gRPC (default: '[::]')
+* ``GRCP_PORT`` - porta do servidor gRPC (default: 5000)
+* ``GRCP_MAX_WORKERS`` - porta do servidor de indice (ElasticSearch) (default: 4)
 
 
 
-Celery
-^^^^^^
+GRPC Server
+===========
 
-This app comes with Celery.
-
-To run a celery worker:
-
-.. code-block:: bash
-
-    cd opac_ssm
-    celery -A opac_ssm.taskapp worker -l info
-
-Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the same folder with *manage.py*, you should be right.
-
-
-
-
-Email Server
-^^^^^^^^^^^^
-
-In development, it is often nice to be able to see emails that are being sent from your application. For that reason local SMTP server `MailHog`_ with a web interface is available as docker container.
-
-.. _mailhog: https://github.com/mailhog/MailHog
-
-Container mailhog will start automatically when you will run all docker containers.
-Please check `cookiecutter-django Docker documentation`_ for more details how to start all containers.
-
-With MailHog running, to view messages that are sent by your application, open your browser and go to ``http://127.0.0.1:8025``
-
-
-
-
-Sentry
-^^^^^^
-
-Sentry is an error logging aggregator service. You can sign up for a free account at  https://sentry.io/signup/?code=cookiecutter  or download and host it yourself.
-The system is setup with reasonable defaults, including 404 logging and integration with the WSGI application.
-
-You must set the DSN url in production.
-
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
-
-GRPC
-----------
 Command to generate GRPC class:
 
 .. code-block:: python
 
     python -m grpc_tools.protoc -I grpc_ssm --python_out=grpc_ssm --grpc_python_out=grpc_ssm grpc_ssm/opac.proto
 
-
-Docker
-^^^^^^
-
-See detailed `cookiecutter-django Docker documentation`_.
-
-.. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
 

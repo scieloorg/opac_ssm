@@ -25,13 +25,6 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # Note: This key only used for development and testing.
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='w%vn20@n7%1)3m10genhm(v@tt_+y=hx!71fdett&hx_rzjs&_')
 
-# Mail settings
-# ------------------------------------------------------------------------------
-
-EMAIL_PORT = 1025
-
-EMAIL_HOST = env("EMAIL_HOST", default='mailhog')
-
 
 # CACHING
 # ------------------------------------------------------------------------------

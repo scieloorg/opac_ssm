@@ -16,6 +16,12 @@ vcs_ref:
 build_date:
 	@echo "Build date: " $(OPACSSM_BUILD_DATE)
 
+remove_celery_pid:
+	rm celerybeat.pid
+
+remove_celery_schedule:
+	rm celerybeat-schedule
+
 ############################################
 ## atalhos docker-compose desenvolvimento ##
 ############################################
@@ -37,9 +43,14 @@ dev_compose_ps:
 
 dev_compose_rm:
 	@docker-compose -f $(COMPOSE_FILE_DEV) rm -f
+	rm celerybeat.pid
+	rm celerybeat-schedule
 
 dev_compose_django_shell:
 	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django python manage.py shell
+
+dev_compose_django_bash:
+	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django bash
 
 dev_compose_django_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django python manage.py test

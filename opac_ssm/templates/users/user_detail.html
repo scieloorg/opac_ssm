@@ -1,36 +1,80 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "users/base.html" %}
+{% load static i18n %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}{% trans "User" %}: {{ object.username }}{% endblock %}
+{% block page_header_title %}
+  {% trans "User" %}: <strong>{{ object.username }}</strong>
+{% endblock page_header_title %}
 
-{% block content %}
-<div class="container">
+{% block inner %}
+  <div class="col-md-6 col-md-offset-3">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>{% trans "Username" %}:</td>
+          <td>{{ object.username }}</td>
+        </tr>
+        {% if object.name %}
+          <tr>
+            <td>{% trans "Name" %}:</td>
+            <td>{{ object.name }}</td>
+          </tr>
+        {% endif %}
+        <tr>
+          <td>{% trans "Email" %}:</td>
+          <td>{{ object.email }}</td>
+        </tr>
+        <tr>
+          <td>{% trans "Is Active?" %}:</td>
+          <td>
+            {% if user.is_active %}
+              <i class="material-icons">check_circle</i>
+            {% else %}
+              <i class="material-icons">highlight_off</i>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>{% trans "is Staff?" %}:</td>
+          <td>
+            {% if user.is_staff %}
+              <i class="material-icons">check_circle</i>
+            {% else %}
+              <i class="material-icons">highlight_off</i>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>{% trans "Is Superuser?" %}:</td>
+          <td>
+            {% if user.is_staff %}
+              <i class="material-icons">check_circle</i>
+            {% else %}
+              <i class="material-icons">highlight_off</i>
+            {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
-        <p>{{ object.name }}</p>
-      {% endif %}
-    </div>
+    {% if object == request.user %}
+      <div class="col-sm-12">
+        <a href="{% url 'users:list' %}" class="btn btn-raised btn-secondary pull-left">
+          {% trans "Back" %}
+        </a>
+        <a class="btn btn-primary btn-raised pull-right" href="{% url 'users:update' %}" role="button">
+          {% trans "Update Info" %}
+        </a>
+        <a class="btn btn-primary btn-raised pull-right" href="{% url 'account_email' %}" role="button">
+          {% trans "Change E-Mail" %}
+        </a>
+      </div>
+    {% else %}
+      <div class="col-sm-12">
+        <a href="{% url 'users:list' %}" class="btn btn-raised btn-secondary pull-left">
+          {% trans "Back" %}
+        </a>
+      </div>
+    {% endif %}
   </div>
-
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
-
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
-  </div>
-
-</div>
-<!-- End Action buttons -->
-{% endif %}
-
-
-</div>
-{% endblock content %}
-
+{% endblock %}

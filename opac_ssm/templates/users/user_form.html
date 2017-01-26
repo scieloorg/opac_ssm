@@ -1,17 +1,23 @@
-{% extends "base.html" %}
+{% extends "users/base.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ user.username }}{% endblock %}
+{% block page_header_title %}
+  <a href="{% url 'users:list' %}">{% trans "Users" %}</a>:
+{% endblock page_header_title %}
 
-{% block content %}
-  <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Update</button>
+{% block inner %}
+  <div class="col-md-6 col-md-offset-3">
+    <h1 class="text-center">{{ user.username }}</h1>
+    <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="control-group">
+        <div class="controls">
+          <a href="{% url 'users:list' %}" class="btn btn-raised btn-secondary">Back</a>
+          <button type="submit" class="btn btn-raised btn-primary pull-right">Update</button>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 {% endblock %}
