@@ -15,8 +15,8 @@ services:
     image: postgres:9.6
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
     volumes:
       - ./pg_data:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -33,8 +33,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -64,8 +64,8 @@ services:
       - elasticsearch
     command: celery -A opac_ssm.taskapp worker -l INFO
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -85,10 +85,11 @@ services:
     depends_on:
       - postgres
       - redis
+      - elasticsearch
     command: celery -A opac_ssm.taskapp beat -l INFO
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.production
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -102,9 +103,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   grpc:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-dev
+    image: scieloorg/opac_ssm
     user: django
     restart: always
     depends_on:
@@ -113,8 +112,8 @@ services:
       - elasticsearch
     command: /start-grpc.sh
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -125,7 +124,6 @@ services:
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
     volumes:
-      - .:/app
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "5000:5000"

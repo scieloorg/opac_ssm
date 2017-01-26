@@ -1,1 +1,145 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block left_sidebar %}
+
+  <div id="sidebar_warpper">
+    <div id="sidebar_app" class="col-sm-3 col-md-2 sidebar">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-md-2 sidebar">
+
+    <h2 class="text-center page-header">
+      <a href="/">SSM</a>
+    </h2>
+
+    <div class="form-group label-floating is-empty">
+      <label for="555" class="control-label">{% trans "Filter" %}:</label>
+      <input class="form-control" id="555" type="text">
+      <p class="help-block">{% trans "Enter text to search folders" %}</p>
+    </div>
+
+    <ul class="nav nav-sidebar" style="padding-top: 20px;">
+      <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+      <li><a href="#">Reports</a></li>
+    </ul>
+
+    <ul class="nav nav-sidebar">
+      <li>
+        <a href="{% url 'users:list' %}">
+          <i class="material-icons">supervisor_account</i> Users
+        </a>
+      </li>
+    </ul>
+
+  </div>
+{% endblock left_sidebar %}
+
+{% block page_header_title %}Dashboard{% endblock page_header_title %}
+{% block sub_header %}{% endblock sub_header %}
+
+
+{% block content %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Header</th>
+          <th>Header</th>
+          <th>Header</th>
+          <th>Header</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1,001</td>
+          <td>Lorem</td>
+          <td>ipsum</td>
+          <td>dolor</td>
+          <td>sit</td>
+        </tr>
+        <tr>
+          <td>1,002</td>
+          <td>amet</td>
+          <td>consectetur</td>
+          <td>adipiscing</td>
+          <td>elit</td>
+        </tr>
+        <tr>
+          <td>1,003</td>
+          <td>Integer</td>
+          <td>nec</td>
+          <td>odio</td>
+          <td>Praesent</td>
+        </tr>
+        <tr>
+          <td>1,003</td>
+          <td>libero</td>
+          <td>Sed</td>
+          <td>cursus</td>
+          <td>ante</td>
+        </tr>
+        <tr>
+          <td>1,004</td>
+          <td>dapibus</td>
+          <td>diam</td>
+          <td>Sed</td>
+          <td>nisi</td>
+        </tr>
+        <tr>
+          <td>1,005</td>
+          <td>Nulla</td>
+          <td>quis</td>
+          <td>sem</td>
+          <td>at</td>
+        </tr>
+        <tr>
+          <td>1,006</td>
+          <td>nibh</td>
+          <td>elementum</td>
+          <td>imperdiet</td>
+          <td>Duis</td>
+        </tr>
+        <tr>
+          <td>1,007</td>
+          <td>sagittis</td>
+          <td>ipsum</td>
+          <td>Praesent</td>
+          <td>mauris</td>
+        </tr>
+        <tr>
+          <td>1,008</td>
+          <td>Fusce</td>
+          <td>nec</td>
+          <td>tellus</td>
+          <td>sed</td>
+        </tr>
+        <tr>
+          <td>1,009</td>
+          <td>augue</td>
+          <td>semper</td>
+          <td>porta</td>
+          <td>Mauris</td>
+        </tr>
+        <tr>
+          <td>1,010</td>
+          <td>massa</td>
+          <td>Vestibulum</td>
+          <td>lacinia</td>
+          <td>arcu</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+{% block vue_app %}
+  <script src="{% static 'js/vue.js' %}"></script>
+  <script src="{% static 'js/vue-router.min.js' %}"></script>
+  <script src="{% static 'js/vuex.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
+{% endblock vue_app %}

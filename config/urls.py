@@ -9,18 +9,21 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from tastypie.api import Api
 from tastypie.utils import trailing_slash
-
+from assets_manager.views import home
 from assets_manager.api.resources import (
-    AssetResource
+    AssetResource,
+    AssetBucketResource,
 )
 
 
 # api
 v1_api = Api(api_name='v1')
 v1_api.register(AssetResource())
+v1_api.register(AssetBucketResource())
+
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^$', home, name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
