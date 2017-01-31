@@ -48,7 +48,7 @@ django-haystack==2.6.0
 elasticsearch==2.4.0
 
 # grpc
-grpcio==1.0.4
+grpcio==1.1.0
 grpcio-tools==1.0.4
 
 # Raven is the Sentry client
