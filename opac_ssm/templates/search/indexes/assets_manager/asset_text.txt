@@ -3,3 +3,4 @@
 {{ object.filename }}
 {{ object.created_at }}
 {{ object.updated_at }}
+{{ object.bucket }}
