@@ -3,6 +3,8 @@ from django.conf.urls import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from haystack.inputs import Raw
+from tastypie import fields
+from tastypie.constants import ALL
 from haystack.query import SearchQuerySet
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
@@ -16,14 +18,6 @@ from tastypie.authorization import ReadOnlyAuthorization
 from django.conf import settings
 
 from assets_manager.models import Asset, AssetBucket
-
-DEFAULT_ALLOWED_METHODS = ['get']
-DEFAULT_AUTHENTICATION = ReadOnlyAuthorization()
-DEFAULT_AUTHENTICATION = MultiAuthentication(
-    BasicAuthentication(),
-    SessionAuthentication(),
-    ApiKeyAuthentication()
-)
 
 
 class SearchableModelResource(ModelResource):
@@ -51,7 +45,7 @@ class SearchableModelResource(ModelResource):
         if self.search_model_class is None:
             raise ImplementationError('Must define: `search_model_class` attribute for this resource: %s' % str(self))
 
-        self.method_check(request, allowed=DEFAULT_ALLOWED_METHODS)
+        self.method_check(request, allowed=['get', ])
         self.is_authenticated(request)
         self.throttle_check(request)
 
@@ -59,7 +53,13 @@ class SearchableModelResource(ModelResource):
         sqs = SearchQuerySet().models(self.search_model_class).load_all().filter(
              content=Raw(request.GET.get('q', ''))
         )
-        limit_per_page = self.search_limit_per_age
+        request_limit = request.GET.get('limit', self.search_limit_per_age)
+        try:
+            request_limit = int(request_limit)
+        except ValueError:
+            request_limit = self.search_limit_per_age
+
+        limit_per_page = request_limit
         paginator = Paginator(sqs, limit_per_page)
 
         try:
@@ -109,17 +109,32 @@ class AssetBucketResource(SearchableModelResource):
     class Meta:
         resource_name = 'asset_bucket'
         queryset = AssetBucket.objects.all()
-        allowed_methods = DEFAULT_ALLOWED_METHODS
-        authentication = DEFAULT_AUTHENTICATION
-        authorization = DEFAULT_AUTHENTICATION
+        allowed_methods = ['get']
+        authentication = MultiAuthentication(
+            BasicAuthentication(),
+            SessionAuthentication(),
+            ApiKeyAuthentication()
+        )
+        authorization = ReadOnlyAuthorization()
+        filtering = {
+            "name": ALL,
+        }
 
 
 class AssetResource(SearchableModelResource):
     search_model_class = Asset
+    bucket = fields.ToOneField(AssetBucketResource, 'bucket', null=True, full=True)
 
     class Meta:
         resource_name = 'asset'
         queryset = Asset.objects.all()
-        allowed_methods = DEFAULT_ALLOWED_METHODS
-        authentication = DEFAULT_AUTHENTICATION
-        authorization = DEFAULT_AUTHENTICATION
+        allowed_methods = ['get']
+        authentication = MultiAuthentication(
+            BasicAuthentication(),
+            SessionAuthentication(),
+            ApiKeyAuthentication()
+        )
+        authorization = ReadOnlyAuthorization()
+        filtering = {
+            "bucket": ('exact',),
+        }
