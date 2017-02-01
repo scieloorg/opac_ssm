@@ -57,12 +57,11 @@ var BucketDetail = {
       var self = this;
       var page = this.$route.params.page;
       var bucket = encodeURI(bucketName);
-      var querystring = encodeURI("django_ct:assets_manager.asset AND bucket:" + bucket);
+      var querystring = 'django_ct:assets_manager.asset AND bucket:"' + bucket + '"';
       var bucket_list_url = "/api/v1/asset/search/?page=" + page + "&q=" + querystring;
       if (searchTerm) {
         bucket_list_url += encodeURI(" AND *" + searchTerm + "*");
       }
-      console.log("bucket_list_url: ", bucket_list_url);
       $.getJSON(
         bucket_list_url,
         function(json, textStatus) {
@@ -125,7 +124,7 @@ var main_app = new Vue({
       var self = this;
       var bucket_list_url = "/api/v1/asset_bucket/search/";
       if (this.bucket_filter !== ""){
-        bucket_list_url += "?q=*" + encodeURI(this.bucket_filter) + "*";
+        bucket_list_url += "?q=*" + this.bucket_filter + "*";
       }
       $.getJSON(
         bucket_list_url,
