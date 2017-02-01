@@ -34,13 +34,17 @@ COPY . /app
 
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./gunicorn.sh /gunicorn.sh
+COPY ./start-grpc.sh /start-grpc.sh
 
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /gunicorn.sh \
+    && sed -i 's/\r//' /start-grpc.sh \
     && chmod +x /entrypoint.sh \
-    && chown django /entrypoint.sh \
     && chmod +x /gunicorn.sh \
-    && chown django /gunicorn.sh
+    && chmod +x /start-grpc.sh \
+    && chown django /entrypoint.sh \
+    && chown django /gunicorn.sh \
+    && chown django /start-grpc.sh
 
 WORKDIR /app
 
