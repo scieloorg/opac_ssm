@@ -25,6 +25,7 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
         if object.metadata:
             try:
                 if isinstance(object.metadata, str):
+                    print(object.metadata.replace("'", "\""))
                     metadata = json.loads(object.metadata.replace("'", "\""))
                 elif isinstance(object.metadata, dict):
                     metadata = object.metadata
