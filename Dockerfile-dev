@@ -44,7 +44,6 @@ RUN sed -i 's/\r//' /entrypoint.sh \
     && chown django /start-dev.sh \
     && chown django /start-grpc.sh
 
-
 WORKDIR /app
 
 RUN chown -R django /app
