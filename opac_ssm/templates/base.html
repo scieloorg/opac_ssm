@@ -31,34 +31,21 @@
     {% endblock %}
   </head>
 
-  <body>
+  <body >
     {% block main_content %}
-      <div class="container-fluid">
+      <div id="vueapp" class="container-fluid">
         <div class="row">
           {% block left_sidebar %}{% endblock left_sidebar %}
           {% block middle_section %}
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
               {% include "includes/messages.html" %}
               {% include "includes/middle_section_headers.html" %}
-              {% comment %}
-              {% block page_header %}
-                <div class="row">
-                  <div class="col-md-10">
-                    <h1 class="page-header">
-                      {% block page_header_title %}{% endblock page_header_title %}
-                    </h1>
-                  </div>
-                  {% include "includes/top_left_toolbar.html" %}
-                </div>
-              {% endblock page_header %}
-              {% endcomment %}
 
               {% block sub_header %}
                 <h2 class="sub-header">
                   {% block sub_header_title %}{% endblock sub_header_title %}
                 </h2>
               {% endblock sub_header %}
-
 
               <div class="row well">
                 {% block content %}
