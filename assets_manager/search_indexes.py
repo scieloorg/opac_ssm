@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 class AssetIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    bucket = indexes.CharField(model_attr='bucket')
 
     def get_model(self):
         return Asset
