@@ -1,145 +1,203 @@
 {% extends "base.html" %}
 {% load staticfiles i18n %}
-
+{% block css %}
+  <style>
+    .upload_btn {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+    }
+  </style>
+{% endblock css %}
 {% block left_sidebar %}
-
-  <div id="sidebar_warpper">
-    <div id="sidebar_app" class="col-sm-3 col-md-2 sidebar">
-      {{ message }}
-    </div>
-  </div>
-
   <div class="col-sm-3 col-md-2 sidebar">
 
     <h2 class="text-center page-header">
       <a href="/">SSM</a>
     </h2>
 
-    <div class="form-group label-floating is-empty">
-      <label for="555" class="control-label">{% trans "Filter" %}:</label>
-      <input class="form-control" id="555" type="text">
+    <div id="sidebar-filter-form" class="form-group label-floating is-empty" style="padding-bottom: 20px;">
+      <label for="filter_bucket_input" class="control-label">{% trans "Filter" %}:</label>
+      <input class="form-control" id="filter_bucket_input" type="text" v-model="bucket_filter">
       <p class="help-block">{% trans "Enter text to search folders" %}</p>
     </div>
 
-    <ul class="nav nav-sidebar" style="padding-top: 20px;">
-      <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-      <li><a href="#">Reports</a></li>
-    </ul>
-
-    <ul class="nav nav-sidebar">
-      <li>
-        <a href="{% url 'users:list' %}">
-          <i class="material-icons">supervisor_account</i> Users
-        </a>
-      </li>
-    </ul>
-
+    <div class="sidebar-nav-wrapper">
+      {% verbatim %}
+        <ul class="nav nav-sidebar">
+          <li v-for="bucket in sidebar_buckets">
+            <router-link :to="{ name: 'buckets_details', params: { bucketName: bucket.name, page: 1 } }">
+              <i class="material-icons">folder</i> {{ bucket.name }}
+            </router-link>
+          </li>
+        </ul>
+      {% endverbatim %}
+    </div>
+    <hr>
+    <div class="sidebar-bottom">
+      <a href="{% url 'users:list' %}">
+        <i class="material-icons">supervisor_account</i> Users
+      </a>
+    </div>
   </div>
 {% endblock left_sidebar %}
 
-{% block page_header_title %}Dashboard{% endblock page_header_title %}
+{% block page_header_title %}{% endblock page_header_title %}
 {% block sub_header %}{% endblock sub_header %}
 
-
 {% block content %}
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Header</th>
-          <th>Header</th>
-          <th>Header</th>
-          <th>Header</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1,001</td>
-          <td>Lorem</td>
-          <td>ipsum</td>
-          <td>dolor</td>
-          <td>sit</td>
-        </tr>
-        <tr>
-          <td>1,002</td>
-          <td>amet</td>
-          <td>consectetur</td>
-          <td>adipiscing</td>
-          <td>elit</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>Integer</td>
-          <td>nec</td>
-          <td>odio</td>
-          <td>Praesent</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>libero</td>
-          <td>Sed</td>
-          <td>cursus</td>
-          <td>ante</td>
-        </tr>
-        <tr>
-          <td>1,004</td>
-          <td>dapibus</td>
-          <td>diam</td>
-          <td>Sed</td>
-          <td>nisi</td>
-        </tr>
-        <tr>
-          <td>1,005</td>
-          <td>Nulla</td>
-          <td>quis</td>
-          <td>sem</td>
-          <td>at</td>
-        </tr>
-        <tr>
-          <td>1,006</td>
-          <td>nibh</td>
-          <td>elementum</td>
-          <td>imperdiet</td>
-          <td>Duis</td>
-        </tr>
-        <tr>
-          <td>1,007</td>
-          <td>sagittis</td>
-          <td>ipsum</td>
-          <td>Praesent</td>
-          <td>mauris</td>
-        </tr>
-        <tr>
-          <td>1,008</td>
-          <td>Fusce</td>
-          <td>nec</td>
-          <td>tellus</td>
-          <td>sed</td>
-        </tr>
-        <tr>
-          <td>1,009</td>
-          <td>augue</td>
-          <td>semper</td>
-          <td>porta</td>
-          <td>Mauris</td>
-        </tr>
-        <tr>
-          <td>1,010</td>
-          <td>massa</td>
-          <td>Vestibulum</td>
-          <td>lacinia</td>
-          <td>arcu</td>
-        </tr>
+  <router-view></router-view>
 
-      </tbody>
-    </table>
+  <div class="upload_btn">
+    <div class="dropup">
+      <button type="button" class="btn btn-info btn-fab btn-fab-mini dropdown-toggle" data-toggle="dropdown">
+        <i class="material-icons">add</i>
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li>
+          <a class="dropdown-item" href="javascript:void(0)">
+            <i class="material-icons">cloud_upload</i> Add File
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0)">
+            <i class="material-icons">create_new_folder</i> Add Folder
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 {% endblock content %}
 
 {% block vue_app %}
+
+  <script id="component_home" type="text/template">
+    {% verbatim %}
+    <h1>Home</h1>
+    {% endverbatim %}
+  </script>
+
+  <script id="component_bucket_detail" type="text/template">
+    {% verbatim %}
+    <div class="bucket-detail">
+      <div class="bucket-detail-wrapper">
+        <div class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="javascript:void(0)">
+                <i class="material-icons">folder</i> / {{ current_bucket_name }}
+              </a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+              <form class="navbar-form navbar-left">
+                <div class="form-group is-empty">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">search</i>
+                    </span>
+                    <input class="form-control" placeholder="Search in this folder" type="text" v-model="bucket_search_input">
+                  </div>
+                </div>
+              </form>
+              <ul class="nav navbar-nav pull-right">
+                <li class="active">
+                  <a href="javascript:void(0)">
+                    <strong>{{ bucket_meta.total_count }}</strong> assets found
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-1">id</th>
+                <th>filename</th>
+                <th class="col-md-1">created</th>
+                <th class="col-md-1">updated</th>
+                <th class="col-md-1">type</th>
+                <th class="col-md-1">URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="asset_obj in bucket_objs">
+                <td>{{ asset_obj.id }}</td>
+                <td>{{ asset_obj.filename }}</td>
+                <td>{{ formatDate(asset_obj.created_at) }}</td>
+                <td>{{ formatDate(asset_obj.updated_at) }}</td>
+                <td>{{ asset_obj.type }}</td>
+                <td>
+                  <a target="_blank" :href="asset_obj.file">
+                    <i class="material-icons">open_in_new</i>
+                  </a>
+                </td>
+              </tr>
+              <tr v-if="bucket_objs.length == 0">
+                <td colspan="7">
+                  <div class="alert alert-info" style="margin-bottom: 0">
+                    <h4><i class="material-icons">info_outline</i> This folder is empty</h4>
+                    <p>Check another folder or change your search</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="7">
+                  <div class="col-md-12">
+                    <ul class="pager">
+
+                      <li v-if="has_prev_page" class="previous">
+                        <router-link class="withripple" :to="{ name: 'buckets_details', params: { bucketName: current_bucket_name, page: prev_page_num } }">
+                          <i class="material-icons">keyboard_arrow_left</i>
+                        </router-link>
+                      </li>
+
+                      <li v-else class="previous disabled">
+                        <a href="javascript:void(0)">
+                          <i class="material-icons">keyboard_arrow_left</i>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="javascript:void(0)">
+                          Page: <strong>{{ $route.params.page }}</strong>
+                        </a>
+                      </li>
+
+                      <li v-if="has_next_page" class="next">
+                        <router-link class="withripple" :to="{ name: 'buckets_details', params: { bucketName: current_bucket_name, page: next_page_num } }">
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </router-link>
+                      </li>
+
+                      <li v-else class="next disabled">
+                        <a href="javascript:void(0)">
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </a>
+                      </li>
+
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endverbatim %}
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
   <script src="{% static 'js/vue.js' %}"></script>
   <script src="{% static 'js/vue-router.min.js' %}"></script>
-  <script src="{% static 'js/vuex.js' %}"></script>
   <script src="{% static 'js/app.js' %}"></script>
 {% endblock vue_app %}

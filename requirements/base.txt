@@ -9,10 +9,10 @@ django==1.10.5
 
 # Configuration
 django-environ==0.4.1
-whitenoise==3.2.3
+whitenoise==3.3.0
 
 # Forms
-django-braces==1.10.0
+django-braces==1.11.0
 django-crispy-forms==1.6.1
 
 # Models
@@ -49,7 +49,7 @@ elasticsearch==2.4.0
 
 # grpc
 grpcio==1.0.4
-grpcio-tools==1.1.0
+grpcio-tools==1.0.4
 
 # Raven is the Sentry client
 raven==5.32.0

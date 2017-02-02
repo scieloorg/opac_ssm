@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 class AssetIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    bucket = indexes.CharField(model_attr='bucket')
 
     def get_model(self):
         return Asset
@@ -24,8 +25,14 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
 
         if object.metadata:
             try:
-                metadata = json.loads(object.metadata.replace("'", "\""))
-            except TypeError as e:
+                if isinstance(object.metadata, str):
+                    print(object.metadata.replace("'", "\""))
+                    metadata = json.loads(object.metadata.replace("'", "\""))
+                elif isinstance(object.metadata, dict):
+                    metadata = object.metadata
+                else:
+                    raise ValueError
+            except (TypeError, ValueError) as e:
                 logger.error(e)
                 raise
 
