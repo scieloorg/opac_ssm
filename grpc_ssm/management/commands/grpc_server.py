@@ -5,6 +5,7 @@ from django.conf import settings
 
 from grpc_ssm import grpc_server
 
+
 class Command(BaseCommand):
     help = 'GRCP Server'
 
