@@ -108,3 +108,10 @@
   display: inline-block;
   border-radius: 50%;
 }
+
+
+/* vue app */
+.sidebar-bottom {
+  position: relative;
+  bottom: 0;
+}
