@@ -23,8 +23,6 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare(self, object):
         self.prepared_data = super(AssetIndex, self).prepare(object)
 
-        logger.info(type(object.metadata))
-
         if object.metadata:
             try:
                 if isinstance(object.metadata, str):
