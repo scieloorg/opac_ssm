@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class AssetIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    bucket = indexes.CharField(model_attr='bucket')
+    bucket = indexes.CharField(model_attr='bucket', null=True)
 
     def get_model(self):
         return Asset
@@ -23,10 +23,11 @@ class AssetIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare(self, object):
         self.prepared_data = super(AssetIndex, self).prepare(object)
 
+        logger.info(type(object.metadata))
+
         if object.metadata:
             try:
                 if isinstance(object.metadata, str):
-                    print(object.metadata.replace("'", "\""))
                     metadata = json.loads(object.metadata.replace("'", "\""))
                 elif isinstance(object.metadata, dict):
                     metadata = object.metadata

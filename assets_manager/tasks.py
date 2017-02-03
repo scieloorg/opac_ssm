@@ -3,6 +3,7 @@
 import io
 import json
 import logging
+from uuid import uuid4
 
 from django.core.files import File
 
