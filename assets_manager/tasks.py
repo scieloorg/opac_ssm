@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @app.task(bind=True)
-def add_asset(self, file, filename, type=None, metadata=None):
+def add_asset(self, file, filename, type=None, metadata=None, bucket_name='UNKNOW'):
     """
     Task to create a new asset.
 
@@ -24,6 +24,7 @@ def add_asset(self, file, filename, type=None, metadata=None):
         :param filename: Name of file (Mandatory)
         :param type: is the type of asset
         :param metadata: JSON with metadada about asset
+        :param bucket_name: Name of bucket related to asset
     """
 
     try:
@@ -32,12 +33,18 @@ def add_asset(self, file, filename, type=None, metadata=None):
         logger.error(e)
         raise
 
+    bucket, created = models.AssetBucket.objects.get_or_create(name=bucket_name)
+
+    if created:
+        logger.info(u"Novo bucket adicionado com o nome: %s", bucket.name)
+
     asset = models.Asset()
     asset.file = File(fp, filename)
     asset.filename = filename
     asset.type = type
     asset.metadata = metadata
     asset.task_id = self.request.id # Save task id
+    asset.bucket = bucket
     asset.save()
 
     logger.info(u"Successfully created asset with the id=%s, size=%s and path=%s",
