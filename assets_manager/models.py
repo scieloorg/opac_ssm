@@ -7,7 +7,8 @@ from django.contrib.postgres.fields import JSONField
 
 
 class AssetBucket(models.Model):
-    name = models.CharField('nome', max_length=256, unique=True, default='')
+    name = models.CharField('nome', max_length=256, unique=True,
+                            default='UNKNOW')
 
     def __str__(self):
         return self.name

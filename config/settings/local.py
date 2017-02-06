@@ -68,3 +68,7 @@ CELERY_ALWAYS_EAGER = False
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+# Change the index name to dev.
+HAYSTACK_CONNECTIONS_INDEX = env('HAYSTACK_CONNECTIONS_INDEX', default='opac_ssm_idx_dev')
+

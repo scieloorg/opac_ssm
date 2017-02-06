@@ -128,7 +128,7 @@ services:
       - USE_DOCKER=yes
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
-      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
     volumes:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
