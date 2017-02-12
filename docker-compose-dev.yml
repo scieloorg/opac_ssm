@@ -52,7 +52,7 @@ services:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "8000:8000"
+      - "8001:8000"
     links:
       - postgres
       - redis
