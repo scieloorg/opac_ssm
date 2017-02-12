@@ -3,9 +3,9 @@ default: test
 COMPOSE_FILE_DEV = docker-compose-dev.yml
 COMPOSE_FILE_BUILD = docker-compose-build.yml
 
-OPACSSM_BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-OPACSSM_VCS_REF=$(strip $(shell git rev-parse --short HEAD))
-OPACSSM_WEBAPP_VERSION=$(strip $(shell cat VERSION))
+export OPACSSM_BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+export OPACSSM_VCS_REF=$(strip $(shell git rev-parse --short HEAD))
+export OPACSSM_WEBAPP_VERSION=$(strip $(shell cat VERSION))
 
 webapp_version:
 	@echo "Version file: " $(OPACSSM_WEBAPP_VERSION)
@@ -48,6 +48,9 @@ dev_compose_rm:
 
 dev_compose_django_shell:
 	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django python manage.py shell
+
+dev_compose_django_createsuperuser:
+	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django python manage.py createsuperuser
 
 dev_compose_django_bash:
 	@docker-compose -f $(COMPOSE_FILE_DEV) run --rm django bash

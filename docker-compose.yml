@@ -31,34 +31,32 @@ services:
       - elasticsearch
     command: /gunicorn.sh
     ports:
-      - "8000:8000"
+      - "8000"
     environment:
-      - DJANGO_ACCOUNT_ALLOW_REGISTRATION='True'
-      - DJANGO_ALLOWED_HOSTS='*'
-      - DJANGO_DEBUG='True'
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
       - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <suporte.aplicacao@scielo.org>
       - DJANGO_EMAIL_HOST=email-smtp.us-east-1.amazonaws.com
       - DJANGO_EMAIL_HOST_PASSWORD=AoyU4W/qpVxF4THsPgTkGjFVmyAVO4XDK1kToP4gYbu1
       - DJANGO_EMAIL_HOST_USER=AKIAI6QBLA25ULOC2E4Q
-      - DJANGO_EMAIL_PORT='587'
-      - DJANGO_EMAIL_SUBJECT_PREFIX='[OPAC SSM]'
-      - DJANGO_EMAIL_USE_SSL='False'
-      - DJANGO_EMAIL_USE_TLS='True'
+      - DJANGO_EMAIL_PORT=587
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
-      - DJANGO_SECURE_SSL_REDIRECT='False'
-      - DJANGO_SENTRY_DSN=https://c287c6c11f324349a5f35be346acbdcb:96071b7fd7a34e849a54e2dc07236174@homolog.sentry.scielo.org/4
-      - DJANGO_SENTRY_LOG_LEVEL='10'
+      - DJANGO_SECURE_SSL_REDIRECT=False
       - DJANGO_SETTINGS_MODULE=config.settings.production
-      - FILE_UPLOAD_MAX_MEMORY_SIZE='2621440'
-      - GRCP_HOST='[::]'
-      - GRCP_MAX_WORKERS='4'
-      - GRCP_PORT='8005'
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
-      - HAYSTACK_CONNECTIONS_PORT='9200'
+      - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_PASSWORD=ssm_postgres_password
       - POSTGRES_USER=ssm_postgres_user
-      - USE_DOCKER='yes'
+      - USE_DOCKER=yes
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
@@ -79,32 +77,30 @@ services:
       - elasticsearch
     command: celery -A opac_ssm.taskapp worker -l INFO
     environment:
-      - DJANGO_ACCOUNT_ALLOW_REGISTRATION='True'
-      - DJANGO_ALLOWED_HOSTS='*'
-      - DJANGO_DEBUG='True'
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
       - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <suporte.aplicacao@scielo.org>
       - DJANGO_EMAIL_HOST=email-smtp.us-east-1.amazonaws.com
       - DJANGO_EMAIL_HOST_PASSWORD=AoyU4W/qpVxF4THsPgTkGjFVmyAVO4XDK1kToP4gYbu1
       - DJANGO_EMAIL_HOST_USER=AKIAI6QBLA25ULOC2E4Q
-      - DJANGO_EMAIL_PORT='587'
-      - DJANGO_EMAIL_SUBJECT_PREFIX='[OPAC SSM]'
-      - DJANGO_EMAIL_USE_SSL='False'
-      - DJANGO_EMAIL_USE_TLS='True'
+      - DJANGO_EMAIL_PORT=587
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
-      - DJANGO_SECURE_SSL_REDIRECT='False'
-      - DJANGO_SENTRY_DSN=https://c287c6c11f324349a5f35be346acbdcb:96071b7fd7a34e849a54e2dc07236174@homolog.sentry.scielo.org/4
-      - DJANGO_SENTRY_LOG_LEVEL='10'
+      - DJANGO_SECURE_SSL_REDIRECT=False
       - DJANGO_SETTINGS_MODULE=config.settings.production
-      - FILE_UPLOAD_MAX_MEMORY_SIZE='2621440'
-      - GRCP_HOST='[::]'
-      - GRCP_MAX_WORKERS='4'
-      - GRCP_PORT='8005'
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
-      - HAYSTACK_CONNECTIONS_PORT='9200'
+      - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_PASSWORD=ssm_postgres_password
       - POSTGRES_USER=ssm_postgres_user
-      - USE_DOCKER='yes'
+      - USE_DOCKER=yes
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
@@ -118,32 +114,30 @@ services:
       - elasticsearch
     command: celery -A opac_ssm.taskapp beat -l INFO
     environment:
-      - DJANGO_ACCOUNT_ALLOW_REGISTRATION='True'
-      - DJANGO_ALLOWED_HOSTS='*'
-      - DJANGO_DEBUG='True'
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
       - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <suporte.aplicacao@scielo.org>
       - DJANGO_EMAIL_HOST=email-smtp.us-east-1.amazonaws.com
       - DJANGO_EMAIL_HOST_PASSWORD=AoyU4W/qpVxF4THsPgTkGjFVmyAVO4XDK1kToP4gYbu1
       - DJANGO_EMAIL_HOST_USER=AKIAI6QBLA25ULOC2E4Q
-      - DJANGO_EMAIL_PORT='587'
-      - DJANGO_EMAIL_SUBJECT_PREFIX='[OPAC SSM]'
-      - DJANGO_EMAIL_USE_SSL='False'
-      - DJANGO_EMAIL_USE_TLS='True'
+      - DJANGO_EMAIL_PORT=587
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
-      - DJANGO_SECURE_SSL_REDIRECT='False'
-      - DJANGO_SENTRY_DSN=https://c287c6c11f324349a5f35be346acbdcb:96071b7fd7a34e849a54e2dc07236174@homolog.sentry.scielo.org/4
-      - DJANGO_SENTRY_LOG_LEVEL='10'
+      - DJANGO_SECURE_SSL_REDIRECT=False
       - DJANGO_SETTINGS_MODULE=config.settings.production
-      - FILE_UPLOAD_MAX_MEMORY_SIZE='2621440'
-      - GRCP_HOST='[::]'
-      - GRCP_MAX_WORKERS='4'
-      - GRCP_PORT='8005'
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
-      - HAYSTACK_CONNECTIONS_PORT='9200'
+      - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_PASSWORD=ssm_postgres_password
       - POSTGRES_USER=ssm_postgres_user
-      - USE_DOCKER='yes'
+      - USE_DOCKER=yes
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
@@ -157,30 +151,28 @@ services:
       - elasticsearch
     command: /start-grpc.sh
     environment:
-      - DJANGO_ACCOUNT_ALLOW_REGISTRATION='True'
-      - DJANGO_ALLOWED_HOSTS='*'
-      - DJANGO_DEBUG='True'
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
       - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <suporte.aplicacao@scielo.org>
       - DJANGO_EMAIL_HOST=email-smtp.us-east-1.amazonaws.com
       - DJANGO_EMAIL_HOST_PASSWORD=AoyU4W/qpVxF4THsPgTkGjFVmyAVO4XDK1kToP4gYbu1
       - DJANGO_EMAIL_HOST_USER=AKIAI6QBLA25ULOC2E4Q
-      - DJANGO_EMAIL_PORT='587'
-      - DJANGO_EMAIL_SUBJECT_PREFIX='[OPAC SSM]'
-      - DJANGO_EMAIL_USE_SSL='False'
-      - DJANGO_EMAIL_USE_TLS='True'
+      - DJANGO_EMAIL_PORT=587
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
-      - DJANGO_SECURE_SSL_REDIRECT='False'
-      - DJANGO_SENTRY_DSN=https://c287c6c11f324349a5f35be346acbdcb:96071b7fd7a34e849a54e2dc07236174@homolog.sentry.scielo.org/4
-      - DJANGO_SENTRY_LOG_LEVEL='10'
+      - DJANGO_SECURE_SSL_REDIRECT=False
       - DJANGO_SETTINGS_MODULE=config.settings.production
-      - FILE_UPLOAD_MAX_MEMORY_SIZE='2621440'
-      - GRCP_HOST='[::]'
-      - GRCP_MAX_WORKERS='4'
-      - GRCP_PORT='8005'
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
-      - HAYSTACK_CONNECTIONS_PORT='9200'
-      - USE_DOCKER='yes'
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - USE_DOCKER=yes
     volumes:
       - /etc/localtime:/etc/localtime:ro
     ports:
