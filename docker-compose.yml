@@ -1,0 +1,181 @@
+version: '2'
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:2
+    restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  postgres:
+    image: postgres:9.6
+    restart: always
+    environment:
+      - POSTGRES_USER=ssm_postgres_user
+      - POSTGRES_PASSWORD=ssm_postgres_password
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+
+  django:
+    image: scieloorg/opac_ssm
+    user: django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    command: /gunicorn.sh
+    ports:
+      - "8000"
+    environment:
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
+      - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <foobar@scielo.org>
+      - DJANGO_EMAIL_HOST=mailserver.foobar.scielo.org
+      - DJANGO_EMAIL_HOST_PASSWORD=foobarbaz1234
+      - DJANGO_EMAIL_HOST_USER=foobar
+      - DJANGO_EMAIL_PORT=1234
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
+      - DJANGO_SECRET_KEY=very-secret-secret
+      - DJANGO_SECURE_SSL_REDIRECT=False
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_USER=ssm_postgres_user
+      - USE_DOCKER=yes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  redis:
+    image: redis:latest
+    user: redis
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  celeryworker:
+    image: scieloorg/opac_ssm
+    user: django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    command: celery -A opac_ssm.taskapp worker -l INFO
+    environment:
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
+      - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <foobar@scielo.org>
+      - DJANGO_EMAIL_HOST=mailserver.foobar.scielo.org
+      - DJANGO_EMAIL_HOST_PASSWORD=foobarbaz1234
+      - DJANGO_EMAIL_HOST_USER=foobar
+      - DJANGO_EMAIL_PORT=1234
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
+      - DJANGO_SECRET_KEY=very-secret-secret
+      - DJANGO_SECURE_SSL_REDIRECT=False
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_USER=ssm_postgres_user
+      - USE_DOCKER=yes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  celerybeat:
+    image: scieloorg/opac_ssm
+    user: django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    command: celery -A opac_ssm.taskapp beat -l INFO
+    environment:
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
+      - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <foobar@scielo.org>
+      - DJANGO_EMAIL_HOST=mailserver.foobar.scielo.org
+      - DJANGO_EMAIL_HOST_PASSWORD=foobarbaz1234
+      - DJANGO_EMAIL_HOST_USER=foobar
+      - DJANGO_EMAIL_PORT=1234
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
+      - DJANGO_SECRET_KEY=very-secret-secret
+      - DJANGO_SECURE_SSL_REDIRECT=False
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_USER=ssm_postgres_user
+      - USE_DOCKER=yes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  grpc:
+    image: scieloorg/opac_ssm
+    user: django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    command: /start-grpc.sh
+    environment:
+      - DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DJANGO_DEBUG=True
+      - DJANGO_DEFAULT_FROM_EMAIL=OPAC SSM <foobar@scielo.org>
+      - DJANGO_EMAIL_HOST=mailserver.foobar.scielo.org
+      - DJANGO_EMAIL_HOST_PASSWORD=foobarbaz1234
+      - DJANGO_EMAIL_HOST_USER=foobar
+      - DJANGO_EMAIL_PORT=1234
+      - DJANGO_EMAIL_SUBJECT_PREFIX=[OPAC SSM]
+      - DJANGO_EMAIL_USE_SSL=False
+      - DJANGO_EMAIL_USE_TLS=True
+      - DJANGO_SECRET_KEY=very-secret-secret
+      - DJANGO_SECURE_SSL_REDIRECT=False
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - FILE_UPLOAD_MAX_MEMORY_SIZE=2621440
+      - GRCP_HOST=[::]
+      - GRCP_MAX_WORKERS=4
+      - GRCP_PORT=8005
+      - HAYSTACK_CONNECTIONS_HOST=elasticsearch
+      - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - HAYSTACK_CONNECTIONS_PORT=9200
+      - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_USER=ssm_postgres_user
+      - USE_DOCKER=yes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "5000:5000"
