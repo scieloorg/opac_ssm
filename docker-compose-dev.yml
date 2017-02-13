@@ -9,6 +9,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
+      - ./data/index:/usr/share/elasticsearch/data
       - /etc/localtime:/etc/localtime:ro
 
   postgres:
@@ -50,6 +51,7 @@ services:
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
     volumes:
       - .:/app
+      - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "8001:8000"
@@ -102,6 +104,7 @@ services:
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
     volumes:
       - .:/app
+      - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
 
   celerybeat:
@@ -132,6 +135,7 @@ services:
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
     volumes:
       - .:/app
+      - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
 
   grpc:
@@ -159,6 +163,7 @@ services:
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
     volumes:
       - .:/app
+      - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "5000:5000"
