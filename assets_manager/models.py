@@ -5,6 +5,9 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.postgres.fields import JSONField
 
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+
 
 class AssetBucket(models.Model):
     name = models.CharField('nome', max_length=256, unique=True,
@@ -58,3 +61,8 @@ class Asset(models.Model):
         domain = Site.objects.get_current().domain
 
         return "http://{0}{1}".format(domain, self.get_absolute_url)
+
+
+@receiver(pre_delete, sender=Asset)
+def asset_delete(sender, instance, **kwargs):
+    instance.file.delete(False)
