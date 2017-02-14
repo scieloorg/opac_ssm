@@ -21,7 +21,8 @@ class Asset(opac_pb2.AssetServiceServicer):
         Return an Asset object
         """
         task_result = tasks.add_asset.delay(request.file, request.filename,
-                                            request.type, request.metadata)
+                                            request.type, request.metadata,
+                                            request.bucket)
 
         return opac_pb2.TaskId(id=task_result.id)
 
@@ -65,7 +66,7 @@ class Asset(opac_pb2.AssetServiceServicer):
 
             return opac_pb2.Asset(file=fp.read(), filename=asset.filename,
                                   type=asset.type, metadata=asset.metadata,
-                                  task_id=str(asset.task_id))
+                                  task_id=str(asset.task_id), bucket=asset.bucket.name)
 
 
 def serve(host='[::]', port=5000, max_workers=4):

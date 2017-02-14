@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @app.task(bind=True)
-def add_asset(self, file, filename, type=None, metadata=None, bucket_name='UNKNOW'):
+def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
     """
     Task to create a new asset.
 
@@ -32,6 +32,9 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name='UNKNO
     except TypeError as e:
         logger.error(e)
         raise
+
+    if bucket_name == "":
+        bucket_name = "UNKNOW"
 
     bucket, created = models.AssetBucket.objects.get_or_create(name=bucket_name)
 

@@ -13,6 +13,7 @@ message Asset {
     string type = 3;
     string metadata = 4;
     string task_id = 5;
+    string bucket = 6;
 }
 
 message AssetInfo {
