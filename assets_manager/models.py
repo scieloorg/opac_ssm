@@ -65,4 +65,5 @@ class Asset(models.Model):
 
 @receiver(pre_delete, sender=Asset)
 def asset_delete(sender, instance, **kwargs):
-    instance.file.delete(False)
+    if instance.file:
+        instance.file.delete(False)
