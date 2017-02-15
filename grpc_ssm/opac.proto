@@ -12,7 +12,7 @@ message Asset {
     string filename = 2;
     string type = 3;
     string metadata = 4;
-    string task_id = 5;
+    string uuid = 5;
     string bucket = 6;
 }
 

@@ -39,7 +39,7 @@ class Asset(opac_pb2.AssetServiceServicer):
         Return an Asset info
         """
         try:
-            asset = models.Asset.objects.get(task_id=request.id)
+            asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
             logger.error(e)
             raise
@@ -52,7 +52,7 @@ class Asset(opac_pb2.AssetServiceServicer):
         Return an Asset
         """
         try:
-            asset = models.Asset.objects.get(task_id=request.id)
+            asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
             logger.error(e)
             raise
@@ -66,7 +66,7 @@ class Asset(opac_pb2.AssetServiceServicer):
 
             return opac_pb2.Asset(file=fp.read(), filename=asset.filename,
                                   type=asset.type, metadata=asset.metadata,
-                                  task_id=str(asset.task_id), bucket=asset.bucket.name)
+                                  uuid=str(asset.uuid), bucket=asset.bucket.name)
 
 
 def serve(host='[::]', port=5000, max_workers=4):

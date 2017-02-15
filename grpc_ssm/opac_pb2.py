@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='opac.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\nopac.proto\"h\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\x12\x0f\n\x07task_id\x18\x05 \x01(\t\x12\x0e\n\x06\x62ucket\x18\x06 \x01(\t\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t2\xa0\x01\n\x0c\x41ssetService\x12\x1e\n\tget_asset\x12\x07.TaskId\x1a\x06.Asset\"\x00\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nopac.proto\"e\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\x12\x0c\n\x04uuid\x18\x05 \x01(\t\x12\x0e\n\x06\x62ucket\x18\x06 \x01(\t\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t2\xa0\x01\n\x0c\x41ssetService\x12\x1e\n\tget_asset\x12\x07.TaskId\x1a\x06.Asset\"\x00\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -62,7 +62,7 @@ _ASSET = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='Asset.task_id', index=4,
+      name='uuid', full_name='Asset.uuid', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -88,7 +88,7 @@ _ASSET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=118,
+  serialized_end=115,
 )
 
 
@@ -125,8 +125,8 @@ _ASSETINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=120,
-  serialized_end=162,
+  serialized_start=117,
+  serialized_end=159,
 )
 
 
@@ -156,8 +156,8 @@ _TASKID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=164,
-  serialized_end=184,
+  serialized_start=161,
+  serialized_end=181,
 )
 
 
@@ -187,8 +187,8 @@ _TASKSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=186,
-  serialized_end=212,
+  serialized_start=183,
+  serialized_end=209,
 )
 
 DESCRIPTOR.message_types_by_name['Asset'] = _ASSET
