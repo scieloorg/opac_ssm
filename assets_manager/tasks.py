@@ -29,6 +29,83 @@ def add_bucket(self, bucket_name):
 
 
 @app.task(bind=True)
+def update_bucket(self, bucket_name, new_name):
+    """
+    Task to update the bucket by name.
+
+    Params:
+        :param bucket_name: String (Mandatory) Case Insensitive
+        :param new_name: String (Mandatory)
+
+    Return a tuple with (success(boolean), old_name, new_name)
+    """
+
+    success = False
+
+    try:
+        ori_exists = models.AssetBucket.objects.filter(name__iexact=bucket_name).exists()
+        des_exists = models.AssetBucket.objects.filter(name__iexact=new_name).exists()
+
+        if ori_exists and not des_exists:
+            ori_bucket = models.AssetBucket.objects.get(name__iexact=bucket_name)
+            ori_bucket.name = new_name
+            ori_bucket.save()
+            success = True
+        elif ori_exists and des_exists:
+            logger.error(u"Existe um bucket com o nome: %s", new_name)
+        elif not ori_exists:
+            logger.error(u"Não existe um bucket com o nome: %s", bucket_name)
+
+    except models.AssetBucket.DoesNotExist as e:
+        logger.error(e)
+
+    return (success, bucket_name, new_name)
+
+
+@app.task(bind=True)
+def remove_bucket(self, bucket_name):
+    """
+    Task to remove bucket by name.
+
+    Params:
+        :param bucket_name: String (Mandatory) Case Insensitive
+
+    Attention: The Django.delete() function by default it emulates the behavior
+    of the SQL constraint ON DELETE CASCADE – in other words, any objects which
+    had foreign keys pointing at the object to be deleted will be deleted along
+    with it
+
+    Return value describing the number of objects deleted, if it does not exists
+    return a tuple with (0, {}).
+
+    More about delete method:
+    https://docs.djangoproject.com/en/1.10/topics/db/queries/#deleting-objects
+    """
+    result = (0, {})
+
+    try:
+        result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
+        logger.info(u"Bucket %s removido com sucesso.", bucket_name)
+    except models.AssetBucket.DoesNotExist as e:
+        logger.error(80*'-' + str(e))
+
+    return result
+
+
+@app.task(bind=True)
+def exists_bucket(self, bucket_name):
+    """
+    Task to check if exists a bucket by name.
+
+    Params:
+        :param bucket_name: String (Mandatory) Case Insensitive
+
+    Return a boolean
+    """
+    return models.AssetBucket.objects.filter(name__iexact=bucket_name).exists()
+
+
+@app.task(bind=True)
 def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
     """
     Task to create a new asset.
@@ -74,36 +151,6 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
 
 
 @app.task(bind=True)
-def remove_bucket(self, bucket_name):
-    """
-    Task to remove bucket by name.
-
-    Params:
-        :param bucket_name: String (Mandatory) Case Insensitive
-
-    Attention: The Django.delete() function by default it emulates the behavior
-    of the SQL constraint ON DELETE CASCADE – in other words, any objects which
-    had foreign keys pointing at the object to be deleted will be deleted along
-    with it
-
-    Return value describing the number of objects deleted, if it does not exists
-    return a tuple with (0, {}).
-
-    More about delete method:
-    https://docs.djangoproject.com/en/1.10/topics/db/queries/#deleting-objects
-    """
-    result = (0, {})
-
-    try:
-        result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
-        logger.info(u"Bucket %s removido com sucesso.", bucket.name)
-    except models.AssetBucket.DoesNotExist as e:
-        logger.error(e)
-
-    return result
-
-
-@app.task(bind=True)
 def remove_asset(self, asset_uuid):
     """
     Task to remove asset by id.
@@ -132,31 +179,6 @@ def remove_asset(self, asset_uuid):
 
 
 @app.task(bind=True)
-def update_bucket(self, bucket_name, new_name):
-    """
-    Task to update the bucket by name.
-
-    Params:
-        :param bucket_name: String (Mandatory) Case Insensitive
-        :param new_name: String (Mandatory)
-
-    Return a tuple with (old_name, new_name)
-    """
-
-    try:
-        bucket = models.AssetBucket.objects.get(name__iexact=bucket_name)
-        bucket.name = new_name
-        bucket.save()
-
-        logger.info(u"Nome do bucket atualizado de %s para %s", bucket_name, new_name)
-
-    except models.AssetBucket.DoesNotExist as e:
-        logger.error(e)
-
-    return (bucket_name, new_name)
-
-
-@app.task(bind=True)
 def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
                  bucket_name=None):
     """
@@ -171,7 +193,8 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
         :param metadata: JSON with metadada about asset
         :param bucket_name: Name of bucket related to asset
 
-    Return a JSON String with all atrib of asset
+    Return a JSON String with all atrib of asset, return {} if asset does not
+    exists.
     """
     asset_dict = {}
 
@@ -218,3 +241,16 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
             )
 
     return json.dumps(asset_dict)
+
+
+@app.task(bind=True)
+def exists_asset(self, asset_uuid):
+    """
+    Task to check if exists a asset by uuid.
+
+    Params:
+        :param asset_uuid: String (UUID)
+
+    Return a boolean
+    """
+    return models.Asset.objects.filter(uuid=asset_uuid).exists()
