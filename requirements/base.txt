@@ -52,7 +52,7 @@ grpcio==1.0.4
 grpcio-tools==1.0.4
 
 # Raven is the Sentry client
-raven==5.32.0
+raven==6.0.0
 
 # Django tasty pie
 django-tastypie==0.13.3
