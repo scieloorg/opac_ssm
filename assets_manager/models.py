@@ -29,7 +29,7 @@ class Asset(models.Model):
     type = models.CharField(max_length=32, null=True, blank=True)
     file = models.FileField(upload_to=upload_to_path, max_length=500)
     filename = models.CharField(max_length=128, null=True, blank=True)
-    task_id = models.UUIDField(unique=True, editable=False, default=uuid4)
+    uuid = models.UUIDField(unique=True, editable=False, default=uuid4)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

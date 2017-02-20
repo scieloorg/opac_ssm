@@ -14,7 +14,7 @@ class AssetAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at'
     )
-    readonly_fields = ('metadata', 'filename', 'task_id')
+    readonly_fields = ('metadata', 'filename', 'uuid')
 
 
 @admin.register(models.AssetBucket)

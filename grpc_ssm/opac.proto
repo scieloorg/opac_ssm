@@ -3,7 +3,18 @@ syntax = "proto3";
 service AssetService {
     rpc get_asset(TaskId) returns (Asset) {}
     rpc add_asset(Asset) returns (TaskId) {}
+    rpc update_asset(Asset) returns (TaskId) {}
+    rpc remove_asset(TaskId) returns (TaskId) {}
+    rpc exists_asset(TaskId) returns (AssetExists) {}
     rpc get_asset_info(TaskId) returns (AssetInfo) {}
+    rpc get_task_state(TaskId) returns (TaskState) {}
+}
+
+service BucketService{
+    rpc add_bucket(BucketName) returns (TaskId) {}
+    rpc update_bucket(BucketName) returns (TaskId) {}
+    rpc remove_bucket(BucketName) returns (TaskId) {}
+    rpc exists_bucket(BucketName) returns (BucketExists) {}
     rpc get_task_state(TaskId) returns (TaskState) {}
 }
 
@@ -12,12 +23,17 @@ message Asset {
     string filename = 2;
     string type = 3;
     string metadata = 4;
-    string task_id = 5;
+    string uuid = 5;
+    string bucket = 6;
 }
 
 message AssetInfo {
     string url = 1;
     string url_path = 2;
+}
+
+message AssetExists{
+    bool exist = 1;
 }
 
 message TaskId{
@@ -27,3 +43,13 @@ message TaskId{
 message TaskState{
     string state = 1;
 }
+
+message BucketName{
+    string name = 1;
+    string new_name = 2;  // Optional, Fields in proto3 are 'optional' by default.
+}
+
+message BucketExists{
+    bool exist = 1;
+}
+
