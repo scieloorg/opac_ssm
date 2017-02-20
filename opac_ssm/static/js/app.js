@@ -60,7 +60,7 @@ var BucketDetail = {
       var querystring = 'django_ct:assets_manager.asset AND bucket:"' + bucket + '"';
       var bucket_list_url = "/api/v1/asset/search/?page=" + page + "&q=" + querystring;
       if (searchTerm) {
-        bucket_list_url += encodeURI(" AND *" + searchTerm + "*");
+        bucket_list_url += encodeURI(" AND " + searchTerm);
       }
       $.getJSON(
         bucket_list_url,
@@ -71,14 +71,12 @@ var BucketDetail = {
     },
     updateAssetsFromRoute: function() {
       var route_bucketName = this.$route.params.bucketName;
-      // this.page = this.$route.params.page;
       this.fetchAssetsListByBucketName(route_bucketName);
     },
     updateAssetsFromSearchInput: function() {
       var route_bucketName = this.$route.params.bucketName;
       var search_term = this.bucket_search_input;
-      console.log('search_term: ', search_term);
-      console.log('route_bucketName: ', route_bucketName);
+
       this.fetchAssetsListByBucketName(route_bucketName, search_term);
     },
     formatDate: function(dateString) {
@@ -112,7 +110,6 @@ var main_app = new Vue({
   el: '#vueapp',
   router: app_router,
   data: {
-    //currentView: '',
     sidebar_buckets: [],
     bucket_filter: ''
   },
