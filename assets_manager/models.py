@@ -18,7 +18,11 @@ class AssetBucket(models.Model):
 
 
 def upload_to_path(instance, filename):
-    return 'assets/raw/{0}/'.format(filename)
+
+    if instance.bucket:
+        return 'assets/{0}/{1}/'.format(instance.bucket.id, filename)
+    else:
+        return 'assets/{0}/'.format(filename)
 
 
 class Asset(models.Model):
