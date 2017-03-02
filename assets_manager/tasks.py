@@ -53,11 +53,14 @@ def update_bucket(self, bucket_name, new_name):
             success = True
         elif ori_exists and des_exists:
             logger.error(u"Existe um bucket com o nome: %s", new_name)
+            raise
         elif not ori_exists:
             logger.error(u"Não existe um bucket com o nome: %s", bucket_name)
+            raise
 
     except models.AssetBucket.DoesNotExist as e:
         logger.error(e)
+        raise
 
     return (success, bucket_name, new_name)
 
@@ -87,7 +90,8 @@ def remove_bucket(self, bucket_name):
         result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
         logger.info(u"Bucket %s removido com sucesso.", bucket_name)
     except models.AssetBucket.DoesNotExist as e:
-        logger.error(80*'-' + str(e))
+        logger.error(e)
+        raise
 
     return result
 
@@ -126,6 +130,7 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
         fp = io.BytesIO(file)
     except TypeError as e:
         logger.error(e)
+        raise
 
     if bucket_name == "":
         bucket_name = "UNKNOW"
@@ -174,6 +179,7 @@ def remove_asset(self, asset_uuid):
         logger.info(u"Asset %s removido com sucesso.", asset_uuid)
     except models.Asset.DoesNotExist as e:
         logger.error(e)
+        raise
 
     return result
 
@@ -202,6 +208,7 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
         asset = models.Asset.objects.get(uuid=uuid)
     except models.Asset.DoesNotExist as e:
         logger.error(e)
+        raise
     else:
 
         if file:
@@ -210,6 +217,7 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
                 asset.file = File(fp, filename)
             except TypeError as e:
                 logger.error(e)
+                raise
 
         if bucket_name:
             bucket, created = add_bucket(bucket_name)

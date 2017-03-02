@@ -12,7 +12,6 @@ from celery.result import AsyncResult
 from assets_manager import tasks
 from assets_manager import models
 
-logger = logging.getLogger(__name__)
 
 class Asset(opac_pb2.AssetServiceServicer):
 
@@ -28,19 +27,20 @@ class Asset(opac_pb2.AssetServiceServicer):
 
     def get_asset(self, request, context):
         """
-        Return an Asset
+        Return an Asset or message erro when asset doesnt exists
         """
         try:
             asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
-            logger.error(e)
+            logging.error(e)
+            context.set_details(e)
             raise
         else:
-
             try:
                 fp = open(asset.file.path, 'rb')
             except IOError as e:
-                logger.error(e)
+                logging.error(e)
+                context.set_details(e)
                 raise
 
             return opac_pb2.Asset(file=fp.read(), filename=asset.filename,
@@ -91,7 +91,8 @@ class Asset(opac_pb2.AssetServiceServicer):
         try:
             asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
-            logger.error(e)
+            logging.error(e)
+            context.set_details(e)
             raise
         else:
             return opac_pb2.AssetInfo(url=asset.get_full_absolute_url,
@@ -151,13 +152,19 @@ def serve(host='[::]', port=5000, max_workers=4):
     server.add_insecure_port('{0}:{1}'.format(host, port))
     server.start()
 
-    print('Started GRPC server on localhost, port: {0}, accept connections!'.format(port))
+    logging.info('Started GRPC server on localhost, port: {0}, accept connections!'.format(port))
 
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
+        logging.info('User stopping server...')
         server.stop(0)
+        logging.info('Server stopped; exiting.')
+    except Exception as e:
+        logging.info('Caught exception "%s"; stopping server...', e)
+        server.stop(0)
+        logging.info('Server stopped; exiting.')
 
 if __name__ == '__main__':
     serve()
