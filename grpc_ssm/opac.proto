@@ -8,6 +8,7 @@ service AssetService {
     rpc exists_asset(TaskId) returns (AssetExists) {}
     rpc get_asset_info(TaskId) returns (AssetInfo) {}
     rpc get_task_state(TaskId) returns (TaskState) {}
+    rpc get_bucket(TaskId) returns (Bucket) {}
 }
 
 service BucketService{
@@ -15,7 +16,7 @@ service BucketService{
     rpc update_bucket(BucketName) returns (TaskId) {}
     rpc remove_bucket(BucketName) returns (TaskId) {}
     rpc exists_bucket(BucketName) returns (BucketExists) {}
-    rpc get_task_state(TaskId) returns (TaskState) {}
+    rpc get_assets(BucketName) returns (Assets) {}
 }
 
 message Asset {
@@ -25,6 +26,10 @@ message Asset {
     string metadata = 4;
     string uuid = 5;
     string bucket = 6;
+}
+
+message Assets{
+    repeated Asset assets = 1;
 }
 
 message AssetInfo {
@@ -42,6 +47,10 @@ message TaskId{
 
 message TaskState{
     string state = 1;
+}
+
+message Bucket{
+    string name = 1;
 }
 
 message BucketName{

@@ -26,6 +26,8 @@ import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
 import opac_pb2 as opac__pb2
+import opac_pb2 as opac__pb2
+import opac_pb2 as opac__pb2
 
 
 class AssetServiceStub(object):
@@ -71,6 +73,11 @@ class AssetServiceStub(object):
         request_serializer=opac__pb2.TaskId.SerializeToString,
         response_deserializer=opac__pb2.TaskState.FromString,
         )
+    self.get_bucket = channel.unary_unary(
+        '/AssetService/get_bucket',
+        request_serializer=opac__pb2.TaskId.SerializeToString,
+        response_deserializer=opac__pb2.Bucket.FromString,
+        )
 
 
 class AssetServiceServicer(object):
@@ -106,6 +113,11 @@ class AssetServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def get_task_state(self, request, context):
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def get_bucket(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -148,6 +160,11 @@ def add_AssetServiceServicer_to_server(servicer, server):
           request_deserializer=opac__pb2.TaskId.FromString,
           response_serializer=opac__pb2.TaskState.SerializeToString,
       ),
+      'get_bucket': grpc.unary_unary_rpc_method_handler(
+          servicer.get_bucket,
+          request_deserializer=opac__pb2.TaskId.FromString,
+          response_serializer=opac__pb2.Bucket.SerializeToString,
+      ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
       'AssetService', rpc_method_handlers)
@@ -182,10 +199,10 @@ class BucketServiceStub(object):
         request_serializer=opac__pb2.BucketName.SerializeToString,
         response_deserializer=opac__pb2.BucketExists.FromString,
         )
-    self.get_task_state = channel.unary_unary(
-        '/BucketService/get_task_state',
-        request_serializer=opac__pb2.TaskId.SerializeToString,
-        response_deserializer=opac__pb2.TaskState.FromString,
+    self.get_assets = channel.unary_unary(
+        '/BucketService/get_assets',
+        request_serializer=opac__pb2.BucketName.SerializeToString,
+        response_deserializer=opac__pb2.Assets.FromString,
         )
 
 
@@ -211,7 +228,7 @@ class BucketServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def get_task_state(self, request, context):
+  def get_assets(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -239,10 +256,10 @@ def add_BucketServiceServicer_to_server(servicer, server):
           request_deserializer=opac__pb2.BucketName.FromString,
           response_serializer=opac__pb2.BucketExists.SerializeToString,
       ),
-      'get_task_state': grpc.unary_unary_rpc_method_handler(
-          servicer.get_task_state,
-          request_deserializer=opac__pb2.TaskId.FromString,
-          response_serializer=opac__pb2.TaskState.SerializeToString,
+      'get_assets': grpc.unary_unary_rpc_method_handler(
+          servicer.get_assets,
+          request_deserializer=opac__pb2.BucketName.FromString,
+          response_serializer=opac__pb2.Assets.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

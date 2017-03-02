@@ -32,8 +32,8 @@ class Asset(opac_pb2.AssetServiceServicer):
         try:
             asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
-            logging.error(e)
-            context.set_details(e)
+            logging.error(str(e))
+            context.set_details(str(e))
             raise
         else:
             try:
@@ -91,13 +91,25 @@ class Asset(opac_pb2.AssetServiceServicer):
         try:
             asset = models.Asset.objects.get(uuid=request.id)
         except models.Asset.DoesNotExist as e:
-            logging.error(e)
-            context.set_details(e)
+            logging.error(str(e))
+            context.set_details(str(e))
             raise
         else:
             return opac_pb2.AssetInfo(url=asset.get_full_absolute_url,
                                       url_path=asset.get_absolute_url)
 
+    def get_bucket(self, request, context):
+        """
+        Return a bucket of any asset
+        """
+        try:
+            asset = models.Asset.objects.get(uuid=request.id)
+        except models.Asset.DoesNotExist as e:
+            logging.error(str(e))
+            context.set_details(str(e))
+            raise
+        else:
+            return opac_pb2.Bucket(name=asset.bucket.name)
 
 class AssetBucket(opac_pb2.BucketServiceServicer):
 
@@ -143,6 +155,23 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
         res = AsyncResult(request.id)
 
         return opac_pb2.TaskState(state=res.state)
+
+    def get_assets(self, request, context):
+        """
+        Return a list of assets
+        """
+        asset_list = []
+
+        result = models.Asset.objects.filter(bucket__name=request.name)
+
+        for asset in result:
+            item = opac_pb2.Asset(file=asset.file.read(),
+                                  filename=asset.filename,
+                                  type=asset.type, metadata=asset.metadata,
+                                  uuid=str(asset.uuid), bucket=asset.bucket.name)
+            asset_list.append(item)
+
+        return opac_pb2.Assets(assets=asset_list)
 
 
 def serve(host='[::]', port=5000, max_workers=4):
