@@ -3,31 +3,6 @@ from grpc.framework.common import cardinality
 from grpc.framework.interfaces.face import utilities as face_utilities
 
 import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
-import opac_pb2 as opac__pb2
 
 
 class AssetServiceStub(object):

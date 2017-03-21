@@ -6,6 +6,9 @@ from concurrent import futures
 
 import grpc
 from grpc_ssm import opac_pb2
+from grpc_health.v1 import health
+from grpc_health.v1 import health_pb2
+
 
 from celery.result import AsyncResult
 
@@ -111,6 +114,7 @@ class Asset(opac_pb2.AssetServiceServicer):
         else:
             return opac_pb2.Bucket(name=asset.bucket.name)
 
+
 class AssetBucket(opac_pb2.BucketServiceServicer):
 
     def add_bucket(self, request, context):
@@ -175,9 +179,38 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
 
 
 def serve(host='[::]', port=5000, max_workers=4):
+
+
+    servicer = health.HealthServicer()
+
+    servicer.set('', health_pb2.HealthCheckResponse.SERVING)
+
+    # Asset
+    servicer.set('get_asset', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('add_asset', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('update_asset', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('remove_asset', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('exists_asset', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('get_asset_info', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('get_task_state', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('get_bucket', health_pb2.HealthCheckResponse.SERVING)
+
+    # Bucket
+    servicer.set('add_bucket', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('update_bucket', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('remove_bucket', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('exists_bucket', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('get_assets', health_pb2.HealthCheckResponse.SERVING)
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
+
     opac_pb2.add_AssetServiceServicer_to_server(Asset(), server)
     opac_pb2.add_BucketServiceServicer_to_server(AssetBucket(), server)
+
+    # Health service
+    health_pb2.add_HealthServicer_to_server(servicer, server)
+
+    # Set port and Start Server
     server.add_insecure_port('{0}:{1}'.format(host, port))
     server.start()
 

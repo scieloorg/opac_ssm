@@ -11,7 +11,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        self.stdout.write("Starting GRPC...")
+        self.stdout.write("Starting GRPC... Host: {0}, Port: {1}".format(
+                          settings.GRCP_HOST, settings.GRCP_PORT))
 
         grpc_server.serve(settings.GRCP_HOST, settings.GRCP_PORT,
                           settings.GRCP_MAX_WORKERS)
