@@ -14,6 +14,8 @@ from celery.result import AsyncResult
 from assets_manager import tasks
 from assets_manager import models
 
+MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
+MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
 
 class Asset(opac_pb2.AssetServiceServicer):
 
@@ -178,9 +180,8 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
 
 
 def serve(host='[::]', port=5000, max_workers=4,
-          max_receive_message_length=90 * 1024 * 1024,
-          max_send_message_length=90 * 1024 * 1024):
-
+          max_receive_message_length=MAX_RECEIVE_MESSAGE_LENGTH,
+          max_send_message_length=MAX_SEND_MESSAGE_LENGTH):
 
     servicer = health.HealthServicer()
 
