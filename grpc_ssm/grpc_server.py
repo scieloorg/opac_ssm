@@ -9,7 +9,6 @@ from grpc_ssm import opac_pb2
 from grpc_health.v1 import health
 from grpc_health.v1 import health_pb2
 
-
 from celery.result import AsyncResult
 
 from assets_manager import tasks
@@ -178,7 +177,9 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
         return opac_pb2.Assets(assets=asset_list)
 
 
-def serve(host='[::]', port=5000, max_workers=4):
+def serve(host='[::]', port=5000, max_workers=4,
+          max_receive_message_length=90 * 1024 * 1024,
+          max_send_message_length=90 * 1024 * 1024):
 
 
     servicer = health.HealthServicer()
@@ -202,7 +203,11 @@ def serve(host='[::]', port=5000, max_workers=4):
     servicer.set('exists_bucket', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('get_assets', health_pb2.HealthCheckResponse.SERVING)
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
+    options = [('grpc.max_receive_message_length', max_receive_message_length),
+               ('grpc.max_send_message_length', max_send_message_length)]
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers),
+                         options=options)
 
     opac_pb2.add_AssetServiceServicer_to_server(Asset(), server)
     opac_pb2.add_BucketServiceServicer_to_server(AssetBucket(), server)

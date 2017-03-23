@@ -64,7 +64,7 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "8025:8025"
+      - "8027:8025"
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
