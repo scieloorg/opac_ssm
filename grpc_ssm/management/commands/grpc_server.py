@@ -15,4 +15,6 @@ class Command(BaseCommand):
                           settings.GRCP_HOST, settings.GRCP_PORT))
 
         grpc_server.serve(settings.GRCP_HOST, settings.GRCP_PORT,
-                          settings.GRCP_MAX_WORKERS)
+                          settings.GRCP_MAX_WORKERS,
+                          settings.GRPC_MAX_RECEIVE_MESSAGE_LENGTH,
+                          settings.GRPC_MAX_SEND_MESSAGE_LENGTH)
