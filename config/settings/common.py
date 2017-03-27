@@ -99,11 +99,19 @@ MANAGERS = ADMINS
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+
+
 DATABASES = {
     'default': env.db('DATABASE_URL', default='postgres:///opac_ssm'),
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
 
+# Running test connect to postgres
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+
+    DATABASES['default']['HOST'] = 'postgres'
+    DATABASES['default']['PORT'] = '5432'
+
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -114,7 +122,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 TIME_ZONE = 'America/Sao_Paulo'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-BR'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1

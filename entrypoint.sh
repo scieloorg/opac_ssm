@@ -29,10 +29,27 @@ sys.exit(0)
 END
 }
 
-until pgbouncer_ready; do
+function postgres_ready(){
+python << END
+import sys
+import psycopg2
+try:
+    conn = psycopg2.connect(dbname="$POSTGRES_USER", user="$POSTGRES_USER", password="$POSTGRES_PASSWORD", host="postgres", port="5432")
+except psycopg2.OperationalError:
+    sys.exit(-1)
+sys.exit(0)
+END
+}
+
+until pgbouncer_ready && ; do
   >&2 echo "PGBouncer is unavailable - sleeping"
   sleep 1
 done
 
->&2 echo "PGBouncer is up - continuing..."
+until postgres_ready && ; do
+  >&2 echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+
+>&2 echo "Postgres and PGBouncer is up - continuing..."
 exec $cmd

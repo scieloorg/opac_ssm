@@ -25,6 +25,7 @@ services:
   pgbouncer:
     image: gavinmroy/alpine-pgbouncer:latest
     restart: always
+    user: pgbouncer
     volumes:
       - ./config/pgbouncer:/etc/pgbouncer:ro
       - /etc/localtime:/etc/localtime:ro
