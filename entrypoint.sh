@@ -13,27 +13,43 @@ if [ -z "$POSTGRES_USER" ]; then
     export POSTGRES_USER=postgres
 fi
 
-export DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres:5432/$POSTGRES_USER
+export DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@pgbouncer:6432/$POSTGRES_USER
 
 export CELERY_BROKER_URL=$REDIS_URL/0
 
-
-function postgres_ready(){
+function pgbouncer_ready(){
 python << END
 import sys
 import psycopg2
 try:
-    conn = psycopg2.connect(dbname="$POSTGRES_USER", user="$POSTGRES_USER", password="$POSTGRES_PASSWORD", host="postgres")
+    conn = psycopg2.connect(dbname="$POSTGRES_USER", user="$POSTGRES_USER", password="$POSTGRES_PASSWORD", host="pgbouncer", port="6432")
 except psycopg2.OperationalError:
     sys.exit(-1)
 sys.exit(0)
 END
 }
 
+function postgres_ready(){
+python << END
+import sys
+import psycopg2
+try:
+    conn = psycopg2.connect(dbname="$POSTGRES_USER", user="$POSTGRES_USER", password="$POSTGRES_PASSWORD", host="postgres", port="5432")
+except psycopg2.OperationalError:
+    sys.exit(-1)
+sys.exit(0)
+END
+}
+
+until pgbouncer_ready; do
+  >&2 echo "PGBouncer is unavailable - sleeping"
+  sleep 1
+done
+
 until postgres_ready; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done
 
->&2 echo "Postgres is up - continuing..."
+>&2 echo "Postgres and PGBouncer is up - continuing..."
 exec $cmd

@@ -16,11 +16,27 @@ services:
     image: postgres:9.6
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
     volumes:
       - ./pg_data_dev:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 5432:5432
+
+  pgbouncer:
+    image: gavinmroy/alpine-pgbouncer:latest
+    restart: always
+    user: pgbouncer
+    volumes:
+      - ./config/pgbouncer:/etc/pgbouncer:ro
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    ports:
+      - 6432:6432
 
   django:
     build:
@@ -33,13 +49,13 @@ services:
     user: django
     restart: always
     depends_on:
-      - postgres
+      - pgbouncer
       - redis
       - elasticsearch
     command: /start-dev.sh
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -56,7 +72,7 @@ services:
     ports:
       - "8001:8000"
     links:
-      - postgres
+      - pgbouncer
       - redis
       - elasticsearch
       - mailhog
@@ -87,13 +103,13 @@ services:
     user: django
     restart: always
     depends_on:
-      - postgres
+      - pgbouncer
       - redis
       - elasticsearch
     command: celery -A opac_ssm.taskapp worker -l DEBUG
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -119,12 +135,12 @@ services:
     user: django
     restart: always
     depends_on:
-      - postgres
+      - pgbouncer
       - redis
     command: celery -A opac_ssm.taskapp beat -l DEBUG
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -146,13 +162,13 @@ services:
     user: django
     restart: always
     depends_on:
-      - postgres
+      - pgbouncer
       - redis
       - elasticsearch
     command: /start-grpc.sh
     environment:
-      - POSTGRES_PASSWORD=postgres_pass
       - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
