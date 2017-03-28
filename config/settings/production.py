@@ -91,9 +91,15 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 
-# Use the Heroku-style specification
 # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+
 DATABASES['default'] = env.db('DATABASE_URL')
+
+# Running test connect to postgres
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+
+    DATABASES['default']['HOST'] = 'postgres'
+    DATABASES['default']['PORT'] = '5432'
 
 # CACHING
 # ------------------------------------------------------------------------------
