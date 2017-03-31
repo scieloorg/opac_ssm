@@ -106,7 +106,6 @@ Servidor GRPC:
 * ``GRCP_MAX_WORKERS`` - porta do servidor de indice (ElasticSearch) (default: 4)
 
 
-
 GRPC Server
 ===========
 
