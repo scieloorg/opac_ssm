@@ -145,12 +145,12 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
     asset.filename = filename
     asset.type = type
     asset.metadata = metadata
-    asset.uuid = self.request.id # Save task id on uuid field.
+    asset.uuid = self.request.id  # Save task id on uuid field.
     asset.bucket = bucket
     asset.save()
 
     logger.info(u"Criado ativo com sucesso id=%s, tamanho=%s bytes e caminho=%s",
-                asset.id, asset.file.size, asset.file.path)
+        asset.id, asset.file.size, asset.file.path)
 
     return self.request.id
 

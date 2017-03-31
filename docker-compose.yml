@@ -72,6 +72,7 @@ services:
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
       - USE_DOCKER=yes
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -117,6 +118,7 @@ services:
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
       - USE_DOCKER=yes
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -155,6 +157,7 @@ services:
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
       - USE_DOCKER=yes
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -193,6 +196,7 @@ services:
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
       - USE_DOCKER=yes
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
