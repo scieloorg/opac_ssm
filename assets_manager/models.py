@@ -18,11 +18,17 @@ class AssetBucket(models.Model):
 
 
 def upload_to_path(instance, filename):
+    """
+    Method to construct the path of asset.
 
+    IMPORTANT: This path is dependent of bucket name, if bucket name doesnt
+    exists, asset is save in ASSET_FOLDER.
+    """
     if instance.bucket:
-        return 'assets/{0}/{1}/'.format(instance.bucket.id, filename)
+        return '{0}/{1}/{2}'.format(settings.ASSET_FOLDER,
+                                    instance.bucket.name, filename)
     else:
-        return 'assets/{0}/'.format(filename)
+        return '{0}/{1}'.format(settings.ASSET_FOLDER, filename)
 
 
 class Asset(models.Model):
@@ -43,7 +49,7 @@ class Asset(models.Model):
     bucket = models.ForeignKey(AssetBucket, null=True, blank=False)
 
     def __unicode__(self):
-        return unicode(self.file)
+        return self.file
 
     class Meta:
         verbose_name = u"Asset"

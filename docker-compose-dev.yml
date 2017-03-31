@@ -65,6 +65,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - ENABLE_INDEXING_ON_CREATE=False
     volumes:
       - .:/app
       - ./data/media:/app/opac_ssm/media
@@ -119,6 +120,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - ENABLE_INDEXING_ON_CREATE=False
     volumes:
       - .:/app
       - ./data/media:/app/opac_ssm/media
@@ -150,6 +152,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - ENABLE_INDEXING_ON_CREATE=False
     volumes:
       - .:/app
       - ./data/media:/app/opac_ssm/media
@@ -178,6 +181,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx_dev
+      - ENABLE_INDEXING_ON_CREATE=False
     volumes:
       - .:/app
       - ./data/media:/app/opac_ssm/media
