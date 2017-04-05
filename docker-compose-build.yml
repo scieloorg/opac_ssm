@@ -64,6 +64,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -96,6 +97,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -120,6 +122,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - ./data/media:/app/opac_ssm/media
       - /etc/localtime:/etc/localtime:ro
@@ -147,6 +150,7 @@ services:
       - HAYSTACK_CONNECTIONS_HOST=elasticsearch
       - HAYSTACK_CONNECTIONS_PORT=9200
       - HAYSTACK_CONNECTIONS_INDEX=opac_ssm_idx
+      - ENABLE_INDEXING_ON_CREATE=True
     volumes:
       - .:/app
       - ./data/media:/app/opac_ssm/media

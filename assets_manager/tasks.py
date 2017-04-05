@@ -52,10 +52,10 @@ def update_bucket(self, bucket_name, new_name):
             ori_bucket.save()
             success = True
         elif ori_exists and des_exists:
-            logger.error(u"Existe um bucket com o nome: %s", new_name)
+            logger.error("Existe um bucket com o nome: %s", new_name)
             raise
         elif not ori_exists:
-            logger.error(u"Não existe um bucket com o nome: %s", bucket_name)
+            logger.error("Não existe um bucket com o nome: %s", bucket_name)
             raise
 
     except models.AssetBucket.DoesNotExist as e:
@@ -88,7 +88,7 @@ def remove_bucket(self, bucket_name):
 
     try:
         result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
-        logger.info(u"Bucket %s removido com sucesso.", bucket_name)
+        logger.info("Bucket %s removido com sucesso.", bucket_name)
     except models.AssetBucket.DoesNotExist as e:
         logger.error(e)
         raise
@@ -138,18 +138,18 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
     bucket, created = add_bucket(bucket_name)
 
     if created:
-        logger.info(u"Novo bucket adicionado com o nome: %s", bucket.name)
+        logger.info("Novo bucket adicionado com o nome: %s", bucket.name)
 
     asset = models.Asset()
     asset.file = File(fp, filename)
     asset.filename = filename
     asset.type = type
     asset.metadata = metadata
-    asset.uuid = self.request.id # Save task id on uuid field.
+    asset.uuid = self.request.id  # Save task id on uuid field.
     asset.bucket = bucket
     asset.save()
 
-    logger.info(u"Criado ativo com sucesso id=%s, tamanho=%s bytes e caminho=%s",
+    logger.info("Criado ativo com sucesso id=%s, tamanho=%s bytes e caminho=%s",
                 asset.id, asset.file.size, asset.file.path)
 
     return self.request.id
@@ -176,7 +176,7 @@ def remove_asset(self, asset_uuid):
 
     try:
         result = models.Asset.objects.get(uuid=asset_uuid).delete()
-        logger.info(u"Asset %s removido com sucesso.", asset_uuid)
+        logger.info("Asset %s removido com sucesso.", asset_uuid)
     except models.Asset.DoesNotExist as e:
         logger.error(e)
         raise
@@ -224,7 +224,7 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
             asset.bucket = bucket
 
             if created:
-                logger.info(u"Novo bucket adicionado com o nome: %s", bucket.name)
+                logger.info("Novo bucket adicionado com o nome: %s", bucket.name)
 
         if filename:
             asset.filename = filename
@@ -237,7 +237,7 @@ def update_asset(self, uuid, file=None, filename=None, type=None, metadata=None,
 
         asset.save()
 
-        logger.info(u"Atualizado ativo com sucesso id=%s, tamanho=%s bytes e caminho=%s",
+        logger.info("Atualizado ativo com sucesso id=%s, tamanho=%s bytes e caminho=%s",
                     asset.id, asset.file.size, asset.file.path)
 
         asset_dict = dict(

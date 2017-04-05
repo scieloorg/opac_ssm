@@ -284,7 +284,10 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+ENABLE_INDEXING_ON_CREATE = env.bool("ENABLE_INDEXING_ON_CREATE", default=False)
+
+if ENABLE_INDEXING_ON_CREATE:
+    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
@@ -307,3 +310,7 @@ EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default='')
 EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
 EMAIL_USE_SSL = env.bool("DJANGO_EMAIL_USE_SSL", default=False)
 EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default='')
+
+# Folder name of asset
+# This variable represent the first part of the asset path
+ASSET_FOLDER = env("ASSET_FOLDER", default='assets')
