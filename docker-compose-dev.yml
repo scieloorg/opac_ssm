@@ -56,6 +56,10 @@ services:
     environment:
       - POSTGRES_USER=postgres_user
       - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -111,6 +115,10 @@ services:
     environment:
       - POSTGRES_USER=postgres_user
       - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -143,6 +151,10 @@ services:
     environment:
       - POSTGRES_USER=postgres_user
       - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
@@ -172,6 +184,10 @@ services:
     environment:
       - POSTGRES_USER=postgres_user
       - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - DJANGO_SECRET_KEY=sdal#^4pih^ekewqtq8k_m9lin#136olq-_p086wsu-)=8=ns!
       - DJANGO_ALLOWED_HOSTS=*
