@@ -109,8 +109,8 @@ DATABASES = {
 # Running test connect to postgres
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
 
-    DATABASES['default']['HOST'] = 'postgres'
-    DATABASES['default']['PORT'] = '5432'
+    DATABASES['default']['HOST'] = env('POSTGRES_HOST', default='postgres')
+    DATABASES['default']['PORT'] = env('POSTGRES_PORT', default='5432')
 
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 

@@ -71,6 +71,10 @@ services:
       - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - USE_DOCKER=yes
       - ENABLE_INDEXING_ON_CREATE=True
     volumes:
@@ -117,6 +121,10 @@ services:
       - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - USE_DOCKER=yes
       - ENABLE_INDEXING_ON_CREATE=True
     volumes:
@@ -156,6 +164,10 @@ services:
       - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - USE_DOCKER=yes
       - ENABLE_INDEXING_ON_CREATE=True
     volumes:
@@ -195,6 +207,10 @@ services:
       - HAYSTACK_CONNECTIONS_PORT=9200
       - POSTGRES_USER=ssm_postgres_user
       - POSTGRES_PASSWORD=ssm_postgres_password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PGBOUNCER_HOST=pgbouncer
+      - PGBOUNCER_PORT=6432
       - USE_DOCKER=yes
       - ENABLE_INDEXING_ON_CREATE=True
     volumes:
