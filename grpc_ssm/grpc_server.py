@@ -131,7 +131,6 @@ class Asset(opac_pb2.AssetServiceServicer):
         """
         asset_list = []
 
-        # Necessário retornar um objeto to tipo Assets
         assets = opac_pb2.Assets()
 
         result = tasks.query(checksum=request.checksum,
@@ -139,16 +138,16 @@ class Asset(opac_pb2.AssetServiceServicer):
 
         for ret in result:
             asset = opac_pb2.Asset()
-            asset.filename = ret['filename']
-            asset.type = ret['type']
-            asset.metadata = ret['metadata']
-            asset.uuid = ret['uuid']
-            asset.checksum = ret['checksum']
-            asset.bucket = ret['bucket_name']
-            asset.absolute_url = ret['absolute_url']
-            asset.full_absolute_url = ret['full_absolute_url']
-            asset.created_at = ret['created_at']
-            asset.updated_at = ret['updated_at']
+            asset.filename = ret.filename
+            asset.type = ret.type
+            asset.metadata = json.dumps(ret.metadata)
+            asset.uuid = ret.uuid.hex
+            asset.checksum = ret.checksum
+            asset.bucket = ret.bucket.name
+            asset.absolute_url = ret.get_absolute_url
+            asset.full_absolute_url = ret.get_full_absolute_url
+            asset.created_at = ret.created_at.isoformat()
+            asset.updated_at = ret.updated_at.isoformat()
 
             asset_list.append(asset)
 

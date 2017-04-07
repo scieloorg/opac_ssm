@@ -203,27 +203,7 @@ def query(self, checksum, metadata=None):
 
     The field ``checksum`` will be compare using the checksum field
 
-    Return a list of asset(dict) with all metadata, look:
-
-    [
-        {
-            "type": "pdf",
-            "asset_url": "media/assets/resp/v78n3/editorial.pdf",
-            "bucket_name": "resp/v78n3",
-            "checksum": "29a44233da06c80e36a6c73bfd4bc76f78b1e41d18f6fcac5801948c28b160ab",
-            "filename": "editorial.pdf",
-            "uuid": "9ad6762b-48fa-4ac3-9804-6cc554e78300",
-            "metadata": {
-                "lang": "es",
-                "article_pid":"S1135-57272004000300001",
-                "registration_date": "2017-04-06T12:55:40.731500",
-                "bucket_name": "resp/v78n3",
-                "article_folder": "editorial",
-                "issue_folder": "v78n3",
-                "journal_folder": "resp"
-            }
-        }
-    ]
+    Return a list of asset.
     """
     if not checksum:
         error_msg = 'Param "checksum" is required'
@@ -239,29 +219,10 @@ def query(self, checksum, metadata=None):
         logger.error(e)
         raise
 
-    assets = models.Asset.objects.filter(checksum=checksum, metadata=meta)
+    assets = models.Asset.objects.filter(checksum=checksum,
+                                         metadata__contains=meta)
 
-    ret_list = []
-
-    if assets:
-
-        dict_asset = {}
-
-        for asset in assets:
-            dict_asset['type'] = asset.type
-            dict_asset['absolute_url'] = asset.get_absolute_url
-            dict_asset['full_absolute_url'] = asset.get_full_absolute_url
-            dict_asset['bucket_name'] = asset.bucket.name
-            dict_asset['checksum'] = asset.checksum
-            dict_asset['filename'] = asset.filename
-            dict_asset['uuid'] = asset.uuid.hex
-            dict_asset['metadata'] = json.dumps(asset.metadata)
-            dict_asset['created_at'] = asset.created_at.isoformat()
-            dict_asset['updated_at'] = asset.updated_at.isoformat()
-
-            ret_list.append(dict_asset)
-
-    return ret_list
+    return assets
 
 
 @app.task(bind=True)
