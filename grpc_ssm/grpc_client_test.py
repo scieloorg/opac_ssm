@@ -76,11 +76,11 @@ def run():
     # Teste asset.update_asset
     ###########################################################################
 
-    # print("Atualizando um asset com o uuid %s" % task.id)
+    print("Atualizando um asset com o uuid %s" % task.id)
 
-    # meta = '{"foo": "updated", "pickles": "updated"}'
+    meta = '{"foo": "updated", "pickles": "updated"}'
 
-    # stubAsset.update_asset(opac_pb2.Asset(uuid=asset.uuid, metadata=meta))
+    stubAsset.update_asset(opac_pb2.Asset(uuid=asset.uuid, metadata=meta))
 
     print("Dormindo por %s segundos..." % SLEEP_TIME)
 
