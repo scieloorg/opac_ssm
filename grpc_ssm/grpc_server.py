@@ -2,6 +2,7 @@
 
 import time
 import logging
+import json
 from concurrent import futures
 
 import grpc
@@ -16,6 +17,7 @@ from assets_manager import models
 
 MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
 MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
+
 
 class Asset(opac_pb2.AssetServiceServicer):
 
@@ -47,9 +49,17 @@ class Asset(opac_pb2.AssetServiceServicer):
                 context.set_details(e)
                 raise
 
-            return opac_pb2.Asset(file=fp.read(), filename=asset.filename,
-                                  type=asset.type, metadata=asset.metadata,
-                                  uuid=str(asset.uuid), bucket=asset.bucket.name)
+            return opac_pb2.Asset(file=fp.read(),
+                                  filename=asset.filename,
+                                  type=asset.type,
+                                  metadata=json.dumps(asset.metadata),
+                                  uuid=asset.uuid.hex,
+                                  bucket=asset.bucket.name,
+                                  checksum=asset.checksum,
+                                  absolute_url=asset.get_absolute_url,
+                                  full_absolute_url=asset.get_full_absolute_url,
+                                  created_at=asset.created_at.isoformat(),
+                                  updated_at=asset.updated_at.isoformat())
 
     def update_asset(self, request, context):
         """
@@ -115,6 +125,37 @@ class Asset(opac_pb2.AssetServiceServicer):
         else:
             return opac_pb2.Bucket(name=asset.bucket.name)
 
+    def query(self, request, context):
+        """
+        Return a list of assets if it exists
+        """
+        asset_list = []
+
+        # Necessário retornar um objeto to tipo Assets
+        assets = opac_pb2.Assets()
+
+        result = tasks.query(checksum=request.checksum,
+                             metadata=request.metadata)
+
+        for ret in result:
+            asset = opac_pb2.Asset()
+            asset.filename = ret['filename']
+            asset.type = ret['type']
+            asset.metadata = ret['metadata']
+            asset.uuid = ret['uuid']
+            asset.checksum = ret['checksum']
+            asset.bucket = ret['bucket_name']
+            asset.absolute_url = ret['absolute_url']
+            asset.full_absolute_url = ret['full_absolute_url']
+            asset.created_at = ret['created_at']
+            asset.updated_at = ret['updated_at']
+
+            asset_list.append(asset)
+
+        assets.assets.extend(asset_list)
+
+        return assets
+
 
 class AssetBucket(opac_pb2.BucketServiceServicer):
 
@@ -167,16 +208,30 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
         """
         asset_list = []
 
+        # Necessário retornar um objeto to tipo Assets
+        assets = opac_pb2.Assets()
+
         result = models.Asset.objects.filter(bucket__name=request.name)
 
-        for asset in result:
-            item = opac_pb2.Asset(file=asset.file.read(),
-                                  filename=asset.filename,
-                                  type=asset.type, metadata=asset.metadata,
-                                  uuid=str(asset.uuid), bucket=asset.bucket.name)
-            asset_list.append(item)
+        for ret in result:
+            asset = opac_pb2.Asset()
+            asset.file = ret.file.read()
+            asset.filename = ret.filename
+            asset.type = ret.type
+            asset.metadata = json.dumps(ret.metadata)
+            asset.uuid = ret.uuid.hex
+            asset.checksum = ret.checksum
+            asset.bucket = ret.bucket.name
+            asset.absolute_url = ret.get_absolute_url
+            asset.full_absolute_url = ret.get_full_absolute_url
+            asset.created_at = ret.created_at.isoformat()
+            asset.updated_at = ret.updated_at.isoformat()
 
-        return opac_pb2.Assets(assets=asset_list)
+            asset_list.append(asset)
+
+        assets.assets.extend(asset_list)
+
+        return assets
 
 
 def serve(host='[::]', port=5000, max_workers=4,

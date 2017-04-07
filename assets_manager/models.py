@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+import hashlib
 from uuid import uuid4
 from django.db import models
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.postgres.fields import JSONField
 
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, pre_save
 from django.dispatch.dispatcher import receiver
 
 
@@ -48,6 +49,9 @@ class Asset(models.Model):
 
     bucket = models.ForeignKey(AssetBucket, null=True, blank=False)
 
+    checksum = models.CharField(max_length=64, null=False, blank=False,
+                                editable=False)
+
     def __unicode__(self):
         return self.file
 
@@ -77,3 +81,13 @@ class Asset(models.Model):
 def asset_delete(sender, instance, **kwargs):
     if instance.file:
         instance.file.delete(False)
+
+
+@receiver(pre_save, sender=Asset)
+def generate_checksum(sender, instance, *args, **kwargs):
+    """
+    Generate checksum before save asset.
+    """
+    text = instance.file.read()
+
+    instance.checksum = hashlib.sha256(text).hexdigest()

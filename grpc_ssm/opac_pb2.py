@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='opac.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\nopac.proto\"e\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\x12\x0c\n\x04uuid\x18\x05 \x01(\t\x12\x0e\n\x06\x62ucket\x18\x06 \x01(\t\" \n\x06\x41ssets\x12\x16\n\x06\x61ssets\x18\x01 \x03(\x0b\x32\x06.Asset\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x1c\n\x0b\x41ssetExists\x12\r\n\x05\x65xist\x18\x01 \x01(\x08\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t\"\x16\n\x06\x42ucket\x12\x0c\n\x04name\x18\x01 \x01(\t\",\n\nBucketName\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08new_name\x18\x02 \x01(\t\"\x1d\n\x0c\x42ucketExists\x12\r\n\x05\x65xist\x18\x01 \x01(\x08\x32\xb2\x02\n\x0c\x41ssetService\x12\x1e\n\tget_asset\x12\x07.TaskId\x1a\x06.Asset\"\x00\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12!\n\x0cupdate_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\"\n\x0cremove_asset\x12\x07.TaskId\x1a\x07.TaskId\"\x00\x12\'\n\x0c\x65xists_asset\x12\x07.TaskId\x1a\x0c.AssetExists\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x12 \n\nget_bucket\x12\x07.TaskId\x1a\x07.Bucket\"\x00\x32\xdc\x01\n\rBucketService\x12$\n\nadd_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12\'\n\rupdate_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12\'\n\rremove_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12-\n\rexists_bucket\x12\x0b.BucketName\x1a\r.BucketExists\"\x00\x12$\n\nget_assets\x12\x0b.BucketName\x1a\x07.Assets\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nopac.proto\"\xd0\x01\n\x05\x41sset\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12\x10\n\x08metadata\x18\x04 \x01(\t\x12\x0c\n\x04uuid\x18\x05 \x01(\t\x12\x0e\n\x06\x62ucket\x18\x06 \x01(\t\x12\x10\n\x08\x63hecksum\x18\x07 \x01(\t\x12\x14\n\x0c\x61\x62solute_url\x18\x08 \x01(\t\x12\x19\n\x11\x66ull_absolute_url\x18\t \x01(\t\x12\x12\n\ncreated_at\x18\n \x01(\t\x12\x12\n\nupdated_at\x18\x0b \x01(\t\" \n\x06\x41ssets\x12\x16\n\x06\x61ssets\x18\x01 \x03(\x0b\x32\x06.Asset\"*\n\tAssetInfo\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08url_path\x18\x02 \x01(\t\"\x1c\n\x0b\x41ssetExists\x12\r\n\x05\x65xist\x18\x01 \x01(\x08\"\x14\n\x06TaskId\x12\n\n\x02id\x18\x01 \x01(\t\"\x1a\n\tTaskState\x12\r\n\x05state\x18\x01 \x01(\t\"\x16\n\x06\x42ucket\x12\x0c\n\x04name\x18\x01 \x01(\t\",\n\nBucketName\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08new_name\x18\x02 \x01(\t\"\x1d\n\x0c\x42ucketExists\x12\r\n\x05\x65xist\x18\x01 \x01(\x08\x32\xce\x02\n\x0c\x41ssetService\x12\x1e\n\tget_asset\x12\x07.TaskId\x1a\x06.Asset\"\x00\x12\x1e\n\tadd_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12!\n\x0cupdate_asset\x12\x06.Asset\x1a\x07.TaskId\"\x00\x12\"\n\x0cremove_asset\x12\x07.TaskId\x1a\x07.TaskId\"\x00\x12\'\n\x0c\x65xists_asset\x12\x07.TaskId\x1a\x0c.AssetExists\"\x00\x12\'\n\x0eget_asset_info\x12\x07.TaskId\x1a\n.AssetInfo\"\x00\x12\'\n\x0eget_task_state\x12\x07.TaskId\x1a\n.TaskState\"\x00\x12 \n\nget_bucket\x12\x07.TaskId\x1a\x07.Bucket\"\x00\x12\x1a\n\x05query\x12\x06.Asset\x1a\x07.Assets\"\x00\x32\xdc\x01\n\rBucketService\x12$\n\nadd_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12\'\n\rupdate_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12\'\n\rremove_bucket\x12\x0b.BucketName\x1a\x07.TaskId\"\x00\x12-\n\rexists_bucket\x12\x0b.BucketName\x1a\r.BucketExists\"\x00\x12$\n\nget_assets\x12\x0b.BucketName\x1a\x07.Assets\"\x00\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -75,6 +75,41 @@ _ASSET = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='checksum', full_name='Asset.checksum', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='absolute_url', full_name='Asset.absolute_url', index=7,
+      number=8, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='full_absolute_url', full_name='Asset.full_absolute_url', index=8,
+      number=9, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='created_at', full_name='Asset.created_at', index=9,
+      number=10, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='updated_at', full_name='Asset.updated_at', index=10,
+      number=11, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -87,8 +122,8 @@ _ASSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14,
-  serialized_end=115,
+  serialized_start=15,
+  serialized_end=223,
 )
 
 
@@ -118,8 +153,8 @@ _ASSETS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=117,
-  serialized_end=149,
+  serialized_start=225,
+  serialized_end=257,
 )
 
 
@@ -156,8 +191,8 @@ _ASSETINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=151,
-  serialized_end=193,
+  serialized_start=259,
+  serialized_end=301,
 )
 
 
@@ -187,8 +222,8 @@ _ASSETEXISTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=195,
-  serialized_end=223,
+  serialized_start=303,
+  serialized_end=331,
 )
 
 
@@ -218,8 +253,8 @@ _TASKID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=225,
-  serialized_end=245,
+  serialized_start=333,
+  serialized_end=353,
 )
 
 
@@ -249,8 +284,8 @@ _TASKSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=247,
-  serialized_end=273,
+  serialized_start=355,
+  serialized_end=381,
 )
 
 
@@ -280,8 +315,8 @@ _BUCKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=275,
-  serialized_end=297,
+  serialized_start=383,
+  serialized_end=405,
 )
 
 
@@ -318,8 +353,8 @@ _BUCKETNAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=299,
-  serialized_end=343,
+  serialized_start=407,
+  serialized_end=451,
 )
 
 
@@ -349,8 +384,8 @@ _BUCKETEXISTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=345,
-  serialized_end=374,
+  serialized_start=453,
+  serialized_end=482,
 )
 
 _ASSETS.fields_by_name['assets'].message_type = _ASSET
@@ -486,6 +521,11 @@ try:
           request_serializer=TaskId.SerializeToString,
           response_deserializer=Bucket.FromString,
           )
+      self.query = channel.unary_unary(
+          '/AssetService/query',
+          request_serializer=Asset.SerializeToString,
+          response_deserializer=Assets.FromString,
+          )
 
 
   class AssetServiceServicer(object):
@@ -526,6 +566,11 @@ try:
       raise NotImplementedError('Method not implemented!')
 
     def get_bucket(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def query(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
@@ -572,6 +617,11 @@ try:
             servicer.get_bucket,
             request_deserializer=TaskId.FromString,
             response_serializer=Bucket.SerializeToString,
+        ),
+        'query': grpc.unary_unary_rpc_method_handler(
+            servicer.query,
+            request_deserializer=Asset.FromString,
+            response_serializer=Assets.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -697,6 +747,8 @@ try:
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def get_bucket(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def query(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
   class BetaAssetServiceStub(object):
@@ -729,6 +781,9 @@ try:
     def get_bucket(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     get_bucket.future = None
+    def query(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    query.future = None
 
 
   def beta_create_AssetService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -744,6 +799,7 @@ try:
       ('AssetService', 'get_asset_info'): TaskId.FromString,
       ('AssetService', 'get_bucket'): TaskId.FromString,
       ('AssetService', 'get_task_state'): TaskId.FromString,
+      ('AssetService', 'query'): Asset.FromString,
       ('AssetService', 'remove_asset'): TaskId.FromString,
       ('AssetService', 'update_asset'): Asset.FromString,
     }
@@ -754,6 +810,7 @@ try:
       ('AssetService', 'get_asset_info'): AssetInfo.SerializeToString,
       ('AssetService', 'get_bucket'): Bucket.SerializeToString,
       ('AssetService', 'get_task_state'): TaskState.SerializeToString,
+      ('AssetService', 'query'): Assets.SerializeToString,
       ('AssetService', 'remove_asset'): TaskId.SerializeToString,
       ('AssetService', 'update_asset'): TaskId.SerializeToString,
     }
@@ -764,6 +821,7 @@ try:
       ('AssetService', 'get_asset_info'): face_utilities.unary_unary_inline(servicer.get_asset_info),
       ('AssetService', 'get_bucket'): face_utilities.unary_unary_inline(servicer.get_bucket),
       ('AssetService', 'get_task_state'): face_utilities.unary_unary_inline(servicer.get_task_state),
+      ('AssetService', 'query'): face_utilities.unary_unary_inline(servicer.query),
       ('AssetService', 'remove_asset'): face_utilities.unary_unary_inline(servicer.remove_asset),
       ('AssetService', 'update_asset'): face_utilities.unary_unary_inline(servicer.update_asset),
     }
@@ -784,6 +842,7 @@ try:
       ('AssetService', 'get_asset_info'): TaskId.SerializeToString,
       ('AssetService', 'get_bucket'): TaskId.SerializeToString,
       ('AssetService', 'get_task_state'): TaskId.SerializeToString,
+      ('AssetService', 'query'): Asset.SerializeToString,
       ('AssetService', 'remove_asset'): TaskId.SerializeToString,
       ('AssetService', 'update_asset'): Asset.SerializeToString,
     }
@@ -794,6 +853,7 @@ try:
       ('AssetService', 'get_asset_info'): AssetInfo.FromString,
       ('AssetService', 'get_bucket'): Bucket.FromString,
       ('AssetService', 'get_task_state'): TaskState.FromString,
+      ('AssetService', 'query'): Assets.FromString,
       ('AssetService', 'remove_asset'): TaskId.FromString,
       ('AssetService', 'update_asset'): TaskId.FromString,
     }
@@ -804,6 +864,7 @@ try:
       'get_asset_info': cardinality.Cardinality.UNARY_UNARY,
       'get_bucket': cardinality.Cardinality.UNARY_UNARY,
       'get_task_state': cardinality.Cardinality.UNARY_UNARY,
+      'query': cardinality.Cardinality.UNARY_UNARY,
       'remove_asset': cardinality.Cardinality.UNARY_UNARY,
       'update_asset': cardinality.Cardinality.UNARY_UNARY,
     }
