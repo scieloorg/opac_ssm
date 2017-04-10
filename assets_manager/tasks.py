@@ -132,6 +132,12 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
         logger.error(e)
         raise
 
+    try:
+        meta = json.loads(metadata)
+    except ValueError as e:
+        logger.error(e)
+        raise
+
     if bucket_name == "":
         bucket_name = "UNKNOW"
 
@@ -144,7 +150,7 @@ def add_asset(self, file, filename, type=None, metadata=None, bucket_name=""):
     asset.file = File(fp, filename)
     asset.filename = filename
     asset.type = type
-    asset.metadata = metadata
+    asset.metadata = meta
     asset.uuid = self.request.id  # Save task id on uuid field.
     asset.bucket = bucket
     asset.save()
@@ -182,6 +188,41 @@ def remove_asset(self, asset_uuid):
         raise
 
     return result
+
+
+@app.task(bind=True)
+def query(self, checksum, metadata=None):
+    """
+    Task query assets.
+
+    The only field mandatory is field checksum
+
+    Params:
+        :param checksum: Bytes
+        :param metadata: JSON with metadada about asset
+
+    The field ``checksum`` will be compare using the checksum field
+
+    Return a list of asset.
+    """
+    if not checksum:
+        error_msg = 'Param "checksum" is required'
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+
+    if not metadata:
+        metadata = {}
+
+    try:
+        meta = json.loads(metadata)
+    except ValueError as e:
+        logger.error(e)
+        raise
+
+    assets = models.Asset.objects.filter(checksum=checksum,
+                                         metadata__contains=meta)
+
+    return assets
 
 
 @app.task(bind=True)

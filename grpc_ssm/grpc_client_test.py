@@ -102,10 +102,6 @@ def run():
     # Teste asset.remove_asset
     ###########################################################################
 
-    print("Removendo um asset com o uuid %s" % task.id)
-
-    stubAsset.remove_asset(opac_pb2.TaskId(id=asset.uuid))
-
     print("Dormindo por %s segundos..." % SLEEP_TIME)
 
     time.sleep(SLEEP_TIME)
@@ -118,6 +114,13 @@ def run():
 
     print(asset_exists.exist)
 
+    print("Realizando uma query com o checksum: %s" % asset.checksum)
+
+    assets = stubAsset.query(opac_pb2.Asset(checksum=asset.checksum,
+                                            metadata='{"foo": "bar", "pickles": "blaus"}'))
+
+    print(assets.assets)
+
     stubBucket = opac_pb2.BucketServiceStub(channel)
 
     print("Adicionando um novo bucket")
@@ -126,13 +129,22 @@ def run():
 
     time.sleep(SLEEP_TIME)
 
-    task_state = stubBucket.get_task_state(opac_pb2.TaskId(id=task.id))
+    print("Coletando assets através do bucket name....")
+
+    stubBucket.get_assets(opac_pb2.BucketName(name="Bucket Sample"))
+
+    print("Removendo um asset com o uuid %s" % task.id)
+
+    stubAsset.remove_asset(opac_pb2.TaskId(id=asset.uuid))
+
+    task_state = stubAsset.get_task_state(opac_pb2.TaskId(id=task.id))
 
     print("Verificando o estado da task: %s" % task_state)
 
     print("Atualizando um bucket")
 
-    task = stubBucket.update_bucket(opac_pb2.BucketName(name="Bucket 007", new_name="Bucket 008"))
+    task = stubBucket.update_bucket(opac_pb2.BucketName(name="Bucket 007",
+                                                        new_name="Bucket 008"))
 
     time.sleep(SLEEP_TIME)
 

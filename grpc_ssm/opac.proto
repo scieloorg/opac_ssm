@@ -9,6 +9,7 @@ service AssetService {
     rpc get_asset_info(TaskId) returns (AssetInfo) {}
     rpc get_task_state(TaskId) returns (TaskState) {}
     rpc get_bucket(TaskId) returns (Bucket) {}
+    rpc query(Asset) returns (Assets) {}
 }
 
 service BucketService{
@@ -26,6 +27,11 @@ message Asset {
     string metadata = 4;
     string uuid = 5;
     string bucket = 6;
+    string checksum = 7;
+    string absolute_url = 8;
+    string full_absolute_url = 9;
+    string created_at = 10;
+    string updated_at = 11;
 }
 
 message Assets{
