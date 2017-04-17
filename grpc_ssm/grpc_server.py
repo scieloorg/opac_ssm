@@ -250,6 +250,7 @@ def serve(host='[::]', port=5000, max_workers=4,
     servicer.set('get_asset_info', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('get_task_state', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('get_bucket', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('query', health_pb2.HealthCheckResponse.SERVING)
 
     # Bucket
     servicer.set('add_bucket', health_pb2.HealthCheckResponse.SERVING)
