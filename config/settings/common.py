@@ -314,3 +314,7 @@ EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default='')
 # Folder name of asset
 # This variable represent the first part of the asset path
 ASSET_FOLDER = env("ASSET_FOLDER", default='assets')
+
+# http:// or https://
+# This will be the beginning of the asset URL.
+ASSET_PROTOCOL_PREFIX = env("ASSET_PROTOCOL_PREFIX", default='https://')
