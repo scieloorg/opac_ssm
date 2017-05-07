@@ -74,7 +74,8 @@ class Asset(models.Model):
         """
         domain = Site.objects.get_current().domain
 
-        return "http://{0}{1}".format(domain, self.get_absolute_url)
+        return "{0}{1}{2}".format(settings.ASSET_PROTOCOL_PREFIX,
+                                  domain, self.get_absolute_url)
 
 
 @receiver(pre_delete, sender=Asset)
