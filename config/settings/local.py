@@ -24,7 +24,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='w%vn20@n7%1)3m10genhm(v@tt_+y=hx!71fdett&hx_rzjs&_')
-
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['example.com'])
 
 # CACHING
 # ------------------------------------------------------------------------------
@@ -71,4 +71,3 @@ CELERY_ALWAYS_EAGER = False
 
 # Change the index name to dev.
 HAYSTACK_CONNECTIONS_INDEX = env('HAYSTACK_CONNECTIONS_INDEX', default='opac_ssm_idx_dev')
-
