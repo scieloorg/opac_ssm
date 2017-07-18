@@ -1,5 +1,5 @@
-#coding: utf-8
 #!/usr/bin/env python
+# coding: utf-8
 
 import os
 import time
@@ -8,6 +8,7 @@ import grpc
 import opac_pb2
 
 SLEEP_TIME = 5
+
 
 def run():
     ###########################################################################
@@ -28,13 +29,13 @@ def run():
 
     filename = os.path.basename(getattr(file, 'name', None))
 
-    meta = '{"foo": "bar", "pickles": "blaus"}' # String
+    meta = '{"foo": "bar", "pickles": "blaus"}'  # String
 
     print("Envida os metadados %s como param metadata." % meta)
 
     task = stubAsset.add_asset(opac_pb2.Asset(file=file.read(), filename=filename,
-                                         type="txt", metadata=meta,
-                                         bucket="Bucket Sample"))
+                                              type="txt", metadata=meta,
+                                              bucket="Bucket Sample"))
 
     ###########################################################################
     # Teste asset.get_task_state
@@ -48,7 +49,7 @@ def run():
 
     print("Dormindo por %s segundos..." % SLEEP_TIME)
 
-    time.sleep(SLEEP_TIME) # sleep 10 seconds
+    time.sleep(SLEEP_TIME)  # sleep 10 seconds
 
     task_state = stubAsset.get_task_state(opac_pb2.TaskId(id=task.id))
 
@@ -116,8 +117,25 @@ def run():
 
     print("Realizando uma query com o checksum: %s" % asset.checksum)
 
-    assets = stubAsset.query(opac_pb2.Asset(checksum=asset.checksum,
-                                            metadata='{"foo": "bar", "pickles": "blaus"}'))
+    assets = stubAsset.query(opac_pb2.Asset(checksum=asset.checksum))
+
+    print(assets.assets)
+
+    print("Realizando uma query com o metadata: %s" % asset.metadata)
+
+    assets = stubAsset.query(opac_pb2.Asset(metadata=asset.metadata))
+
+    print(assets.assets)
+
+    print("Realizando uma query com o metadata e checksum: %s, %s" % (asset.metadata, asset.checksum))
+
+    assets = stubAsset.query(opac_pb2.Asset(metadata=asset.metadata, checksum=asset.checksum))
+
+    print(assets.assets)
+
+    print("Realizando uma query com o filename: %s" % filename)
+
+    assets = stubAsset.query(opac_pb2.Asset(filename=asset.filename))
 
     print(assets.assets)
 
