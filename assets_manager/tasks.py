@@ -201,24 +201,24 @@ def query(self, filters=None, metadata=None):
 
     Return a list of asset.
     """
-    if not isinstance(filters, dict):
+
+    if filters is None:
+        filters = {}
+    elif not isinstance(filters, dict):
         error_msg = 'Param "filters" must be a Dict or None.'
         logger.error(error_msg)
         raise ValueError(error_msg)
 
-    if not filters:
-        filters = {}
+    if metadata and isinstance(metadata, str):
+        try:
+            meta = json.loads(metadata)
+        except ValueError as e:
+            logger.error(e)
+            raise
+        else:
+            filters['metadata__contains'] = meta
 
-    if not metadata:
-        metadata = {}
-
-    try:
-        meta = json.loads(metadata)
-    except ValueError as e:
-        logger.error(e)
-        raise
-
-    assets = models.Asset.objects.filter(metadata__contains=meta, **filters)
+    assets = models.Asset.objects.filter(**filters)
 
     return assets
 
