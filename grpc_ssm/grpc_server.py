@@ -133,8 +133,24 @@ class Asset(opac_pb2.AssetServiceServicer):
 
         assets = opac_pb2.Assets()
 
-        result = tasks.query(checksum=request.checksum,
-                             metadata=request.metadata)
+        filters = {}
+
+        if request.checksum:
+            filters['checksum'] = request.checksum
+
+        if request.filename:
+            filters['filename'] = request.filename
+
+        if request.type:
+            filters['type'] = request.type
+
+        if request.uuid:
+            filters['uuid'] = request.uuid
+
+        if request.bucket:
+            filters['bucket'] = request.bucket
+
+        result = tasks.query(filters, metadata=request.metadata)
 
         for ret in result:
             asset = opac_pb2.Asset()
