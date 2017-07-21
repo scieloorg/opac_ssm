@@ -191,36 +191,34 @@ def remove_asset(self, asset_uuid):
 
 
 @app.task(bind=True)
-def query(self, checksum, metadata=None):
+def query(self, filters=None, metadata=None):
     """
     Task query assets.
 
-    The only field mandatory is field checksum
-
     Params:
-        :param checksum: Bytes
+        :param filters: must be dictionary (Use Django ORM lookup)
         :param metadata: JSON with metadada about asset
-
-    The field ``checksum`` will be compare using the checksum field
 
     Return a list of asset.
     """
-    if not checksum:
-        error_msg = 'Param "checksum" is required'
+
+    if filters is None:
+        filters = {}
+    elif not isinstance(filters, dict):
+        error_msg = 'Param "filters" must be a Dict or None.'
         logger.error(error_msg)
         raise ValueError(error_msg)
 
-    if not metadata:
-        metadata = {}
+    if metadata and isinstance(metadata, str):
+        try:
+            meta = json.loads(metadata)
+        except ValueError as e:
+            logger.error(e)
+            raise
+        else:
+            filters['metadata__contains'] = meta
 
-    try:
-        meta = json.loads(metadata)
-    except ValueError as e:
-        logger.error(e)
-        raise
-
-    assets = models.Asset.objects.filter(checksum=checksum,
-                                         metadata__contains=meta)
+    assets = models.Asset.objects.filter(**filters)
 
     return assets
 
