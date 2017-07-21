@@ -77,7 +77,7 @@ class Asset(opac_pb2.AssetServiceServicer):
         Return a task id
         """
 
-        task_result = tasks.remove_asset.delay(asset_uuid=request.id)
+        task_result = tasks.remove_asset(asset_uuid=request.id)
 
         return opac_pb2.TaskId(id=task_result.id)
 
@@ -196,7 +196,7 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
         Return a task id
         """
 
-        task_result = tasks.remove_bucket.delay(bucket_name=request.name)
+        task_result = tasks.remove_bucket(bucket_name=request.name)
 
         return opac_pb2.TaskId(id=task_result.id)
 
