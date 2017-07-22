@@ -78,22 +78,18 @@ def remove_bucket(self, bucket_name):
     had foreign keys pointing at the object to be deleted will be deleted along
     with it
 
-    Return value describing the number of objects deleted, if it does not exists
-    return a tuple with (0, {}).
-
     More about delete method:
     https://docs.djangoproject.com/en/1.10/topics/db/queries/#deleting-objects
     """
-    result = (0, {})
 
     try:
-        result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
+        code, result = models.AssetBucket.objects.get(name__iexact=bucket_name).delete()
         logger.info("Bucket %s removido com sucesso.", bucket_name)
     except models.AssetBucket.DoesNotExist as e:
         logger.error(e)
         raise
 
-    return result
+    return bool(code)
 
 
 @app.task(bind=True)
@@ -174,20 +170,18 @@ def remove_asset(self, asset_uuid):
     had foreign keys pointing at the object to be deleted will be deleted along
     with it
 
-    Return value describing the number of objects deleted, if it does not exists
-    return a tuple with (0, {}).
-
+    More about delete method:
+    https://docs.djangoproject.com/en/1.10/topics/db/queries/#deleting-objects
     """
-    result = (0, {})
 
     try:
-        result = models.Asset.objects.get(uuid=asset_uuid).delete()
+        code, result = models.Asset.objects.get(uuid=asset_uuid).delete()
         logger.info("Asset %s removido com sucesso.", asset_uuid)
     except models.Asset.DoesNotExist as e:
         logger.error(e)
         raise
 
-    return result
+    return bool(code)
 
 
 @app.task(bind=True)

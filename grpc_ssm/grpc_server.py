@@ -74,12 +74,12 @@ class Asset(opac_pb2.AssetServiceServicer):
 
     def remove_asset(self, request, context):
         """
-        Return a task id
+        Return a AssetExists
         """
 
-        task_result = tasks.remove_asset(asset_uuid=request.id)
+        result = tasks.remove_asset(asset_uuid=request.id)
 
-        return opac_pb2.TaskId(id=task_result.id)
+        return opac_pb2.AssetRemoved(exist=result)
 
     def exists_asset(self, request, context):
         """
@@ -193,12 +193,12 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
 
     def remove_bucket(self, request, context):
         """
-        Return a task id
+        Return a BucketRemoved
         """
 
-        task_result = tasks.remove_bucket(bucket_name=request.name)
+        result = tasks.remove_bucket(bucket_name=request.name)
 
-        return opac_pb2.TaskId(id=task_result.id)
+        return opac_pb2.BucketRemoved(exist=result)
 
     def exists_bucket(self, request, context):
         """
