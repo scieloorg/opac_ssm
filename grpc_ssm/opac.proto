@@ -4,7 +4,7 @@ service AssetService {
     rpc get_asset(TaskId) returns (Asset) {}
     rpc add_asset(Asset) returns (TaskId) {}
     rpc update_asset(Asset) returns (TaskId) {}
-    rpc remove_asset(TaskId) returns (TaskId) {}
+    rpc remove_asset(TaskId) returns (AssetRemoved) {}
     rpc exists_asset(TaskId) returns (AssetExists) {}
     rpc get_asset_info(TaskId) returns (AssetInfo) {}
     rpc get_task_state(TaskId) returns (TaskState) {}
@@ -15,7 +15,7 @@ service AssetService {
 service BucketService{
     rpc add_bucket(BucketName) returns (TaskId) {}
     rpc update_bucket(BucketName) returns (TaskId) {}
-    rpc remove_bucket(BucketName) returns (TaskId) {}
+    rpc remove_bucket(BucketName) returns (BucketRemoved) {}
     rpc exists_bucket(BucketName) returns (BucketExists) {}
     rpc get_assets(BucketName) returns (Assets) {}
 }
@@ -43,6 +43,10 @@ message AssetInfo {
     string url_path = 2;
 }
 
+message AssetRemoved{
+    bool exist = 1;
+}
+
 message AssetExists{
     bool exist = 1;
 }
@@ -65,6 +69,10 @@ message BucketName{
 }
 
 message BucketExists{
+    bool exist = 1;
+}
+
+message BucketRemoved{
     bool exist = 1;
 }
 

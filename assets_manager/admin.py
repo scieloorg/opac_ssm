@@ -15,6 +15,8 @@ class AssetAdmin(admin.ModelAdmin):
         'updated_at'
     )
     readonly_fields = ('checksum', 'metadata', 'filename', 'uuid')
+    list_filter = ('type', 'created_at', 'updated_at')
+    search_fields = ['checksum', 'uuid', 'filename', 'bucket__name', 'metadata']
 
 
 @admin.register(models.AssetBucket)
