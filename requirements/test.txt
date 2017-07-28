@@ -2,7 +2,7 @@
 -r base.txt
 
 coverage==4.4.1
-flake8==3.4.0 # pyup: != 2.6.0
+flake8==3.4.1 # pyup: != 2.6.0
 django-test-plus==1.0.18
 factory-boy==2.8.1
 
