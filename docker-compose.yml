@@ -82,7 +82,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   redis:
-    image: redis:latest
+    image: scieloorg/redis
     user: redis
     restart: always
     volumes:
