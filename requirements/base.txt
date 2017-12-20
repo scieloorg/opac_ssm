@@ -48,7 +48,7 @@ django-haystack==2.6.1
 elasticsearch==5.2.0
 
 # grpc
-grpcio==1.6.0
+grpcio==1.8.2
 grpcio-tools==1.6.0
 grpcio-health-checking==1.6.0
 
