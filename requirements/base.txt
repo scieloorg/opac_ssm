@@ -2,40 +2,40 @@
 # like Pillow and psycopg2
 # See http://bitly.com/wheel-building-fails-CPython-35
 # Verified bug on Python 3.5.1
-wheel==0.30.0
+wheel==0.31.1
 
 # Bleeding edge Django
-django==1.11.7
+django==1.11.14
 
 # Configuration
-django-environ==0.4.4
+django-environ==0.4.5
 whitenoise==3.3.1
 
 # Forms
-django-braces==1.11.0
-django-crispy-forms==1.7.0
+django-braces==1.13.0
+django-crispy-forms==1.7.2
 
 # Models
-django-model-utils==3.0.0
+django-model-utils==3.1.2
 
 # Images
-Pillow==4.3.0
+Pillow==5.2.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.34.0
+django-allauth==0.36.0
 
 # Python-PostgreSQL Database Adapter
-psycopg2==2.7.3.2
+psycopg2==2.7.5
 
 # Unicode slugification
 awesome-slugify==1.6.5
 
 # Time zones support
-pytz==2017.3
+pytz==2018.5
 
 # Redis support
-django-redis==4.8.0
+django-redis==4.9.0
 redis>=2.10.5
 
 # celery
@@ -44,7 +44,7 @@ celery==3.1.24
 # Your custom requirements go here
 
 # haystack and elasticsearch
-django-haystack==2.6.1
+django-haystack==2.8.1
 elasticsearch==5.2.0
 
 # grpc
@@ -53,7 +53,7 @@ grpcio-tools==1.6.0
 grpcio-health-checking==1.6.0
 
 # Raven is the Sentry client
-raven==6.3.0
+raven==6.9.0
 
 # Django tasty pie
-django-tastypie==0.14.0
+django-tastypie==0.14.1
