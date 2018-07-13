@@ -12,7 +12,7 @@ from django.dispatch.dispatcher import receiver
 
 class AssetBucket(models.Model):
     name = models.CharField('nome', max_length=256, unique=True,
-                            default='UNKNOW')
+                            default='UNKNOW', db_index=True)
 
     def __str__(self):
         return self.name
@@ -37,20 +37,20 @@ class Asset(models.Model):
     Class that represent Asset.
     """
 
-    type = models.CharField(max_length=32, null=True, blank=True)
+    type = models.CharField(max_length=32, null=True, blank=True, db_index=True)
     file = models.FileField(upload_to=upload_to_path, max_length=500)
-    filename = models.CharField(max_length=128, null=True, blank=True)
-    uuid = models.UUIDField(unique=True, editable=False, default=uuid4)
+    filename = models.CharField(max_length=128, null=True, blank=True, db_index=True)
+    uuid = models.UUIDField(unique=True, editable=False, default=uuid4, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    metadata = JSONField(null=True, blank=True)
+    metadata = JSONField(null=True, blank=True, db_index=True)
 
-    bucket = models.ForeignKey(AssetBucket, null=True, blank=False)
+    bucket = models.ForeignKey(AssetBucket, null=True, blank=False, db_index=True)
 
     checksum = models.CharField(max_length=64, null=False, blank=False,
-                                editable=False)
+                                editable=False, db_index=True)
 
     def __unicode__(self):
         return self.file
