@@ -15,8 +15,8 @@ from celery.result import AsyncResult
 from assets_manager import tasks
 from assets_manager import models
 
-MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
-MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
+DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
+DEFAULT_MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
 
 
 class Asset(opac_pb2.AssetServiceServicer):
@@ -250,8 +250,14 @@ class AssetBucket(opac_pb2.BucketServiceServicer):
 
 
 def serve(host='[::]', port=5000, max_workers=4,
-          max_receive_message_length=MAX_RECEIVE_MESSAGE_LENGTH,
-          max_send_message_length=MAX_SEND_MESSAGE_LENGTH):
+          max_receive_message_length=None,
+          max_send_message_length=None):
+
+    if max_receive_message_length is None:
+        max_receive_message_length = DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH
+
+    if max_send_message_length is None:
+        max_send_message_length = DEFAULT_MAX_SEND_MESSAGE_LENGTH
 
     servicer = health.HealthServicer()
 
@@ -275,11 +281,15 @@ def serve(host='[::]', port=5000, max_workers=4,
     servicer.set('exists_bucket', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('get_assets', health_pb2.HealthCheckResponse.SERVING)
 
-    options = [('grpc.max_receive_message_length', max_receive_message_length),
-               ('grpc.max_send_message_length', max_send_message_length)]
+    options = [
+        ('grpc.max_receive_message_length', max_receive_message_length),
+        ('grpc.max_send_message_length', max_send_message_length)
+    ]
+    logging.info('Starting GRPC server with this options: %s', options)
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers),
-                         options=options)
+    server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=max_workers),
+        options=options)
 
     opac_pb2.add_AssetServiceServicer_to_server(Asset(), server)
     opac_pb2.add_BucketServiceServicer_to_server(AssetBucket(), server)
@@ -289,9 +299,8 @@ def serve(host='[::]', port=5000, max_workers=4,
 
     # Set port and Start Server
     server.add_insecure_port('{0}:{1}'.format(host, port))
+    logging.info('Started GRPC server on host: {0}, port: {1}, accept connections!'.format(host, port))
     server.start()
-
-    logging.info('Started GRPC server on localhost, port: {0}, accept connections!'.format(port))
 
     try:
         while True:
@@ -304,6 +313,7 @@ def serve(host='[::]', port=5000, max_workers=4,
         logging.info('Caught exception "%s"; stopping server...', e)
         server.stop(0)
         logging.info('Server stopped; exiting.')
+
 
 if __name__ == '__main__':
     serve()
