@@ -56,4 +56,4 @@ grpcio-health-checking==1.6.0
 raven==6.9.0
 
 # Django tasty pie
-django-tastypie==0.14.1
+django-tastypie==0.14.2
