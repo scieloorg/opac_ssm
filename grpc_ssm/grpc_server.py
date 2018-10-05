@@ -9,6 +9,7 @@ import grpc
 from grpc_ssm import opac_pb2
 from grpc_health.v1 import health
 from grpc_health.v1 import health_pb2
+from grpc_health.v1 import health_pb2_grpc
 
 from celery.result import AsyncResult
 
@@ -295,7 +296,7 @@ def serve(host='[::]', port=5000, max_workers=4,
     opac_pb2.add_BucketServiceServicer_to_server(AssetBucket(), server)
 
     # Health service
-    health_pb2.add_HealthServicer_to_server(servicer, server)
+    health_pb2_grpc.add_HealthServicer_to_server(servicer, server)
 
     # Set port and Start Server
     server.add_insecure_port('{0}:{1}'.format(host, port))

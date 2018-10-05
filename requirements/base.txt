@@ -5,7 +5,7 @@
 wheel==0.31.1
 
 # Bleeding edge Django
-django==1.11.14
+django==1.11.16
 
 # Configuration
 django-environ==0.4.5
@@ -48,9 +48,9 @@ django-haystack==2.8.1
 elasticsearch==5.2.0
 
 # grpc
-grpcio==1.6.0
-grpcio-tools==1.6.0
-grpcio-health-checking==1.6.0
+grpcio==1.15.0
+grpcio-tools==1.15.0
+grpcio-health-checking==1.15.0
 
 # Raven is the Sentry client
 raven==6.9.0
