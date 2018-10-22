@@ -24,6 +24,16 @@ class AssetServiceStub(object):
         request_serializer=opac__pb2.Asset.SerializeToString,
         response_deserializer=opac__pb2.TaskId.FromString,
         )
+    self.upload_file = channel.stream_unary(
+        '/AssetService/upload_file',
+        request_serializer=opac__pb2.File.SerializeToString,
+        response_deserializer=opac__pb2.Reply.FromString,
+        )
+    self.download_file = channel.unary_stream(
+        '/AssetService/download_file',
+        request_serializer=opac__pb2.Request.SerializeToString,
+        response_deserializer=opac__pb2.File.FromString,
+        )
     self.update_asset = channel.unary_unary(
         '/AssetService/update_asset',
         request_serializer=opac__pb2.Asset.SerializeToString,
@@ -73,6 +83,20 @@ class AssetServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def add_asset(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def upload_file(self, request_iterator, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def download_file(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -140,6 +164,16 @@ def add_AssetServiceServicer_to_server(servicer, server):
           servicer.add_asset,
           request_deserializer=opac__pb2.Asset.FromString,
           response_serializer=opac__pb2.TaskId.SerializeToString,
+      ),
+      'upload_file': grpc.stream_unary_rpc_method_handler(
+          servicer.upload_file,
+          request_deserializer=opac__pb2.File.FromString,
+          response_serializer=opac__pb2.Reply.SerializeToString,
+      ),
+      'download_file': grpc.unary_stream_rpc_method_handler(
+          servicer.download_file,
+          request_deserializer=opac__pb2.Request.FromString,
+          response_serializer=opac__pb2.File.SerializeToString,
       ),
       'update_asset': grpc.unary_unary_rpc_method_handler(
           servicer.update_asset,

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+import os
+import tempfile
 import time
 import logging
 import json
@@ -16,20 +17,64 @@ from celery.result import AsyncResult
 from assets_manager import tasks
 from assets_manager import models
 
-DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
-DEFAULT_MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
+DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH = 5 * 1024 * 1024
+DEFAULT_MAX_SEND_MESSAGE_LENGTH = 5 * 1024 * 1024
+
+
+CHUNK_SIZE = 1024 * 1024  # 1MB
+MAX_DOWNLOADED_FILE_SIZE = 2 * CHUNK_SIZE
+
+
+def get_file_chunks(filename):
+    with open(filename, 'rb') as f:
+        while True:
+            piece = f.read(CHUNK_SIZE)
+            if len(piece) == 0:
+                return
+            yield opac_pb2.File(buffer=piece)
+
+
+def save_chunks_to_file(chunks, filename):
+    with open(filename, 'wb') as f:
+        for chunk in chunks:
+            f.write(chunk.buffer)
+
+
+def save_tmpfile(content, file_path=None):
+    if file_path is None:
+        tmphandle, file_path = tempfile.mkstemp()
+    with open(file_path, 'wb') as f:
+        f.write(content)
+    return file_path
+
+
+def delete_temp_file(file_path):
+    try:
+        os.unlink(file_path)
+    except OSError:
+        logging.info('%s' % file_path)
 
 
 class Asset(opac_pb2.AssetServiceServicer):
+
+    def upload_file(self, request_iterator, context):
+        tmphandle, tmppath = tempfile.mkstemp()
+        save_chunks_to_file(request_iterator, tmppath)
+        return tmppath
+
+    def download_file(self, request, context):
+        if request.large_file_path:
+            return get_file_chunks(request.large_file_path)
 
     def add_asset(self, request, context):
         """
         Return a task id
         """
+        if request.large_file_path:
+            request.file = open(request.large_file_path, 'rb').read()
         task_result = tasks.add_asset.delay(request.file, request.filename,
                                             request.type, request.metadata,
                                             request.bucket)
-
         return opac_pb2.TaskId(id=task_result.id)
 
     def get_asset(self, request, context):
@@ -44,13 +89,17 @@ class Asset(opac_pb2.AssetServiceServicer):
             raise
         else:
             try:
-                fp = open(asset.file.path, 'rb')
+                if os.path.getsize(asset.file.path) > MAX_DOWNLOADED_FILE_SIZE:
+                    file_content = b''
+                    large_file_path = asset.file.path
+                else:
+                    file_content = open(asset.file.path, 'rb').read()
+                    large_file_path = ''
             except IOError as e:
                 logging.error(e)
                 context.set_details(e)
                 raise
-
-            return opac_pb2.Asset(file=fp.read(),
+            return opac_pb2.Asset(file=file_content,
                                   filename=asset.filename,
                                   type=asset.type,
                                   metadata=json.dumps(asset.metadata),
@@ -60,13 +109,15 @@ class Asset(opac_pb2.AssetServiceServicer):
                                   absolute_url=asset.get_absolute_url,
                                   full_absolute_url=asset.get_full_absolute_url,
                                   created_at=asset.created_at.isoformat(),
-                                  updated_at=asset.updated_at.isoformat())
+                                  updated_at=asset.updated_at.isoformat(),
+                                  large_file_path=large_file_path)
 
     def update_asset(self, request, context):
         """
         Return a task id
         """
-
+        if request.large_file_path:
+            request.file = open(request.large_file_path, 'rb').read()
         task_result = tasks.update_asset.delay(request.uuid, request.file,
                                                request.filename, request.type,
                                                request.metadata, request.bucket)
@@ -265,6 +316,8 @@ def serve(host='[::]', port=5000, max_workers=4,
     servicer.set('', health_pb2.HealthCheckResponse.SERVING)
 
     # Asset
+    servicer.set('download_file', health_pb2.HealthCheckResponse.SERVING)
+    servicer.set('upload_file', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('get_asset', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('add_asset', health_pb2.HealthCheckResponse.SERVING)
     servicer.set('update_asset', health_pb2.HealthCheckResponse.SERVING)
