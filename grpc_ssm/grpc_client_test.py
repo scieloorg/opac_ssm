@@ -6,6 +6,7 @@ import time
 import grpc
 
 import opac_pb2
+import opac_pb2_grpc
 
 SLEEP_TIME = 5
 
@@ -17,7 +18,7 @@ def run():
 
     channel = grpc.insecure_channel('localhost:5000')
 
-    stubAsset = opac_pb2.AssetServiceStub(channel)
+    stubAsset = opac_pb2_grpc.AssetServiceStub(channel)
 
     ###########################################################################
     # Teste asset.add_asset
@@ -74,6 +75,52 @@ def run():
     print("Agora vou verificando o estado da task: %s, %s" % (task.id, task_state))
 
     ###########################################################################
+    # Teste asset.get_asset (large file)
+    ###########################################################################
+
+    asset = stubAsset.get_asset(opac_pb2.TaskId(id=task.id))
+
+    print("Retornando os dados do Asset: ")
+
+    print((task.id, task_state.state, task_info.url, task_info.url_path, asset))
+
+    ###########################################################################
+    # Teste asset.add_asset (large file)
+    ###########################################################################
+
+    print("Obtendo o arquivo para ser enviado pelo GRPC")
+
+    file = open('large_sample.txt', 'rb')
+
+    meta = '{"foo": "bar", "pickles": "blaus"}'  # String
+
+    print("Envida os metadados %s como param metadata." % meta)
+
+    task = stubAsset.add_asset(
+        opac_pb2.Asset(file='', filename='artigo.txt',
+                       type="txt", metadata=meta,
+                       bucket="Bucket Sample",
+                       large_file_path='artigo.txt'))
+
+    ###########################################################################
+    # Teste asset.get_task_state (large file)
+    ###########################################################################
+
+    print("ID da task: %s" % task.id)
+
+    task_state = stubAsset.get_task_state(opac_pb2.TaskId(id=task.id))
+
+    print("Verificando o estado da task: %s" % task_state)
+
+    print("Dormindo por %s segundos..." % SLEEP_TIME)
+
+    time.sleep(SLEEP_TIME)  # sleep 10 seconds
+
+    task_state = stubAsset.get_task_state(opac_pb2.TaskId(id=task.id))
+
+    print("Agora vou verificando o estado da task: %s, %s" % (task.id, task_state))
+
+    ###########################################################################
     # Teste asset.get_asset_info
     ###########################################################################
 
@@ -82,7 +129,7 @@ def run():
     print("Informações da url do asset: %s" % task_info)
 
     ###########################################################################
-    # Teste asset.get_asset
+    # Teste asset.get_asset (large file)
     ###########################################################################
 
     asset = stubAsset.get_asset(opac_pb2.TaskId(id=task.id))
@@ -225,6 +272,7 @@ def run():
     time.sleep(SLEEP_TIME)
 
     task = stubBucket.remove_bucket(opac_pb2.BucketName(name="Bucket Sample"))
+
 
 if __name__ == '__main__':
     run()

@@ -3,6 +3,8 @@ syntax = "proto3";
 service AssetService {
     rpc get_asset(TaskId) returns (Asset) {}
     rpc add_asset(Asset) returns (TaskId) {}
+    rpc upload_file(stream File) returns (Reply) {}
+    rpc download_file(Request) returns (stream File) {}
     rpc update_asset(Asset) returns (TaskId) {}
     rpc remove_asset(TaskId) returns (AssetRemoved) {}
     rpc exists_asset(TaskId) returns (AssetExists) {}
@@ -32,6 +34,19 @@ message Asset {
     string full_absolute_url = 9;
     string created_at = 10;
     string updated_at = 11;
+    string large_file_path = 12;
+}
+
+message File {
+    bytes file = 1; // file of the asset
+}
+
+message Request {
+  string large_file_path = 1;
+}
+
+message Reply {
+  string large_file_path = 1;
 }
 
 message Assets{
