@@ -6,7 +6,7 @@ import json
 from concurrent import futures
 
 import grpc
-from grpc_ssm import opac_pb2
+from grpc_ssm import opac_pb2, opac_pb2_grpc
 from grpc_health.v1 import health
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
@@ -20,7 +20,7 @@ DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH = 90 * 1024 * 1024
 DEFAULT_MAX_SEND_MESSAGE_LENGTH = 90 * 1024 * 1024
 
 
-class Asset(opac_pb2.AssetServiceServicer):
+class Asset(opac_pb2_grpc.AssetServiceServicer):
 
     def add_asset(self, request, context):
         """
@@ -173,7 +173,7 @@ class Asset(opac_pb2.AssetServiceServicer):
         return assets
 
 
-class AssetBucket(opac_pb2.BucketServiceServicer):
+class AssetBucket(opac_pb2_grpc.BucketServiceServicer):
 
     def add_bucket(self, request, context):
         """
@@ -292,8 +292,8 @@ def serve(host='[::]', port=5000, max_workers=4,
         futures.ThreadPoolExecutor(max_workers=max_workers),
         options=options)
 
-    opac_pb2.add_AssetServiceServicer_to_server(Asset(), server)
-    opac_pb2.add_BucketServiceServicer_to_server(AssetBucket(), server)
+    opac_pb2_grpc.add_AssetServiceServicer_to_server(Asset(), server)
+    opac_pb2_grpc.add_BucketServiceServicer_to_server(AssetBucket(), server)
 
     # Health service
     health_pb2_grpc.add_HealthServicer_to_server(servicer, server)

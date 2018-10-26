@@ -23,6 +23,24 @@ def run():
     # Teste asset.add_asset
     ###########################################################################
 
+    print("Enviado o video para o GRCP ~400MB")
+
+    file = open('video.mp4', 'rb')
+
+    filename = os.path.basename(getattr(file, 'name', None))
+
+    meta = '{"foo": "bar", "pickles": "blaus"}'  # String
+
+    print("Envida os metadados %s como param metadata." % meta)
+
+    task = stubAsset.add_asset(opac_pb2.Asset(file=file.read(), filename=filename,
+                                              type="mp4", metadata=meta,
+                                              bucket="Video"))
+
+    ###########################################################################
+    # Teste asset.add_asset
+    ###########################################################################
+
     print("Obtendo o arquivo para ser enviado pelo GRPC")
 
     file = open('sample.txt', 'rb')
