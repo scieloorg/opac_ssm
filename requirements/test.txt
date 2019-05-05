@@ -2,7 +2,7 @@
 -r base.txt
 coverage==4.4.2
 flake8==3.5.0 # pyup: != 2.6.0
-django-test-plus==1.0.20
+django-test-plus==1.2.0
 factory-boy==2.11.1
 
 # pytest
