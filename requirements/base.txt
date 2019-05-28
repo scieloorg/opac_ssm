@@ -50,7 +50,7 @@ elasticsearch==5.2.0
 # grpc
 grpcio==1.15.0
 grpcio-tools==1.15.0
-grpcio-health-checking==1.15.0
+grpcio-health-checking==1.21.1
 
 # Raven is the Sentry client
 raven==6.9.0
