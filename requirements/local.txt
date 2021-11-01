@@ -1,6 +1,6 @@
 # Local development dependencies go here
 -r base.txt
-coverage==4.5.1
+coverage==6.1.1
 django-extensions==2.0.7
 django-coverage-plugin==1.5.0
 Werkzeug==0.14.1
