@@ -23,7 +23,7 @@ Pillow==5.2.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.36.0
+django-allauth==0.49.0
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.7.5
